@@ -73,44 +73,44 @@ namespace BFP4FLauncherWV
             byte[] buff = Blaze.CreatePacket(p.Component, p.Command, 0, 0x1000, p.ID, SESS);
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
-            //CreateAuthPacketA(p, pi, ns);
+            CreateAuthPacketA(p, pi, ns);
         }
-        //public static void CreateAuthPacketA(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
-        //{
-        //    List<Blaze.Tdf> Result = new List<Blaze.Tdf>();
-        //    List<Blaze.Tdf> DATA = new List<Blaze.Tdf>();
-        //    DATA.Add(Blaze.TdfUnion.Create("ADDR"));
-        //    DATA.Add(Blaze.TdfString.Create("BPS\0", ""));
-        //    DATA.Add(Blaze.TdfDoubleList.Create("CMAP", 0, 0, null, null, 0));
-        //    DATA.Add(Blaze.TdfString.Create("CTY\0", ""));
-        //    DATA.Add(Blaze.TdfDoubleList.Create("DMAP", 0, 0, null, null, 0));
-        //    DATA.Add(Blaze.TdfInteger.Create("HWFG", 0));
-        //    List<Blaze.Tdf> QDAT = new List<Blaze.Tdf>();
-        //    QDAT.Add(Blaze.TdfInteger.Create("DBPS", 0));
-        //    QDAT.Add(Blaze.TdfInteger.Create("NATT", 0));
-        //    QDAT.Add(Blaze.TdfInteger.Create("UBPS", 0));
-        //    DATA.Add(Blaze.TdfStruct.Create("QDAT", QDAT));
-        //    DATA.Add(Blaze.TdfInteger.Create("UATT", 0));
-        //    DATA.Add(Blaze.TdfDoubleList.Create("ULST", 0, 0, null, null, 0));
-        //    Result.Add(Blaze.TdfStruct.Create("DATA", DATA));
-        //    List<Blaze.Tdf> USER = new List<Blaze.Tdf>();
-        //    USER.Add(Blaze.TdfInteger.Create("AID\0", pi.userId));
-        //    USER.Add(Blaze.TdfInteger.Create("ALOC", 0x64654445));
-        //    USER.Add(Blaze.TdfBlob.Create("EXBB", new byte[0]));
-        //    USER.Add(Blaze.TdfInteger.Create("EXID", 0));
-        //    USER.Add(Blaze.TdfInteger.Create("ID\0\0", pi.userId));
-        //    USER.Add(Blaze.TdfString.Create("NAME", pi.name));
-        //    Result.Add(Blaze.TdfStruct.Create("USER", USER));
-        //    byte[] buff = Blaze.CreatePacket(0x7802, 2, 0, 0x2000, 0, Result);
-        //    ns.Write(buff, 0, buff.Length);
-        //    ns.Flush();
-        //    Result = new List<Blaze.Tdf>();
-        //    Result.Add(Blaze.TdfInteger.Create("FLGS", 3));
-        //    Result.Add(Blaze.TdfInteger.Create("ID\0\0", pi.userId));
-        //    buff = Blaze.CreatePacket(0x7802, 5, 0, 0x2000, 0, Result);
-        //    ns.Write(buff, 0, buff.Length);
-        //    ns.Flush();
-        //}
+        public static void CreateAuthPacketA(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
+        {
+            List<Blaze.Tdf> Result = new List<Blaze.Tdf>();
+            List<Blaze.Tdf> DATA = new List<Blaze.Tdf>();
+            DATA.Add(Blaze.TdfUnion.Create("ADDR"));
+            DATA.Add(Blaze.TdfString.Create("BPS\0", ""));
+            DATA.Add(Blaze.TdfDoubleList.Create("CMAP", 0, 0, null, null, 0));
+            DATA.Add(Blaze.TdfString.Create("CTY\0", ""));
+            DATA.Add(Blaze.TdfDoubleList.Create("DMAP", 0, 0, null, null, 0));
+            DATA.Add(Blaze.TdfInteger.Create("HWFG", 0));
+            List<Blaze.Tdf> QDAT = new List<Blaze.Tdf>();
+            QDAT.Add(Blaze.TdfInteger.Create("DBPS", 0));
+            QDAT.Add(Blaze.TdfInteger.Create("NATT", 0));
+            QDAT.Add(Blaze.TdfInteger.Create("UBPS", 0));
+            DATA.Add(Blaze.TdfStruct.Create("QDAT", QDAT));
+            DATA.Add(Blaze.TdfInteger.Create("UATT", 0));
+            DATA.Add(Blaze.TdfDoubleList.Create("ULST", 0, 0, null, null, 0));
+            Result.Add(Blaze.TdfStruct.Create("DATA", DATA));
+            List<Blaze.Tdf> USER = new List<Blaze.Tdf>();
+            USER.Add(Blaze.TdfInteger.Create("AID\0", pi.userId));
+            USER.Add(Blaze.TdfInteger.Create("ALOC", 0x64654445));
+            USER.Add(Blaze.TdfBlob.Create("EXBB", new byte[0]));
+            USER.Add(Blaze.TdfInteger.Create("EXID", 0));
+            USER.Add(Blaze.TdfInteger.Create("ID\0\0", pi.userId));
+            USER.Add(Blaze.TdfString.Create("NAME", pi.name));
+            Result.Add(Blaze.TdfStruct.Create("USER", USER));
+            byte[] buff = Blaze.CreatePacket(0x7802, 2, 0, 0x2000, 0, Result);
+            //ns.Write(buff, 0, buff.Length);                                           //TODO!!
+            //ns.Flush();                                                               //TODO!!
+            Result = new List<Blaze.Tdf>();
+            Result.Add(Blaze.TdfInteger.Create("FLGS", 3));
+            Result.Add(Blaze.TdfInteger.Create("ID\0\0", pi.userId));
+            buff = Blaze.CreatePacket(0x7802, 5, 0, 0x2000, 0, Result);
+            ns.Write(buff, 0, buff.Length);
+            ns.Flush();
+        }
 
     }
 }

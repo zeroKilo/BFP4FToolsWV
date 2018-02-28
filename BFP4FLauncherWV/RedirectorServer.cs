@@ -21,6 +21,7 @@ namespace BFP4FLauncherWV
         public static bool _exit;
         public static RichTextBox box = null;
         public static TcpListener lRedirector = null;
+        public static int targetPort = 30000;
         
         public static void Start()
         {
@@ -90,7 +91,7 @@ namespace BFP4FLauncherWV
             List<Blaze.Tdf> VALU = new List<Blaze.Tdf>();
             VALU.Add(Blaze.TdfString.Create("HOST", "localhost"));
             VALU.Add(Blaze.TdfInteger.Create("IP\0\0", Blaze.GetIPfromString("127.0.0.1")));
-            VALU.Add(Blaze.TdfInteger.Create("PORT", 30000));
+            VALU.Add(Blaze.TdfInteger.Create("PORT", targetPort));
             Blaze.TdfUnion ADDR = Blaze.TdfUnion.Create("ADDR", 0, Blaze.TdfStruct.Create("VALU", VALU));
             Result.Add(ADDR);
             Result.Add(Blaze.TdfInteger.Create("SECU", 0));

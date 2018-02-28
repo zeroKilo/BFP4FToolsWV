@@ -40,13 +40,14 @@ namespace BFP4FLauncherWV
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
+            toolStripMenuItem1.Enabled =
+            launchStandaloneToolStripMenuItem.Enabled = false;
             RedirectorServer.box =
             BlazeServer.box =
             HttpServer.box = rtb2;
             RedirectorServer.Start();
             BlazeServer.Start();
             HttpServer.Start();
-            toolStripMenuItem1.Enabled = false;
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -54,6 +55,19 @@ namespace BFP4FLauncherWV
             RedirectorServer.Stop();
             BlazeServer.Stop();
             HttpServer.Stop();
+        }
+
+        private void launchStandaloneToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toolStripMenuItem1.Enabled =
+            launchStandaloneToolStripMenuItem.Enabled = false;
+            RedirectorServer.targetPort = 30001;
+            RedirectorServer.box =
+            BlazeServer.box =
+            HttpServer.box = rtb2;
+            RedirectorServer.Start();
+            BlazeServer.Start();
+            HttpServer.Start();
         }
     }
 }

@@ -38,6 +38,7 @@
             this.rtb2 = new System.Windows.Forms.RichTextBox();
             this.menuStrip2 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.launchStandaloneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -53,7 +54,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(425, 275);
+            this.tabControl1.Size = new System.Drawing.Size(637, 371);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -103,7 +104,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(417, 249);
+            this.tabPage2.Size = new System.Drawing.Size(629, 345);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Blaze";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -115,32 +116,40 @@
             this.rtb2.Font = new System.Drawing.Font("Consolas", 8.25F);
             this.rtb2.Location = new System.Drawing.Point(3, 27);
             this.rtb2.Name = "rtb2";
-            this.rtb2.Size = new System.Drawing.Size(411, 219);
+            this.rtb2.Size = new System.Drawing.Size(623, 315);
             this.rtb2.TabIndex = 5;
             this.rtb2.Text = "";
             // 
             // menuStrip2
             // 
             this.menuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1});
+            this.toolStripMenuItem1,
+            this.launchStandaloneToolStripMenuItem});
             this.menuStrip2.Location = new System.Drawing.Point(3, 3);
             this.menuStrip2.Name = "menuStrip2";
-            this.menuStrip2.Size = new System.Drawing.Size(411, 24);
+            this.menuStrip2.Size = new System.Drawing.Size(623, 24);
             this.menuStrip2.TabIndex = 4;
             this.menuStrip2.Text = "menuStrip2";
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(53, 20);
-            this.toolStripMenuItem1.Text = "Launch";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(167, 20);
+            this.toolStripMenuItem1.Text = "Launch for use with Blazeshark";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
+            // launchStandaloneToolStripMenuItem
+            // 
+            this.launchStandaloneToolStripMenuItem.Name = "launchStandaloneToolStripMenuItem";
+            this.launchStandaloneToolStripMenuItem.Size = new System.Drawing.Size(110, 20);
+            this.launchStandaloneToolStripMenuItem.Text = "Launch Standalone";
+            this.launchStandaloneToolStripMenuItem.Click += new System.EventHandler(this.launchStandaloneToolStripMenuItem_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(425, 275);
+            this.ClientSize = new System.Drawing.Size(637, 371);
             this.Controls.Add(this.tabControl1);
             this.Name = "Form1";
             this.Text = "Battlefield Play 4 Free Launcher by Warranty Voider";
@@ -169,6 +178,7 @@
         private System.Windows.Forms.RichTextBox rtb2;
         private System.Windows.Forms.MenuStrip menuStrip2;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem launchStandaloneToolStripMenuItem;
 
     }
 }
