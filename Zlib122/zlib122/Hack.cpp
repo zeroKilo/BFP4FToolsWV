@@ -143,18 +143,29 @@ int myLogger(int a1, char *Format, ...)
 	return orgLog(a1, Format, va);
 }
 
+TCHAR szFileName[MAX_PATH + 1];
+
 void Hack_Init()
 {
-	OpenConsole();
-	printf("Hi from inside the game!\n");
-	orgMain = (WINMAIN)DetourFunction((PBYTE)0x4059B0, (PBYTE)WinMain);
-	orgProtoConnect = (PROTOCONNECT)DetourFunction((PBYTE)0xB18C50, (PBYTE)ProtoSSLConnect);
-	//orgLog = (SOMELOG1)DetourFunction((PBYTE)0xA7B740, (PBYTE)myLogger);
-	DetourFunction((PBYTE)0xB18580, (PBYTE)VerifyCertificate);
-	DetourFunction((PBYTE)0xBB3972, (PBYTE)specialHook);
-	FILE* fp = fopen ("TagMapLog.txt", "w");
-	fclose(fp);
+	OpenConsole();	
+	GetModuleFileName(NULL, szFileName, MAX_PATH + 1);
+	printf("Exe name: %S\n", szFileName);
+	if(wcsstr(szFileName, L"_w32ded.exe") != NULL)
+	{
+		printf("Hi from inside the server!\n");
+		DetourFunction((PBYTE)0xAFA180, (PBYTE)VerifyCertificate);
+	}
+	else
+	{
+		printf("Hi from inside the game!\n");
+		orgMain = (WINMAIN)DetourFunction((PBYTE)0x4059B0, (PBYTE)WinMain);
+		orgProtoConnect = (PROTOCONNECT)DetourFunction((PBYTE)0xB18C50, (PBYTE)ProtoSSLConnect);
+		//orgLog = (SOMELOG1)DetourFunction((PBYTE)0xA7B740, (PBYTE)myLogger);
+		DetourFunction((PBYTE)0xB18580, (PBYTE)VerifyCertificate);
+		DetourFunction((PBYTE)0xBB3972, (PBYTE)specialHook);
+		FILE* fp = fopen ("TagMapLog.txt", "w");
+		fclose(fp);
+	}
 	printf("Detours done.\n");
 	MessageBoxA(0, "Attach now!", 0, 0);
-
 }
