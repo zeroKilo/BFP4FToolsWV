@@ -64,7 +64,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(417, 249);
+            this.tabPage1.Size = new System.Drawing.Size(629, 345);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Launcher";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -76,7 +76,7 @@
             this.rtb1.Font = new System.Drawing.Font("Consolas", 8.25F);
             this.rtb1.Location = new System.Drawing.Point(3, 27);
             this.rtb1.Name = "rtb1";
-            this.rtb1.Size = new System.Drawing.Size(411, 219);
+            this.rtb1.Size = new System.Drawing.Size(623, 315);
             this.rtb1.TabIndex = 3;
             this.rtb1.Text = resources.GetString("rtb1.Text");
             // 
@@ -86,7 +86,7 @@
             this.launchToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(3, 3);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(411, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(623, 24);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 

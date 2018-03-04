@@ -38,8 +38,9 @@ WINMAIN orgMain;
 PROTOCONNECT orgProtoConnect;
 SOMELOG1 orgLog;
 
-DWORD buf;
+DWORD buf, buf2, buf2len;
 DWORD ret = 0x00BB397A;
+DWORD ret2 = 0x00B89807;
 DWORD foundMaps[1000];
 DWORD fMapCount = 0;
 
@@ -57,43 +58,47 @@ void PrintTagLabel(DWORD t, FILE* fp)
 
 void DecodeTagInfoMap(BYTE* buf)
 {
-	DWORD address = (DWORD)buf;
-	for(int i=0; i<fMapCount; i++)
-		if(foundMaps[i] == address)
-			return;
-	foundMaps[fMapCount++] = address;		
-	FILE* fp = fopen ("TagMapLog.txt", "a+");
-	printf("Visited TagInfoMap @0x%08X\n", buf);
-	fprintf(fp, "Visited TagInfoMap @0x%08X\n", buf);
-	while(true)
+	try
 	{
-		DWORD tagLabel = *(DWORD*)(buf);		
-		DWORD next = *(BYTE*)(buf + 5);
-		PrintTagLabel(tagLabel, fp);
-		if(next != 0)
+		DWORD address = (DWORD)buf;
+		for(int i=0; i<fMapCount; i++)
+			if(foundMaps[i] == address)
+				return;
+		foundMaps[fMapCount++] = address;		
+		FILE* fp = fopen ("TagMapLog.txt", "a+");
+		printf("Visited TagInfoMap @0x%08X\n", buf);
+		fprintf(fp, "Visited TagInfoMap @0x%08X\n", buf);
+		while(true)
 		{
-			for(int i=0; i<next; i++)
+			DWORD tagLabel = *(DWORD*)(buf);		
+			DWORD next = *(BYTE*)(buf + 5);
+			PrintTagLabel(tagLabel, fp);
+			if(next != 0)
 			{
-				printf(" %02X", buf[i]);
-				fprintf(fp," %02X", buf[i]);
+				for(int i=0; i<next; i++)
+				{
+					printf(" %02X", buf[i]);
+					fprintf(fp," %02X", buf[i]);
+				}
+				printf("\n");
+				fprintf(fp,"\r\n");
+				buf += next;
 			}
-			printf("\n");
-			fprintf(fp,"\r\n");
-			buf += next;
-		}
-		else
-		{
-			for(int i=0; i<8; i++)
+			else
 			{
-				printf(" %02X", buf[i]);
-				fprintf(fp, " %02X", buf[i]);
+				for(int i=0; i<8; i++)
+				{
+					printf(" %02X", buf[i]);
+					fprintf(fp, " %02X", buf[i]);
+				}
+				printf("...\n");
+				fprintf(fp, "...\r\n");
+				break;
 			}
-			printf("...\n");
-			fprintf(fp, "...\r\n");
-			break;
 		}
+		fclose(fp);
 	}
-	fclose(fp);
+	catch(...){};
 }
 
 void __declspec(naked) specialHook()
@@ -112,6 +117,41 @@ void __declspec(naked) specialHook()
 		jmp ret;
 	}
 }
+
+//  B89800
+
+char strBuffer[256];
+
+void special2sub(void)
+{
+	FILE* fp = fopen ("ComponentLog.txt", "a+");
+	memcpy(strBuffer, (char*)buf2, buf2len);
+	strBuffer[buf2len] = 0;
+	fprintf(fp, "%s\n", strBuffer);
+	fclose(fp);
+}
+
+void __declspec(naked) specialHook2()
+{
+	_asm
+	{
+		pushad;
+		mov eax, [esp + 0x28];
+		mov buf2, eax;
+		mov eax, [esp + 0x30];
+		mov buf2len, eax;
+	}
+	special2sub();
+	_asm
+	{
+		popad;
+		mov dl, [esp + 4];
+		mov eax, ecx;
+		push esi;
+		jmp ret2;
+	}
+}
+
 
 int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
@@ -154,6 +194,9 @@ void Hack_Init()
 	{
 		printf("Hi from inside the server!\n");
 		DetourFunction((PBYTE)0xAFA180, (PBYTE)VerifyCertificate);
+		DetourFunction((PBYTE)0xB89800, (PBYTE)specialHook2);
+		FILE* fp = fopen ("ComponentLog.txt", "w");
+		fclose(fp);
 	}
 	else
 	{
@@ -162,7 +205,7 @@ void Hack_Init()
 		orgProtoConnect = (PROTOCONNECT)DetourFunction((PBYTE)0xB18C50, (PBYTE)ProtoSSLConnect);
 		//orgLog = (SOMELOG1)DetourFunction((PBYTE)0xA7B740, (PBYTE)myLogger);
 		DetourFunction((PBYTE)0xB18580, (PBYTE)VerifyCertificate);
-		DetourFunction((PBYTE)0xBB3972, (PBYTE)specialHook);
+		//DetourFunction((PBYTE)0xBB3972, (PBYTE)specialHook);
 		FILE* fp = fopen ("TagMapLog.txt", "w");
 		fclose(fp);
 	}

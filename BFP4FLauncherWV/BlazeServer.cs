@@ -71,7 +71,7 @@ namespace BFP4FLauncherWV
             NetworkStream ns = client.GetStream();
             PlayerInfo pi = new PlayerInfo();
             pi.id = nextClientID;
-            pi.name = "Soldier";
+            pi.name = "test";
             pi.userId = 1;
             nextClientID++;
             Log("[CLNT] #" + pi.id + " Handler started");
