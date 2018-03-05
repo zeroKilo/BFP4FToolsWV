@@ -23,6 +23,9 @@ namespace BFP4FLauncherWV
                 case 8:
                     PostAuth(p, pi, ns);
                     break;
+                case 0xC:
+                    UserSettingsLoadAll(p, pi, ns);
+                    break;
             }
         }
         
@@ -113,6 +116,23 @@ namespace BFP4FLauncherWV
             UROPList.Add(Blaze.TdfInteger.Create("TMOP", 1));
             UROPList.Add(Blaze.TdfInteger.Create("UID\0", 1));
             Result.Add(Blaze.TdfStruct.Create("UROP", UROPList));
+            byte[] buff = Blaze.CreatePacket(p.Component, p.Command, 0, 0x1000, p.ID, Result);
+            ns.Write(buff, 0, buff.Length);
+            ns.Flush();
+        }
+        
+        private static void UserSettingsLoadAll(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
+        {
+
+            List<Blaze.Tdf> Result = new List<Blaze.Tdf>();
+            List<string> Keys = new List<string>();
+            List<string> Data = new List<string>();
+            //foreach (Player.PlayerInfo.SettingEntry set in player.Settings)
+            //{
+            //    Keys.Add(set.Key);
+            //    Data.Add(set.Data);
+            //}//TODO
+            Result.Add(Blaze.TdfDoubleList.Create("SMAP", 1, 1, Keys, Data, Keys.Count));
             byte[] buff = Blaze.CreatePacket(p.Component, p.Command, 0, 0x1000, p.ID, Result);
             ns.Write(buff, 0, buff.Length);
             ns.Flush();

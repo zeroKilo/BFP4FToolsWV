@@ -53,36 +53,46 @@ namespace BlazeSharkWV
                 byte[] data;
                 while (!GetExit())
                 {
-                    client = listener.AcceptTcpClient();
-                    Log("Client connected");
-                    TcpClient target = new TcpClient("127.0.0.1", portTarget);
-                    Log("Target connected");
-                    NetworkStream nsc = client.GetStream();
-                    NetworkStream nst = target.GetStream();
-                    while (client.Connected && target.Connected && !GetExit())
+                    try
                     {
-                        data = ReadContentTCP(nsc);
-                        if (data.Length != 0)
+                        client = listener.AcceptTcpClient();
+                        Log("Client connected");
+                        TcpClient target = new TcpClient("127.0.0.1", portTarget);
+                        Log("Target connected");
+                        NetworkStream nsc = client.GetStream();
+                        NetworkStream nst = target.GetStream();
+                        while (client.Connected && target.Connected && !GetExit())
                         {
-                            Log("Received " + data.Length + " bytes of data from client");
-                            nst.Write(data, 0, data.Length);
-                            nst.Flush();
-                            AddPacket(data);
+                            data = ReadContentTCP(nsc);
+                            if (data.Length != 0)
+                            {
+                                Log("Received " + data.Length + " bytes of data from client");
+                                nst.Write(data, 0, data.Length);
+                                nst.Flush();
+                                AddPacket(data);
+                            }
+                            data = ReadContentTCP(nst);
+                            if (data.Length != 0)
+                            {
+                                Log("Received " + data.Length + " bytes of data from target");
+                                nsc.Write(data, 0, data.Length);
+                                nsc.Flush();
+                                AddPacket(data);
+                            }
+                            Thread.Sleep(10);
                         }
-                        data = ReadContentTCP(nst);
-                        if (data.Length != 0)
-                        {
-                            Log("Received " + data.Length + " bytes of data from target");
-                            nsc.Write(data, 0, data.Length);
-                            nsc.Flush();
-                            AddPacket(data);
-                        }
-                        Thread.Sleep(10);
+                        target.Close();
+                        Log("Target disconnected");
+                        client.Close();
+                        Log("Client disconnected");
                     }
-                    target.Close();
-                    Log("Target disconnected");
-                    client.Close();
-                    Log("Client disconnected");
+                    catch (Exception ex)
+                    {
+                        string err = ex.Message;
+                        if (ex.InnerException != null)
+                            err += " - " + ex.InnerException.Message;
+                        Log("ERROR : " + err);
+                    }
                 }
             }
             catch (Exception ex)

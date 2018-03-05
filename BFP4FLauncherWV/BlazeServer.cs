@@ -73,6 +73,9 @@ namespace BFP4FLauncherWV
             pi.id = nextClientID;
             pi.name = "test";
             pi.userId = 1;
+            List<byte> ip = new List<byte>(((IPEndPoint)client.Client.RemoteEndPoint).Address.GetAddressBytes());
+            ip.Reverse();
+            pi.exIp = BitConverter.ToUInt32(ip.ToArray(), 0);
             nextClientID++;
             Log("[CLNT] #" + pi.id + " Handler started");
             try
@@ -104,11 +107,17 @@ namespace BFP4FLauncherWV
                 Log("[CLNT] #" + pi.id + " " + Blaze.PacketToDescriber(p));
                 switch (p.Component)
                 {
-                    case 0x1://Authentication Component
+                    case 0x1:
                         AuthenticationComponent.HandlePacket(p, pi, ns);
                         break;
-                    case 0x9://Util Component
+                    case 0x7:
+                        StatsComponent.HandlePacket(p, pi, ns);
+                        break;
+                    case 0x9:
                         UtilComponent.HandlePacket(p, pi, ns);
+                        break;
+                    case 0x7802:
+                        UserSessionComponent.HandlePacket(p, pi, ns);
                         break;
                 }
             }

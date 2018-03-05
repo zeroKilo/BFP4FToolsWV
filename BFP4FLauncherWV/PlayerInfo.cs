@@ -11,6 +11,7 @@ namespace BFP4FLauncherWV
         public string name;
         public int id;
         public int userId;
-
+        public uint exIp, exPort;
+        public uint inIp, inPort;
     }
 }
