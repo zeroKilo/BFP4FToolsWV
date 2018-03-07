@@ -44,63 +44,79 @@ DWORD ret2 = 0x00B89807;
 DWORD foundMaps[1000];
 DWORD fMapCount = 0;
 
-void PrintTagLabel(DWORD t, FILE* fp)
-{
-	t >>= 8;
-	printf(" ");
-	for(int i=0; i<4; i++)
-	{
-		BYTE b = (BYTE)(((t >> (6 * (3-i))) & 0x3F) + 0x20);
-		printf("%c", b);
-		fprintf(fp, "%c", b);
-	}
-}
+//void PrintTagLabel(DWORD t, FILE* fp)
+//{
+//	t >>= 8;
+//	printf(" ");
+//	for(int i=0; i<4; i++)
+//	{
+//		BYTE b = (BYTE)(((t >> (6 * (3-i))) & 0x3F) + 0x20);
+//		printf("%c", b);
+//		fprintf(fp, "%c", b);
+//	}
+//}
+//
+//void DecodeTagInfoMap(BYTE* buf)
+//{
+//	try
+//	{
+//		DWORD address = (DWORD)buf;
+//		for(int i=0; i<fMapCount; i++)
+//			if(foundMaps[i] == address)
+//				return;
+//		foundMaps[fMapCount++] = address;		
+//		FILE* fp = fopen ("TagMapLog.txt", "a+");
+//		fprintf(fp, "Visited TagInfoMap @0x%08X\n", buf);
+//		while(true)
+//		{
+//			DWORD tagLabel = *(DWORD*)(buf);		
+//			DWORD next = *(BYTE*)(buf + 5);
+//			PrintTagLabel(tagLabel, fp);
+//			if(next != 0)
+//			{
+//				for(int i=0; i<next; i++)
+//				{
+//					printf(" %02X", buf[i]);
+//					fprintf(fp," %02X", buf[i]);
+//				}
+//				printf("\n");
+//				fprintf(fp,"\r\n");
+//				buf += next;
+//			}
+//			else
+//			{
+//				for(int i=0; i<8; i++)
+//				{
+//					printf(" %02X", buf[i]);
+//					fprintf(fp, " %02X", buf[i]);
+//				}
+//				printf("...\n");
+//				fprintf(fp, "...\r\n");
+//				break;
+//			}
+//		}
+//		fclose(fp);
+//	}
+//	catch(...)
+//	{
+//		printf("ERROR!ERROR!ERROR!ERROR!ERROR!\n");
+//	};
+//}
 
-void DecodeTagInfoMap(BYTE* buf)
+char textBuffer[256];
+
+void _stdcall DecodeTagInfoMap2(void)
 {
 	try
 	{
-		DWORD address = (DWORD)buf;
-		for(int i=0; i<fMapCount; i++)
-			if(foundMaps[i] == address)
-				return;
-		foundMaps[fMapCount++] = address;		
-		FILE* fp = fopen ("TagMapLog.txt", "a+");
-		printf("Visited TagInfoMap @0x%08X\n", buf);
-		fprintf(fp, "Visited TagInfoMap @0x%08X\n", buf);
-		while(true)
-		{
-			DWORD tagLabel = *(DWORD*)(buf);		
-			DWORD next = *(BYTE*)(buf + 5);
-			PrintTagLabel(tagLabel, fp);
-			if(next != 0)
-			{
-				for(int i=0; i<next; i++)
-				{
-					printf(" %02X", buf[i]);
-					fprintf(fp," %02X", buf[i]);
-				}
-				printf("\n");
-				fprintf(fp,"\r\n");
-				buf += next;
-			}
-			else
-			{
-				for(int i=0; i<8; i++)
-				{
-					printf(" %02X", buf[i]);
-					fprintf(fp, " %02X", buf[i]);
-				}
-				printf("...\n");
-				fprintf(fp, "...\r\n");
-				break;
-			}
-		}
-		fclose(fp);
+		sprintf(textBuffer, "Visited TagInfoMap @0x%08X\n\0", buf);
+		printf(textBuffer);
 	}
-	catch(...){};
+	catch(...)
+	{
+		printf("ERROR!ERROR!ERROR!ERROR!ERROR!\n\0");
+	};
 }
-
 void __declspec(naked) specialHook()
 {
 	_asm
@@ -108,7 +124,7 @@ void __declspec(naked) specialHook()
 		pushad;
 		mov buf, ecx;
 	}
-	DecodeTagInfoMap((BYTE*)buf);
+	DecodeTagInfoMap2();
 	_asm
 	{
 		popad;

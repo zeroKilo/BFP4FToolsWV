@@ -125,13 +125,8 @@ namespace BFP4FLauncherWV
         {
 
             List<Blaze.Tdf> Result = new List<Blaze.Tdf>();
-            List<string> Keys = new List<string>();
-            List<string> Data = new List<string>();
-            //foreach (Player.PlayerInfo.SettingEntry set in player.Settings)
-            //{
-            //    Keys.Add(set.Key);
-            //    Data.Add(set.Data);
-            //}//TODO
+            List<string> Keys = new List<string>() { "apr", "emo", "eqp"};
+            List<string> Data = new List<string>() { "350;0;349;0;0", "0", "3012;3006;3027;2021;2054;2168;8000;8002;0;0" };
             Result.Add(Blaze.TdfDoubleList.Create("SMAP", 1, 1, Keys, Data, Keys.Count));
             byte[] buff = Blaze.CreatePacket(p.Component, p.Command, 0, 0x1000, p.ID, Result);
             ns.Write(buff, 0, buff.Length);

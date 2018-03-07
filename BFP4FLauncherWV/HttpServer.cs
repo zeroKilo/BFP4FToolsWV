@@ -86,6 +86,10 @@ namespace BFP4FLauncherWV
                         Log("[HTTP] Sending AuthToken");
                         ReplyWithXML(s, "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n<success><token code=\"NEW_TOKEN\">SIxmvSLJSOwKPq5WZ3FL5KIRNJVCLp4Jgs_3mJcY2yJahXxR5mTRGUsi6PKhA4X1jpuVMxHJQv3WQ3HnQfvKeG60hRugA</token></success>");
                         break;
+                    case "/api/relationships/roster/nucleus:1":
+                        Log("[HTTP] Sending Roster response");
+                        ReplyWithXML(s, "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n<roster relationships=\"0\"/><success code=\"SUCCESS\"/>");
+                        break;
                 }
             }
             if (cmd == "POST")
@@ -102,7 +106,7 @@ namespace BFP4FLauncherWV
             sb.AppendLine("HTTP/1.1 200 OK");
             sb.AppendLine("Date: " + DateTime.Now.ToUniversalTime().ToString("r"));
             sb.AppendLine("Server: Warranty Voiders");
-            sb.AppendLine("Content-Length: 189");
+            sb.AppendLine("Content-Length: " + c.Length);
             sb.AppendLine("Keep-Alive: timeout=5, max=100");
             sb.AppendLine("Connection: Keep-Alive");
             sb.AppendLine();
