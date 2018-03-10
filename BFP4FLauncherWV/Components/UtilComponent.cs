@@ -63,13 +63,13 @@ namespace BFP4FLauncherWV
             List<Blaze.Tdf> QOSS = new List<Blaze.Tdf>();
             List<Blaze.Tdf> BWPS = new List<Blaze.Tdf>();
             BWPS.Add(Blaze.TdfString.Create("PSA\0", "127.0.0.1"));
-            BWPS.Add(Blaze.TdfInteger.Create("PSP\0", 20000));
+            BWPS.Add(Blaze.TdfInteger.Create("PSP\0", 80));
             BWPS.Add(Blaze.TdfString.Create("SNA\0", "wv"));
             QOSS.Add(Blaze.TdfStruct.Create("BWPS", BWPS));
             QOSS.Add(Blaze.TdfInteger.Create("LNP\0", 0xA));
             List<Blaze.Tdf> LTPS1 = new List<Blaze.Tdf>();
             LTPS1.Add(Blaze.TdfString.Create("PSA\0", "127.0.0.1"));
-            LTPS1.Add(Blaze.TdfInteger.Create("PSP\0", 21000));
+            LTPS1.Add(Blaze.TdfInteger.Create("PSP\0", 80));
             LTPS1.Add(Blaze.TdfString.Create("SNA\0", "wv"));
             List<Blaze.TdfStruct> LTPS = new List<Blaze.TdfStruct>();
             LTPS.Add(Blaze.CreateStructStub(LTPS1));

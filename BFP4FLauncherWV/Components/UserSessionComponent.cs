@@ -53,7 +53,7 @@ namespace BFP4FLauncherWV
             NQOS.Add(Blaze.TdfInteger.Create("NATT", 4));
             NQOS.Add(Blaze.TdfInteger.Create("UBPS", 0));
             Result.Add(Blaze.TdfStruct.Create("NQOS", NQOS)); 
-            byte[] buff = Blaze.CreatePacket(p.Component, 1, 0, 0x2000, p.ID, Result);
+            byte[] buff = Blaze.CreatePacket(p.Component, 1, 0, 0x2000, 0, Result);
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
 
