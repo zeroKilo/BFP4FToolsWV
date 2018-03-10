@@ -44,6 +44,8 @@ DWORD ret2 = 0x00B89807;
 DWORD foundMaps[1000];
 DWORD fMapCount = 0;
 
+bool printout = true;
+
 //void PrintTagLabel(DWORD t, FILE* fp)
 //{
 //	t >>= 8;
@@ -171,21 +173,24 @@ void __declspec(naked) specialHook2()
 
 int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
-	printf("Detoured WinMain called...\n");
-	printf("Arguments: %s\n", lpCmdLine);
+	if(printout)
+	{
+		printf("Detoured WinMain called...\n");
+		printf("Arguments: %s\n", lpCmdLine);
+	}
 	//printf("Arguments after: %s\n", newArguments);
 	return orgMain(hInstance, hPrevInstance, lpCmdLine, nShowCmd);
 }
 
 int __cdecl ProtoSSLConnect(int pState, int iSecure, char *pAddr, int uAddr, unsigned short iPort)
 {
-	printf("ProtoSSLConnect was used: Address = %s:%d\n" , pAddr, iPort);
+	if(printout) printf("ProtoSSLConnect was used: Address = %s:%d\n" , pAddr, iPort);
 	return orgProtoConnect(pState, iSecure, pAddr, uAddr, iPort);
 }
 
 signed int __cdecl VerifyCertificate(int a1, size_t *a2, char a3)
 {
-	printf("VerifyCertificate was used\n");
+	if(printout) printf("VerifyCertificate was used\n");
 	return 0;
 }
 
@@ -203,19 +208,17 @@ TCHAR szFileName[MAX_PATH + 1];
 
 void Hack_Init()
 {
-	OpenConsole();	
 	GetModuleFileName(NULL, szFileName, MAX_PATH + 1);
-	printf("Exe name: %S\n", szFileName);
 	if(wcsstr(szFileName, L"_w32ded.exe") != NULL)
 	{
-		printf("Hi from inside the server!\n");
+		printout = false;
 		DetourFunction((PBYTE)0xAFA180, (PBYTE)VerifyCertificate);
-		DetourFunction((PBYTE)0xB89800, (PBYTE)specialHook2);
-		FILE* fp = fopen ("ComponentLog.txt", "w");
-		fclose(fp);
+		//DetourFunction((PBYTE)0xB89800, (PBYTE)specialHook2);
 	}
 	else
 	{
+		OpenConsole();	
+		printf("Exe name: %S\n", szFileName);
 		printf("Hi from inside the game!\n");
 		orgMain = (WINMAIN)DetourFunction((PBYTE)0x4059B0, (PBYTE)WinMain);
 		orgProtoConnect = (PROTOCONNECT)DetourFunction((PBYTE)0xB18C50, (PBYTE)ProtoSSLConnect);
@@ -224,7 +227,7 @@ void Hack_Init()
 		//DetourFunction((PBYTE)0xBB3972, (PBYTE)specialHook);
 		FILE* fp = fopen ("TagMapLog.txt", "w");
 		fclose(fp);
+		printf("Detours done.\n");
 	}
-	printf("Detours done.\n");
 	MessageBoxA(0, "Attach now!", 0, 0);
 }
