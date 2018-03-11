@@ -468,5 +468,34 @@ namespace BlazeSharkWV
             }
         }
 
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string s = toolStripTextBox4.Text.Trim();
+                s = s.Replace(" ", "");
+                MemoryStream m = new MemoryStream();
+                for (int i = 0; i < 4; i++)
+                    m.WriteByte(Convert.ToByte(s.Substring((3 - i) * 2, 2), 16));
+                toolStripTextBox5.Text = Blaze.TagToLabel(BitConverter.ToUInt32(m.ToArray(), 0));
+            }
+            catch { }
+        }
+
+        private void toolStripButton3_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string s = toolStripTextBox5.Text.Trim();
+                byte[] tmp = Blaze.Label2Tag(s);
+                string s2 = "";
+                foreach (byte b in tmp)
+                    s2 += b.ToString("X2") + " ";
+                s2 += "00";
+                toolStripTextBox4.Text = s2;
+            }
+            catch { }
+        }
+
     }
 }
