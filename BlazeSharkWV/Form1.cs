@@ -497,5 +497,19 @@ namespace BlazeSharkWV
             catch { }
         }
 
+        private void produceLogToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog d = new SaveFileDialog();
+            d.Filter = "*.txt|*.txt";
+            if (d.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                StringBuilder sb = new StringBuilder();
+                foreach (Blaze.Packet p in packets)
+                    sb.Append(BlazePrettyPrinter.PrintPacket(p));
+                File.WriteAllText(d.FileName, sb.ToString());
+                MessageBox.Show("Done.");
+            }
+        }
+
     }
 }

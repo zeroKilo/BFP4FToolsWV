@@ -50,47 +50,50 @@ namespace BlazeLibWV
             public byte Type;
             public TreeNode ToTree()
             {
-                string typedescription;
+                string typedescription = GetTypeDesc();
+                return new TreeNode(Label + " : " + Type + " (" + typedescription + ")");
+            }
+
+            public string GetTypeDesc()
+            {
+                string typedescription = "TdfUnknown";
                 switch (Type)
                 {
                     case 0:
-                        typedescription = "(TdfInteger)";
+                        typedescription = "TdfInteger";
                         break;
                     case 1:
-                        typedescription = "(TdfString)";
+                        typedescription = "TdfString";
                         break;
                     case 2:
-                        typedescription = "(TdfBlob)";
+                        typedescription = "TdfBlob";
                         break;
                     case 3:
-                        typedescription = "(TdfStruct)";
+                        typedescription = "TdfStruct";
                         break;
                     case 4:
-                        typedescription = "(TdfList)";
+                        typedescription = "TdfList";
                         break;
                     case 5:
-                        typedescription = "(TdfDoubleList)";
+                        typedescription = "TdfDoubleList";
                         break;
                     case 6:
-                        typedescription = "(TdfUnion)";
+                        typedescription = "TdfUnion";
                         break;
                     case 7:
-                        typedescription = "(TdfIntegerList)";
+                        typedescription = "TdfIntegerList";
                         break;
                     case 8:
-                        typedescription = "(TdfDoubleVal)";
+                        typedescription = "TdfDoubleVal";
                         break;
                     case 9:
-                        typedescription = "(TdfTrippleVal)";
+                        typedescription = "TdfTrippleVal";
                         break;
                     case 0xA:
-                        typedescription = "(TdfFloat)";
-                        break;
-                    default:
-                        typedescription = "(unknown)";
+                        typedescription = "TdfFloat";
                         break;
                 }
-                return new TreeNode(Label + " : " + Type + " " + typedescription);
+                return typedescription;
             }
             public void Set(string label, byte type)
             {
@@ -1067,7 +1070,7 @@ namespace BlazeLibWV
             string t = p.Command.ToString("X");
             string t2 = p.Component.ToString("X");
             string[] lines = ComponentNames.Split(',');
-            string cname = "";
+            string cname = "Unknown";
             foreach (string line in lines)
             {
                 string[] parts = line.Split('=');
@@ -1082,45 +1085,45 @@ namespace BlazeLibWV
                 case 0x1:
                     for (int i = 0; i < DescComponent1.Length / 2; i++)
                         if (DescComponent1[i * 2] == t)
-                            return cname + " : " + DescComponent1[i * 2 + 1];
+                            return cname + ":" + DescComponent1[i * 2 + 1];
                     break;
                 case 0x4:
                     for (int i = 0; i < DescComponent4.Length / 2; i++)
                         if (DescComponent4[i * 2] == t)
-                            return cname + " : " + DescComponent4[i * 2 + 1];
+                            return cname + ":" + DescComponent4[i * 2 + 1];
                     break;
                 case 0x7:
                     for (int i = 0; i < DescComponent7.Length / 2; i++)
                         if (DescComponent7[i * 2] == t)
-                            return cname + " : " + DescComponent7[i * 2 + 1];
+                            return cname + ":" + DescComponent7[i * 2 + 1];
                     break;
                 case 0x9:
                     for (int i = 0; i < DescComponent9.Length / 2; i++)
                         if (DescComponent9[i * 2] == t)
-                            return cname + " : " + DescComponent9[i * 2 + 1];
+                            return cname + ":" + DescComponent9[i * 2 + 1];
                     break;
                 case 0xF:
                     for (int i = 0; i < DescComponentF.Length / 2; i++)
                         if (DescComponentF[i * 2] == t)
-                            return cname + " : " + DescComponentF[i * 2 + 1];
+                            return cname + ":" + DescComponentF[i * 2 + 1];
                     break;
                 case 0x19:
                     for (int i = 0; i < DescComponent19.Length / 2; i++)
                         if (DescComponent19[i * 2] == t)
-                            return cname + " : " + DescComponent19[i * 2 + 1];
+                            return cname + ":" + DescComponent19[i * 2 + 1];
                     break;
                 case 0x1C:
                     for (int i = 0; i < DescComponent1C.Length / 2; i++)
                         if (DescComponent1C[i * 2] == t)
-                            return cname + " : " + DescComponent1C[i * 2 + 1];
+                            return cname + ":" + DescComponent1C[i * 2 + 1];
                     break;
                 case 0x7802:
                     for (int i = 0; i < DescComponent7802.Length / 2; i++)
                         if (DescComponent7802[i * 2] == t)
-                            return cname + " : " + DescComponent7802[i * 2 + 1];
+                            return cname + ":" + DescComponent7802[i * 2 + 1];
                     break;
             }
-            return cname + " : " + p.Command.ToString("X");
+            return cname + ":Unknown";
         }
         public static string ComponentNames = "Authentication Component=1,Example Component=3,Game Manager Component=4,Redirector Component=5,Play Groups Component=6,Stats Component=7,Util Component=9,Census Data Component=A,Clubs Component=B,Game Report Lagacy Component=C,League Component=D,Mail Component=E,Messaging Component=F,Locker Component=14,Rooms Component=15,Tournaments Component=17,Commerce Info Component=18,Association Lists Component=19,GPS Content Controller Component=1B,Game Reporting Component=1C,Dynamic Filter Component=7D0,RSP Component=801,User Sessions Component=7802";
         public static string[] DescComponent1 = { "A", "createAccount", "14", "updateAccount", "1C", "updateParentalEmail", "1D", "listUserEntitlements2", "1E", "getAccount", "1F", "grantEntitlement", "20", "listEntitlements", "21", "hasEntitlement", "22", "getUseCount", "23", "decrementUseCount", "24", "getAuthToken", "25", "getHandoffToken", "26", "getPasswordRules", "27", "grantEntitlement2", "28", "login", "29", "acceptTos", "2A", "getTosInfo", "2B", "modifyEntitlement2", "2C", "consumecode", "2D", "passwordForgot", "2E", "getTermsAndConditionsContent", "2F", "getPrivacyPolicyContent", "30", "listPersonaEntitlements2", "32", "silentLogin", "33", "checkAgeReq", "34", "getOptIn", "35", "enableOptIn", "36", "disableOptIn", "3C", "expressLogin", "46", "logout", "50", "createPersona", "5A", "getPersona", "64", "listPersonas", "6E", "loginPersona", "78", "logoutPersona", "8C", "deletePersona", "8D", "disablePersona", "8F", "listDeviceAccounts", "96", "xboxCreateAccount", "98", "originLogin", "A0", "xboxAssociateAccount", "AA", "xboxLogin", "B4", "ps3CreateAccount", "BE", "ps3AssociateAccount", "C8", "ps3Login", "D2", "validateSessionKey", "E6", "createWalUserSession", "F1", "acceptLegalDocs", "F2", "getLegalDocsInfo", "F6", "getTermsOfServiceContent", "12C", "deviceLoginGuest" };
