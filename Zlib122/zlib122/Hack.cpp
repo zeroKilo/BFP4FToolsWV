@@ -217,9 +217,10 @@ void Hack_Init()
 	}
 	else
 	{
-		OpenConsole();	
-		printf("Exe name: %S\n", szFileName);
-		printf("Hi from inside the game!\n");
+		printout = false;
+		//OpenConsole();	
+		//printf("Exe name: %S\n", szFileName);
+		//printf("Hi from inside the game!\n");
 		orgMain = (WINMAIN)DetourFunction((PBYTE)0x4059B0, (PBYTE)WinMain);
 		orgProtoConnect = (PROTOCONNECT)DetourFunction((PBYTE)0xB18C50, (PBYTE)ProtoSSLConnect);
 		//orgLog = (SOMELOG1)DetourFunction((PBYTE)0xA7B740, (PBYTE)myLogger);
@@ -227,7 +228,7 @@ void Hack_Init()
 		//DetourFunction((PBYTE)0xBB3972, (PBYTE)specialHook);
 		FILE* fp = fopen ("TagMapLog.txt", "w");
 		fclose(fp);
-		printf("Detours done.\n");
+		//printf("Detours done.\n");
 	}
 	MessageBoxA(0, "Attach now!", 0, 0);
 }

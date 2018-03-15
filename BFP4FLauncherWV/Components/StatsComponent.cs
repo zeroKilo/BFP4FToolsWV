@@ -184,12 +184,12 @@ namespace BFP4FLauncherWV
             e0.Add(Blaze.TdfInteger.Create("EID\0", eid));
             e0.Add(Blaze.TdfDoubleVal.Create("ETYP", new Blaze.DoubleVal(30722, 1)));
             e0.Add(Blaze.TdfInteger.Create("POFF", 0));
-            List<long> values = new List<long>();
+            List<string> values = new List<string>();
             if (statSpace == "crit")
-                values.AddRange(new long[] { 1, 806, 0 });
+                values.AddRange(new string[] { "1", "806", "0" });
             else
-                values.AddRange(new long[] { 3, 10, 90, 161 });
-            e0.Add(Blaze.TdfList.Create("STAT", 0, values.Count, values));
+                values.AddRange(new string[] { "3", "10", "90", "161" });
+            e0.Add(Blaze.TdfList.Create("STAT", 1, values.Count, values));
             STAT.Add(Blaze.TdfStruct.Create("0", e0));
 
             STS.Add(Blaze.TdfList.Create("STAT", 3, STAT.Count, STAT));
