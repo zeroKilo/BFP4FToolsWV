@@ -47,14 +47,14 @@ namespace BFP4FLauncherWV
             HttpServer.box = rtb2;
             RedirectorServer.Start();
             BlazeServer.Start();
-            HttpServer.Start();
+            //HttpServer.Start();
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             RedirectorServer.Stop();
             BlazeServer.Stop();
-            HttpServer.Stop();
+            //HttpServer.Stop();
         }
 
         private void launchStandaloneToolStripMenuItem_Click(object sender, EventArgs e)
@@ -67,7 +67,7 @@ namespace BFP4FLauncherWV
             HttpServer.box = rtb2;
             RedirectorServer.Start();
             BlazeServer.Start();
-            HttpServer.Start();
+            //HttpServer.Start();
         }
     }
 }
