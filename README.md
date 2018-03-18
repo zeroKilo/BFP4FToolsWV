@@ -10,6 +10,8 @@ with this tool you can research the blaze side of the game and the server
 
 -BlazeLibWV is a library for reading and creating blaze packets
 
+-Other/minimalhtdocs contain the minimal frontend files that need to be hosted via xampp or the like
+
 
 # THIS IS UNFINISHED AND FOR RESEARCH ONLY!!!
 
@@ -27,3 +29,7 @@ pw: warrantyvoider
 # DEMO (newer)
 
 [![Alt text](https://img.youtube.com/vi/MoaW1es4xbY/0.jpg)](https://www.youtube.com/watch?v=MoaW1es4xbY)
+
+# DEMO (last)
+
+[![Alt text](https://img.youtube.com/vi/z9EfC4xNQZQ/0.jpg)](https://www.youtube.com/watch?v=z9EfC4xNQZQ)
