@@ -65,6 +65,15 @@ namespace BlazeLibWV
                     sb.Append(PrintTdfDoubleList((Blaze.TdfDoubleList)tdf, tabs + 1));
                     sb.AppendLine(tab + "}");
                     break;
+                case 6:
+                    if (((Blaze.TdfUnion)tdf).Type != 0x7f)
+                    {
+                        sb.AppendLine();
+                        sb.AppendLine(tab + "{");
+                        sb.Append(PrintTdf(((Blaze.TdfUnion)tdf).UnionContent, tabs + 1));
+                        sb.AppendLine(tab + "}");
+                    }
+                    break;
                 case 8:
                     dv = ((Blaze.TdfDoubleVal)tdf).Value;
                     sb.AppendLine("{0x" + dv.v1.ToString("X") + "(" + dv.v1 + "),0x" + dv.v2.ToString("X") + "(" + dv.v2 + ")}");

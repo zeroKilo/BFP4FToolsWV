@@ -34,6 +34,7 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadPacketsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.savePacketsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.produceLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripTextBox1 = new System.Windows.Forms.ToolStripTextBox();
@@ -57,7 +58,8 @@
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             this.toolStripTextBox5 = new System.Windows.Forms.ToolStripTextBox();
-            this.produceLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.convertListOfTagsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -77,7 +79,8 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
+            this.fileToolStripMenuItem,
+            this.toolsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(677, 24);
@@ -97,16 +100,23 @@
             // loadPacketsToolStripMenuItem
             // 
             this.loadPacketsToolStripMenuItem.Name = "loadPacketsToolStripMenuItem";
-            this.loadPacketsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.loadPacketsToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.loadPacketsToolStripMenuItem.Text = "Load Packets";
             this.loadPacketsToolStripMenuItem.Click += new System.EventHandler(this.loadPacketsToolStripMenuItem_Click);
             // 
             // savePacketsToolStripMenuItem
             // 
             this.savePacketsToolStripMenuItem.Name = "savePacketsToolStripMenuItem";
-            this.savePacketsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.savePacketsToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.savePacketsToolStripMenuItem.Text = "Save Packets";
             this.savePacketsToolStripMenuItem.Click += new System.EventHandler(this.savePacketsToolStripMenuItem_Click);
+            // 
+            // produceLogToolStripMenuItem
+            // 
+            this.produceLogToolStripMenuItem.Name = "produceLogToolStripMenuItem";
+            this.produceLogToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.produceLogToolStripMenuItem.Text = "Produce Log";
+            this.produceLogToolStripMenuItem.Click += new System.EventHandler(this.produceLogToolStripMenuItem_Click);
             // 
             // toolStrip1
             // 
@@ -335,12 +345,20 @@
             this.toolStripTextBox5.Size = new System.Drawing.Size(100, 25);
             this.toolStripTextBox5.Text = "CONF";
             // 
-            // produceLogToolStripMenuItem
+            // toolsToolStripMenuItem
             // 
-            this.produceLogToolStripMenuItem.Name = "produceLogToolStripMenuItem";
-            this.produceLogToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.produceLogToolStripMenuItem.Text = "Produce Log";
-            this.produceLogToolStripMenuItem.Click += new System.EventHandler(this.produceLogToolStripMenuItem_Click);
+            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.convertListOfTagsToolStripMenuItem});
+            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.toolsToolStripMenuItem.Text = "Tools";
+            // 
+            // convertListOfTagsToolStripMenuItem
+            // 
+            this.convertListOfTagsToolStripMenuItem.Name = "convertListOfTagsToolStripMenuItem";
+            this.convertListOfTagsToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.convertListOfTagsToolStripMenuItem.Text = "Convert List of Tags";
+            this.convertListOfTagsToolStripMenuItem.Click += new System.EventHandler(this.convertListOfTagsToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -407,6 +425,8 @@
         private System.Windows.Forms.ToolStripButton toolStripButton3;
         private System.Windows.Forms.ToolStripTextBox toolStripTextBox5;
         private System.Windows.Forms.ToolStripMenuItem produceLogToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem convertListOfTagsToolStripMenuItem;
     }
 }
 

@@ -5,18 +5,17 @@
 #pragma comment(lib, "detours.lib")
 #include "detours.h"
 
-LPSTR newArguments = "+webSiteHostName \"localhost\" "
-					 "+battleFundsHostName \"localhost\" "
-					 "+survey 0 "
-					 "+dc 1 "
-					 "+sessionId 1234 "
-					 "+lang en "
-					 "+soldierName \"mysoldier\" "
-					 "+multi 1 "
-					 "+frontendUrl \"http://localhost/\" "
-					 "+autoLogin 1 "
-					 "+loggedIn \"true\" "
-					 "+webBrowser 0";
+bool isServer = false;
+DWORD ptrEnum, cntEnum;
+TCHAR szFileName[MAX_PATH + 1];
+const BYTE JMP		= 0xEB;
+const BYTE JZ		= 0x74;
+const BYTE JNZ		= 0x75;
+DWORD* pOpenAddress;
+BYTE* pAccept;
+DWORD patch1 = 0x9EF9C7;
+DWORD patch2 = 0x9EFA1F;
+bool conIsOpen = false;
 
 void OpenConsole()
 {
@@ -29,206 +28,155 @@ void OpenConsole()
 			printf("Console initialized.\n");
 }
 
-//Typedefs
-typedef int (__stdcall * WINMAIN)(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd);
-typedef int (__cdecl * PROTOCONNECT)(int pState, int iSecure, char *pAddr, int uAddr, __int16 iPort);
-typedef int (* SOMELOG1)(int a1, char *Format, ...);
-
-WINMAIN orgMain;
-PROTOCONNECT orgProtoConnect;
-SOMELOG1 orgLog;
-
-DWORD buf, buf2, buf2len;
-DWORD ret = 0x00BB397A;
-DWORD ret2 = 0x00B89807;
-DWORD foundMaps[1000];
-DWORD fMapCount = 0;
-
-bool printout = true;
-
-//void PrintTagLabel(DWORD t, FILE* fp)
-//{
-//	t >>= 8;
-//	printf(" ");
-//	for(int i=0; i<4; i++)
-//	{
-//		BYTE b = (BYTE)(((t >> (6 * (3-i))) & 0x3F) + 0x20);
-//		printf("%c", b);
-//		fprintf(fp, "%c", b);
-//	}
-//}
-//
-//void DecodeTagInfoMap(BYTE* buf)
-//{
-//	try
-//	{
-//		DWORD address = (DWORD)buf;
-//		for(int i=0; i<fMapCount; i++)
-//			if(foundMaps[i] == address)
-//				return;
-//		foundMaps[fMapCount++] = address;		
-//		FILE* fp = fopen ("TagMapLog.txt", "a+");
-//		fprintf(fp, "Visited TagInfoMap @0x%08X\n", buf);
-//		while(true)
-//		{
-//			DWORD tagLabel = *(DWORD*)(buf);		
-//			DWORD next = *(BYTE*)(buf + 5);
-//			PrintTagLabel(tagLabel, fp);
-//			if(next != 0)
-//			{
-//				for(int i=0; i<next; i++)
-//				{
-//					printf(" %02X", buf[i]);
-//					fprintf(fp," %02X", buf[i]);
-//				}
-//				printf("\n");
-//				fprintf(fp,"\r\n");
-//				buf += next;
-//			}
-//			else
-//			{
-//				for(int i=0; i<8; i++)
-//				{
-//					printf(" %02X", buf[i]);
-//					fprintf(fp, " %02X", buf[i]);
-//				}
-//				printf("...\n");
-//				fprintf(fp, "...\r\n");
-//				break;
-//			}
-//		}
-//		fclose(fp);
-//	}
-//	catch(...)
-//	{
-//		printf("ERROR!ERROR!ERROR!ERROR!ERROR!\n");
-//	};
-//}
-
-char textBuffer[256];
-
-void _stdcall DecodeTagInfoMap2(void)
+void PrintEnum()
 {
-	try
+	char* desc;
+	DWORD value;	
+	FILE* fp = fopen ("EnumLog.txt", "a+");
+	fprintf(fp, "Found Enum at 0x%08x with %d Entries\n", ptrEnum, cntEnum);
+	for(int i=0; i<cntEnum; i++)
 	{
-		sprintf(textBuffer, "Visited TagInfoMap @0x%08X\n\0", buf);
-		printf(textBuffer);
+		desc = (char*)*(DWORD*)ptrEnum;
+		value = *(DWORD*)(ptrEnum + 4);
+		fprintf(fp, "\t%08x = %s\n", value, desc);
+		ptrEnum += 8;
 	}
-	catch(...)
-	{
-		printf("ERROR!ERROR!ERROR!ERROR!ERROR!\n\0");
-	};
-}
-void __declspec(naked) specialHook()
-{
-	_asm
-	{
-		pushad;
-		mov buf, ecx;
-	}
-	DecodeTagInfoMap2();
-	_asm
-	{
-		popad;
-		movzx ecx, [ecx + 6];
-		mov edx, [esp + 0x24];
-		jmp ret;
-	}
-}
-
-//  B89800
-
-char strBuffer[256];
-
-void special2sub(void)
-{
-	FILE* fp = fopen ("ComponentLog.txt", "a+");
-	memcpy(strBuffer, (char*)buf2, buf2len);
-	strBuffer[buf2len] = 0;
-	fprintf(fp, "%s\n", strBuffer);
 	fclose(fp);
 }
 
-void __declspec(naked) specialHook2()
+void __declspec(naked) EnumHook()
 {
 	_asm
 	{
+		mov edx, [esp + 4];
+		mov ptrEnum, edx;
+		mov edx, [esp + 8];
+		mov cntEnum, edx;
 		pushad;
-		mov eax, [esp + 0x28];
-		mov buf2, eax;
-		mov eax, [esp + 0x30];
-		mov buf2len, eax;
 	}
-	special2sub();
+	PrintEnum();
 	_asm
 	{
 		popad;
-		mov dl, [esp + 4];
 		mov eax, ecx;
-		push esi;
-		jmp ret2;
+		mov ecx, [esp + 4];
+		mov [eax], ecx;
+		mov [eax + 4], edx;
+		retn 8;
 	}
-}
-
-
-int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
-{
-	if(printout)
-	{
-		printf("Detoured WinMain called...\n");
-		printf("Arguments: %s\n", lpCmdLine);
-	}
-	//printf("Arguments after: %s\n", newArguments);
-	return orgMain(hInstance, hPrevInstance, lpCmdLine, nShowCmd);
-}
-
-int __cdecl ProtoSSLConnect(int pState, int iSecure, char *pAddr, int uAddr, unsigned short iPort)
-{
-	if(printout) printf("ProtoSSLConnect was used: Address = %s:%d\n" , pAddr, iPort);
-	return orgProtoConnect(pState, iSecure, pAddr, uAddr, iPort);
 }
 
 signed int __cdecl VerifyCertificate(int a1, size_t *a2, char a3)
 {
-	if(printout) printf("VerifyCertificate was used\n");
 	return 0;
 }
 
-int myLogger(int a1, char *Format, ...)
+void BlazeLogger(char* str)
 {
-	va_list va;
-	va_start(va, Format);
-	printf("[Logger1]");
-	vprintf(Format, va);
-	printf("\n");
-	return orgLog(a1, Format, va);
+	FILE* fp;
+	if(isServer)
+		fp = fopen ("BlazeLogServer.txt", "a+");
+	else
+		fp = fopen ("BlazeLog.txt", "a+");
+	fprintf(fp, str);
+	fclose(fp);
 }
 
-TCHAR szFileName[MAX_PATH + 1];
+void DetourBlazeLogger(DWORD org, DWORD target)
+{
+	DWORD old;
+	VirtualProtect((LPVOID)org, 6, PAGE_EXECUTE_READWRITE, &old);
+	*((BYTE*)org) = 0x68;
+	*((DWORD*)(org + 1)) = target;
+	*((BYTE*)(org + 5)) = 0xC3;
+}
+
+void ClearFile(char* str)
+{
+	FILE* fp = fopen (str, "w");
+	fclose(fp);
+}
+
+
+void EnableConsole(bool open)
+{	
+	DWORD oldProtect = 0;
+	VirtualProtect((LPVOID)pOpenAddress, 4, PAGE_EXECUTE_READWRITE, &oldProtect);
+	VirtualProtect((LPVOID)pAccept, 1, PAGE_EXECUTE_READWRITE, &oldProtect);
+	if(open)
+	{
+		*pOpenAddress = 1;
+		*pAccept = 1;	
+	}
+	else
+	{
+		*pOpenAddress = 0;
+		*pAccept = 0;	
+	}
+	conIsOpen = open;
+}
+
+DWORD WINAPI InputThread(LPVOID)
+{
+	while(true)
+	{
+		if(GetAsyncKeyState(VK_F12) & 1)
+			EnableConsole(!conIsOpen);
+		Sleep(10);
+	}
+	return 0;
+}
+
+DWORD WINAPI enable_ingame_console(LPVOID)
+{	
+	DWORD oldProtect = 0;
+	HANDLE hGame = OpenProcess(PROCESS_ALL_ACCESS, false, GetCurrentProcessId());
+	VirtualProtect((LPVOID)patch1, 1, PAGE_EXECUTE_READWRITE, &oldProtect);
+	VirtualProtect((LPVOID)patch2, 1, PAGE_EXECUTE_READWRITE, &oldProtect);
+	WriteProcessMemory(hGame, (PVOID)patch1, &JMP, sizeof(JMP), NULL);		
+	WriteProcessMemory(hGame, (PVOID)patch2, &JMP, sizeof(JMP), NULL);
+	DWORD dwClass = NULL;
+	DWORD dwOpen = NULL;
+	DWORD dwAccept = NULL;
+	DWORD dwOpenAddress = NULL;
+	DWORD dwInputAddress = NULL;
+	DWORD dwRendDx9Base = 0;
+	while(dwRendDx9Base == 0)
+		dwRendDx9Base = (DWORD)GetModuleHandle(L"RendDX9.dll");
+	DWORD dwReadAt = dwRendDx9Base + 0x62C13C;
+	while(!dwClass)
+		ReadProcessMemory(hGame, (PVOID)dwReadAt, &dwClass, 4, NULL);	
+	pOpenAddress = (DWORD*)(dwClass + 4);
+	while(!dwInputAddress)
+		ReadProcessMemory(hGame, (PVOID)(dwClass + 696), &dwInputAddress, 4, NULL);
+	dwInputAddress = dwInputAddress + 20;
+	while(!dwAccept)
+		ReadProcessMemory(hGame, (PVOID)dwInputAddress, &dwAccept, 4, NULL);		
+	pAccept = (BYTE*)dwAccept;
+	CloseHandle(hGame);	
+	EnableConsole(false);
+	CreateThread(0, 0, InputThread, 0, 0, 0);
+	return 0;
+}
 
 void Hack_Init()
 {
 	GetModuleFileName(NULL, szFileName, MAX_PATH + 1);
 	if(wcsstr(szFileName, L"_w32ded.exe") != NULL)
 	{
-		printout = false;
+		isServer = true;
 		DetourFunction((PBYTE)0xAFA180, (PBYTE)VerifyCertificate);
-		//DetourFunction((PBYTE)0xB89800, (PBYTE)specialHook2);
+		DetourBlazeLogger(0xAFFB30, (DWORD)BlazeLogger);
+		ClearFile("BlazeLogServer.txt");
 	}
 	else
 	{
-		printout = false;
-		//OpenConsole();	
-		//printf("Exe name: %S\n", szFileName);
-		//printf("Hi from inside the game!\n");
-		orgMain = (WINMAIN)DetourFunction((PBYTE)0x4059B0, (PBYTE)WinMain);
-		orgProtoConnect = (PROTOCONNECT)DetourFunction((PBYTE)0xB18C50, (PBYTE)ProtoSSLConnect);
-		//orgLog = (SOMELOG1)DetourFunction((PBYTE)0xA7B740, (PBYTE)myLogger);
 		DetourFunction((PBYTE)0xB18580, (PBYTE)VerifyCertificate);
-		//DetourFunction((PBYTE)0xBB3972, (PBYTE)specialHook);
-		FILE* fp = fopen ("TagMapLog.txt", "w");
-		fclose(fp);
-		//printf("Detours done.\n");
+		DetourFunction((PBYTE)0xBB3E90, (PBYTE)EnumHook);
+		DetourBlazeLogger(0xB247A0, (DWORD)BlazeLogger);
+		ClearFile("EnumLog.txt");
+		ClearFile("BlazeLog.txt");
+		CreateThread(0, 0, enable_ingame_console, 0, 0, 0);
 	}
 	MessageBoxA(0, "Attach now!", 0, 0);
 }

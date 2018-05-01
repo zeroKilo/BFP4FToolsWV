@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <metadata name="menuStrip3.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>235, 17</value>
+  </metadata>
   <data name="rtb1.Text" xml:space="preserve">
     <value>+webSiteHostName "localhost" 
 +battleFundsHostName "localhost" 
@@ -124,9 +127,9 @@
 +dc 1 
 +sessionId 1234 
 +lang en 
-+soldierName "test" 
++soldierName "test-player" 
 +multi 1 
-+frontendUrl "http://localhost/" 
++frontendUrl "http://localhost:1234/" 
 +autoLogin 1 
 +loggedIn "true" 
 +webBrowser 0

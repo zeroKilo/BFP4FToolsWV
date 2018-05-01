@@ -18,6 +18,7 @@ namespace BFP4FLauncherWV
         {
             InitializeComponent();
             tabControl1.SelectTab("TabPage2");
+            this.Text += " - Build " + Resources.Resource1.BuildDate;
         }
 
         public static void RunShell(string file, string command)
@@ -42,19 +43,15 @@ namespace BFP4FLauncherWV
         {
             toolStripMenuItem1.Enabled =
             launchStandaloneToolStripMenuItem.Enabled = false;
-            RedirectorServer.box =
-            BlazeServer.box =
-            HttpServer.box = rtb2;
-            RedirectorServer.Start();
-            BlazeServer.Start();
-            //HttpServer.Start();
+            Start();
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             RedirectorServer.Stop();
             BlazeServer.Stop();
-            //HttpServer.Stop();
+            MagmaServer.Stop();
+            Webserver.Stop();
         }
 
         private void launchStandaloneToolStripMenuItem_Click(object sender, EventArgs e)
@@ -62,12 +59,27 @@ namespace BFP4FLauncherWV
             toolStripMenuItem1.Enabled =
             launchStandaloneToolStripMenuItem.Enabled = false;
             RedirectorServer.targetPort = 30001;
+            Start();
+        }
+
+        private void Start()
+        {
             RedirectorServer.box =
-            BlazeServer.box =
-            HttpServer.box = rtb2;
+            BlazeServer.box = rtb2;
+            Webserver.box = rtb5;
+            MagmaServer.box = rtb4;
             RedirectorServer.Start();
             BlazeServer.Start();
-            //HttpServer.Start();
+            MagmaServer.Start();
+            Webserver.Start();
+        }
+
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            string args = rtb3.Text.Replace("\r", "").Replace("\n", " ");
+            while (args.Contains("  "))
+                args = args.Replace("  ", " ");
+            RunShell("bfp4f_w32ded.exe", args);
         }
     }
 }

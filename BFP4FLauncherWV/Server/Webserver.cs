@@ -9,11 +9,10 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using BlazeLibWV;
 
 namespace BFP4FLauncherWV
 {
-    public static class HttpServer
+    public static class Webserver
     {
         public static readonly object _sync = new object();
         public static bool _exit;
@@ -23,7 +22,7 @@ namespace BFP4FLauncherWV
         public static void Start()
         {
             SetExit(false);
-            Log("Starting Http...");
+            Log("Starting Webserver...");
             new Thread(tHTTPMain).Start();
             for (int i = 0; i < 50; i++)
             {
@@ -34,7 +33,7 @@ namespace BFP4FLauncherWV
 
         public static void Stop()
         {
-            Log("Http stopping...");
+            Log("Webserver stopping...");
             if (lHttp != null) lHttp.Stop();
             SetExit(true);
             Log("Done.");
@@ -44,75 +43,111 @@ namespace BFP4FLauncherWV
         {
             try
             {
-                Log("[HTTP] starting...");
-                lHttp = new TcpListener(IPAddress.Parse("127.0.0.1"), 80);
-                Log("[HTTP] bound to port 80");
+                Log("[WEBS] starting...");
+                lHttp = new TcpListener(IPAddress.Parse("127.0.0.1"), 1234);
+                Log("[WEBS] bound to port 1234");
                 lHttp.Start();
-                Log("[HTTP] listening...");
+                Log("[WEBS] listening...");
                 TcpClient client;
                 while (!GetExit())
                 {
                     client = lHttp.AcceptTcpClient();
-                    Log("[HTTP] Client connected");
+                    Log("[WEBS] Client connected");
                     NetworkStream ns = client.GetStream();
                     byte[] data = Helper.ReadContentTCP(ns);
-                    Log("[HTTP] Received " + data.Length + " bytes of data");
+                    Log("[WEBS] Received " + data.Length + " bytes of data");
                     try
                     {
                         ProcessHttp(Encoding.ASCII.GetString(data), ns);
                     }
                     catch { }
                     client.Close();
-                    Log("[HTTP] Client disconnected");
+                    Log("[WEBS] Client disconnected");
                 }
             }
             catch (Exception ex)
             {
-                LogError("HTTP", ex);
+                LogError("WEBS", ex);
             }
         }
 
         public static void ProcessHttp(string data, Stream s)
         {
             string[] lines = data.Split("\r\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-            Log("[HTTP] Request: " + lines[0]);
+            Log("[WEBS] Request: " + lines[0]);
             string cmd = lines[0].Split(' ')[0];
-            string url = lines[0].Split(' ')[1];
+            string url = lines[0].Split(' ')[1].Split(':')[0];
             if (cmd == "GET")
             {
-                switch (url)
+                if (url == "/")
+                    ReplyWithText(s, GetTextFile("\\index.html"));
+                else
                 {
-                    case "/api/nucleus/authToken":
-                        Log("[HTTP] Sending AuthToken");
-                        ReplyWithXML(s, "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n<success><token code=\"NEW_TOKEN\">SIxmvSLJSOwKPq5WZ3FL5KIRNJVCLp4Jgs_3mJcY2yJahXxR5mTRGUsi6PKhA4X1jpuVMxHJQv3WQ3HnQfvKeG60hRugA</token></success>");
-                        break;
-                    case "/api/relationships/roster/nucleus:1":
-                        Log("[HTTP] Sending Roster response");
-                        ReplyWithXML(s, "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n<roster relationships=\"0\"/><success code=\"SUCCESS\"/>");
-                        break;
+                    switch (Path.GetExtension(url).ToLower())
+                    {
+                        case ".png":
+                        case ".jpg":
+                        case ".gif":
+                        case ".bmp":
+                            ReplyWithBinary(s, GetBinaryFile(url.Replace("/", "\\")));
+                            break;
+                        default:
+                            ReplyWithText(s, GetTextFile(url.Replace("/", "\\")));
+                            break;
+                    }
                 }
-            }
-            if (cmd == "POST")
-            {
-                int pos = data.IndexOf("\r\n\r\n");
-                if (pos != -1)
-                    Log("[HTTP] Content: \n" + data.Substring(pos + 4));
             }
         }
 
-        public static void ReplyWithXML(Stream s, string c)
+        public static string GetTextFile(string path)
+        {
+            if (File.Exists("html" + path))
+                return File.ReadAllText("html" + path);
+            Log("[WEBS] Error file not found: " + path);
+            return "";
+        }
+
+        public static byte[] GetBinaryFile(string path)
+        {
+            if (File.Exists("html" + path))
+                return File.ReadAllBytes("html" + path);
+            Log("[WEBS] Error file not found: " + path);
+            return new byte[0];
+        }
+
+        public static void ReplyWithText(Stream s, string c)
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("HTTP/1.1 200 OK");
             sb.AppendLine("Date: " + DateTime.Now.ToUniversalTime().ToString("r"));
             sb.AppendLine("Server: Warranty Voiders");
+            sb.AppendLine("Content-Type: text/html; charset=UTF-8");
+            sb.AppendLine("Content-Encoding: UTF-8");
             sb.AppendLine("Content-Length: " + c.Length);
             sb.AppendLine("Keep-Alive: timeout=5, max=100");
-            sb.AppendLine("Connection: Keep-Alive");
+            sb.AppendLine("Connection: close");
             sb.AppendLine();
             sb.Append(c);
             byte[] buf = Encoding.ASCII.GetBytes(sb.ToString());
             s.Write(buf, 0, buf.Length);
+            Log("[WEBS] Reply: " + buf.Length + " Bytes");
+        }
+
+        public static void ReplyWithBinary(Stream s, byte[] b)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("HTTP/1.1 200 OK");
+            sb.AppendLine("Date: " + DateTime.Now.ToUniversalTime().ToString("r"));
+            sb.AppendLine("Server: Warranty Voiders");
+            sb.AppendLine("Content-Type: application/octet-stream");
+            sb.AppendLine("Content-Length: " + b.Length);
+            sb.AppendLine("Keep-Alive: timeout=5, max=100");
+            sb.AppendLine("Connection: close");
+            sb.AppendLine();
+            byte[] buf = Encoding.ASCII.GetBytes(sb.ToString());
+            s.Write(buf, 0, buf.Length);
+            s.Write(b, 0, b.Length);
+            Log("[WEBS] Reply: " + buf.Length + " Bytes");
         }
 
         public static void SetExit(bool state)

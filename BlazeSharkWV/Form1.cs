@@ -25,6 +25,7 @@ namespace BlazeSharkWV
         public int packetCount = 0;
         public List<Blaze.Tdf> inlist;
         public int inlistcount;
+        public int clientcount;
 
         public Form1()
         {
@@ -44,55 +45,14 @@ namespace BlazeSharkWV
             {
                 Log("Starting...");
                 int port = Convert.ToInt32(toolStripTextBox1.Text);
-                int portTarget = Convert.ToInt32(toolStripTextBox2.Text);
                 listener = new TcpListener(IPAddress.Parse(toolStripTextBox3.Text), port);
                 Log("Bind to port " + port);
                 listener.Start();
                 Log("Listening...");
-                TcpClient client;
-                byte[] data;
+                clientcount = 0;
                 while (!GetExit())
                 {
-                    try
-                    {
-                        client = listener.AcceptTcpClient();
-                        Log("Client connected");
-                        TcpClient target = new TcpClient("127.0.0.1", portTarget);
-                        Log("Target connected");
-                        NetworkStream nsc = client.GetStream();
-                        NetworkStream nst = target.GetStream();
-                        while (client.Connected && target.Connected && !GetExit())
-                        {
-                            data = ReadContentTCP(nsc);
-                            if (data.Length != 0)
-                            {
-                                Log("Received " + data.Length + " bytes of data from client");
-                                nst.Write(data, 0, data.Length);
-                                nst.Flush();
-                                AddPacket(data);
-                            }
-                            data = ReadContentTCP(nst);
-                            if (data.Length != 0)
-                            {
-                                Log("Received " + data.Length + " bytes of data from target");
-                                nsc.Write(data, 0, data.Length);
-                                nsc.Flush();
-                                AddPacket(data);
-                            }
-                            Thread.Sleep(10);
-                        }
-                        target.Close();
-                        Log("Target disconnected");
-                        client.Close();
-                        Log("Client disconnected");
-                    }
-                    catch (Exception ex)
-                    {
-                        string err = ex.Message;
-                        if (ex.InnerException != null)
-                            err += " - " + ex.InnerException.Message;
-                        Log("ERROR : " + err);
-                    }
+                        new Thread(tClientHandler).Start(listener.AcceptTcpClient());
                 }
             }
             catch (Exception ex)
@@ -100,9 +60,57 @@ namespace BlazeSharkWV
                 string err = ex.Message;
                 if (ex.InnerException != null)
                     err += " - " + ex.InnerException.Message;
-                Log("ERROR : " + err);
+                Log("MAIN ERROR : " + err);
             }
             toolStripButton1.Enabled = true;
+        }
+
+        public void tClientHandler(object obj)
+        {
+            int portTarget = Convert.ToInt32(toolStripTextBox2.Text);
+            TcpClient client = (TcpClient)obj;
+            byte[] data;
+            int id = ++clientcount;
+            try
+            {
+                Log("Client #" + id + " connected");
+                TcpClient target = new TcpClient("127.0.0.1", portTarget);
+                Log("Client #" + id + " Target connected");
+                NetworkStream nsc = client.GetStream();
+                NetworkStream nst = target.GetStream();
+                while (client.Connected && target.Connected && !GetExit())
+                {
+                    data = ReadContentTCP(nsc);
+                    if (data.Length != 0)
+                    {
+                        Log("Client #" + id + " Received " + data.Length + " bytes of data from client");
+                        nst.Write(data, 0, data.Length);
+                        nst.Flush();
+                        AddPacket(data);
+                    }
+                    data = ReadContentTCP(nst);
+                    if (data.Length != 0)
+                    {
+                        Log("Client #" + id + " Received " + data.Length + " bytes of data from target");
+                        nsc.Write(data, 0, data.Length);
+                        nsc.Flush();
+                        AddPacket(data);
+                    }
+                    Thread.Sleep(10);
+                }
+                target.Close();
+                Log("Client #" + id + " Target disconnected");
+                client.Close();
+                Log("Client #" + id + " disconnected");
+
+            }
+            catch (Exception ex)
+            {
+                string err = ex.Message;
+                if (ex.InnerException != null)
+                    err += " - " + ex.InnerException.Message;
+                Log("Client #" + id + " ERROR : " + err);
+            }
         }
 
         public static byte[] ReadContentTCP(NetworkStream Stream)
@@ -508,6 +516,21 @@ namespace BlazeSharkWV
                     sb.Append(BlazePrettyPrinter.PrintPacket(p));
                 File.WriteAllText(d.FileName, sb.ToString());
                 MessageBox.Show("Done.");
+            }
+        }
+
+        private void convertListOfTagsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog d = new OpenFileDialog();
+            d.Filter = "*.txt|*.txt";
+            if (d.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                string[] lines = File.ReadAllLines(d.FileName);
+                StringBuilder sb = new StringBuilder();
+                foreach (string line in lines)
+                    sb.AppendLine(Blaze.TagToLabel(Convert.ToUInt32(line, 16)));
+                MessageBox.Show(sb.ToString());
+                Clipboard.SetText(sb.ToString());
             }
         }
 

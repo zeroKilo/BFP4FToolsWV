@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Security;
 using System.Net.Sockets;
+using System.Drawing;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,19 +20,20 @@ namespace BFP4FLauncherWV
         public static bool _exit;
         public static RichTextBox box = null;
         public static TcpListener lBlaze = null;
-        public static int nextClientID;
+        public static int idCounter;
+        public static List<PlayerInfo> allClients = new List<PlayerInfo>();
         
         public static void Start()
         {
             SetExit(false);
             Log("Starting Blaze...");
             new Thread(tBlazeMain).Start();
+            idCounter = 1;
             for (int i = 0; i < 50; i++)
             {
                 Thread.Sleep(10);
                 Application.DoEvents();
             }
-            nextClientID = 1;
         }
 
         public static void Stop()
@@ -47,8 +49,8 @@ namespace BFP4FLauncherWV
             try
             {
                 Log("[MAIN] Blaze starting...");
-                lBlaze = new TcpListener(IPAddress.Parse("127.0.0.1"), 30001);
-                Log("[MAIN] Blaze bound to port 30001");
+                lBlaze = new TcpListener(IPAddress.Parse(ProviderInfo.ip), 30001);
+                Log("[MAIN] Blaze bound to " + ProviderInfo.ip + ":30001");
                 lBlaze.Start();
                 Log("[MAIN] Blaze listening...");
                 TcpClient client;
@@ -70,33 +72,27 @@ namespace BFP4FLauncherWV
             TcpClient client = (TcpClient)obj;
             NetworkStream ns = client.GetStream();
             PlayerInfo pi = new PlayerInfo();
-            pi.id = nextClientID;
-            pi.name = "test";
-            pi.userId = 1;
-            List<byte> ip = new List<byte>(((IPEndPoint)client.Client.RemoteEndPoint).Address.GetAddressBytes());
-            ip.Reverse();
-            pi.exIp = BitConverter.ToUInt32(ip.ToArray(), 0);
-            nextClientID++;
-            Log("[CLNT] #" + pi.id + " Handler started");
+            allClients.Add(pi);
+            pi.userId = idCounter++;
+            pi.exIp = 0;
+            pi.ns = ns;
+            Log("[CLNT] #" + pi.userId + " Handler started");
             try
             {
                 while (!GetExit())
                 {
                     byte[] data = Helper.ReadContentTCP(ns);
                     if (data != null && data.Length != 0)
-                    {
-                        Log("[CLNT] #" + pi.id + " Received " + data.Length + " bytes of data");
                         ProcessPackets(data, pi, ns);
-                    }
                     Thread.Sleep(1);
                 }
             }
             catch (Exception ex)
             {
-                LogError("CLNT", ex, "Handler " + pi.id);
+                LogError("CLNT", ex, "Handler " + pi.userId);
             }
             client.Close();
-            Log("[CLNT] #" + pi.id + " Client disconnected");
+            Log("[CLNT] #" + pi.userId + " Client disconnected");
         }
 
         public static void ProcessPackets(byte[] data, PlayerInfo pi, NetworkStream ns)
@@ -104,11 +100,14 @@ namespace BFP4FLauncherWV
             List<Blaze.Packet> packets = Blaze.FetchAllBlazePackets(new MemoryStream(data));
             foreach (Blaze.Packet p in packets)
             {
-                Log("[CLNT] #" + pi.id + " " + Blaze.PacketToDescriber(p));
+                Log("[CLNT] #" + pi.userId + " " + Blaze.PacketToDescriber(p));
                 switch (p.Component)
                 {
                     case 0x1:
                         AuthenticationComponent.HandlePacket(p, pi, ns);
+                        break;
+                    case 0x4:
+                        GameManagerComponent.HandlePacket(p, pi, ns);
                         break;
                     case 0x7:
                         StatsComponent.HandlePacket(p, pi, ns);
@@ -141,7 +140,7 @@ namespace BFP4FLauncherWV
             return result;
         }
 
-        public static void Log(string s)
+        public static void Log(string s, object color = null)
         {
             if (box == null) return;
             try
@@ -149,8 +148,16 @@ namespace BFP4FLauncherWV
                 box.Invoke(new Action(delegate
                 {
                     string stamp = DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString() + " : ";
-                    box.Text += stamp + s + "\n";
-                    box.SelectionStart = box.Text.Length;
+                    Color c;
+                    if (color != null)
+                        c = (Color)color;
+                    else
+                        c = Color.Black;
+                    box.SelectionStart = box.TextLength;
+                    box.SelectionLength = 0;
+                    box.SelectionColor = c;
+                    box.AppendText(stamp + s + "\n");
+                    box.SelectionColor = box.ForeColor;
                     box.ScrollToCaret();
                 }));
             }

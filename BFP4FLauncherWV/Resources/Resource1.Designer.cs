@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BFP4FLauncherWV {
+namespace BFP4FLauncherWV.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace BFP4FLauncherWV {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BFP4FLauncherWV.Resource1", typeof(Resource1).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BFP4FLauncherWV.Resources.Resource1", typeof(Resource1).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,6 +57,16 @@ namespace BFP4FLauncherWV {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die 10.04.2018 16:21:24,89 
+        /// ähnelt.
+        /// </summary>
+        internal static string BuildDate {
+            get {
+                return ResourceManager.GetString("BuildDate", resourceCulture);
             }
         }
         
