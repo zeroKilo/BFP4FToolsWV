@@ -12,6 +12,8 @@ with this tool you can research the blaze side of the game and the server
 
 -"Other" contain the minimal frontend files that need to be hosted via xampp or internal webbrowser, and other files
 
+[more information in the wiki](https://github.com/zeroKilo/BFP4FToolsWV/wiki)
+
 
 # THIS IS UNFINISHED AND FOR RESEARCH ONLY!!!
 
