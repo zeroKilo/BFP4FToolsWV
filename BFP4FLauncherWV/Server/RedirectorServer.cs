@@ -19,6 +19,7 @@ namespace BFP4FLauncherWV
     {
         public static readonly object _sync = new object();
         public static bool _exit;
+        public static bool useSSL;
         public static RichTextBox box = null;
         public static TcpListener lRedirector = null;
         public static int targetPort = 30000;
@@ -47,36 +48,60 @@ namespace BFP4FLauncherWV
 
         public static void tRedirectorMain(object obj)
         {
+            X509Certificate2 cert = null;
             try
             {
                 Log("[REDI] Redirector starting...");
                 lRedirector = new TcpListener(IPAddress.Parse(ProviderInfo.ip), 42127);
                 Log("[REDI] Redirector bound to  " + ProviderInfo.ip + ":42127");
                 lRedirector.Start();
-                Log("[REDI] Loading Cert...");
-                X509Certificate2 cert = new X509Certificate2(BFP4FLauncherWV.Resources.Resource1.redi, "123456");
+                if (useSSL)
+                {
+                    Log("[REDI] Loading Cert...");
+                    cert = new X509Certificate2(BFP4FLauncherWV.Resources.Resource1.redi, "123456");
+                }
                 Log("[REDI] Redirector listening...");
                 TcpClient client;
                 while (!GetExit())
                 {
                     client = lRedirector.AcceptTcpClient();
                     Log("[REDI] Client connected");
-                    SslStream sslStream = new SslStream(client.GetStream(), false);
-                    Log("[REDI] Authenticating...");
-                    sslStream.AuthenticateAsServer(cert, false, SslProtocols.Ssl3, false);
-                    Log("[REDI] Reading data...");
-                    byte[] data = Helper.ReadContentSSL(sslStream);
-                    Log("[REDI] Received " + data.Length + " bytes of data");
-                    MemoryStream m = new MemoryStream();
-                    m.Write(data, 0, data.Length);
-                    data = CreateRedirectorPacket();
-                    m.Write(data, 0, data.Length);
-                    Log("[REDI] Sending response");
-                    sslStream.Write(data);
-                    sslStream.Flush();
-                    client.Close();
-                    Log("[REDI] Client disconnected");
-                    File.WriteAllBytes("redidump.bin", m.ToArray());
+                    if (useSSL)
+                    {
+                        SslStream sslStream = new SslStream(client.GetStream(), false);
+                        Log("[REDI] Authenticating...");
+                        sslStream.AuthenticateAsServer(cert, false, SslProtocols.Ssl3, false);
+                        Log("[REDI] Reading data...");
+                        byte[] data = Helper.ReadContentSSL(sslStream);
+                        Log("[REDI] Received " + data.Length + " bytes of data");
+                        MemoryStream m = new MemoryStream();
+                        m.Write(data, 0, data.Length);
+                        data = CreateRedirectorPacket();
+                        m.Write(data, 0, data.Length);
+                        Log("[REDI] Sending response");
+                        sslStream.Write(data);
+                        sslStream.Flush();
+                        client.Close();
+                        Log("[REDI] Client disconnected");
+                        File.WriteAllBytes("redidump.bin", m.ToArray());
+                    }
+                    else
+                    {
+                        NetworkStream stream = client.GetStream();
+                        Log("[REDI] Reading data...");
+                        byte[] data = Helper.ReadContentTCP(stream);
+                        Log("[REDI] Received " + data.Length + " bytes of data");
+                        MemoryStream m = new MemoryStream();
+                        m.Write(data, 0, data.Length);
+                        data = CreateRedirectorPacket();
+                        m.Write(data, 0, data.Length);
+                        Log("[REDI] Sending response");
+                        stream.Write(data, 0, data.Length);
+                        stream.Flush();
+                        client.Close();
+                        Log("[REDI] Client disconnected");
+                        File.WriteAllBytes("redidump.bin", m.ToArray());
+                    }
                 }
             }
             catch (Exception ex)

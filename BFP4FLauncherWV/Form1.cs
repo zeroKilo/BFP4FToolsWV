@@ -68,6 +68,7 @@ namespace BFP4FLauncherWV
             BlazeServer.box = rtb2;
             Webserver.box = rtb5;
             MagmaServer.box = rtb4;
+            RedirectorServer.useSSL = checkBox1.Checked;
             RedirectorServer.Start();
             BlazeServer.Start();
             MagmaServer.Start();

@@ -56,6 +56,7 @@ namespace BFP4FLauncherWV
                     NetworkStream ns = client.GetStream();
                     byte[] data = Helper.ReadContentTCP(ns);
                     Log("[MGMA] Received " + data.Length + " bytes of data");
+                    Log("[MGMA] Recvdump:\n" + Encoding.ASCII.GetString(data));
                     try
                     {
                         ProcessMagma(Encoding.ASCII.GetString(data), ns);
@@ -83,7 +84,10 @@ namespace BFP4FLauncherWV
                 {
                     case "/api/nucleus/authToken":
                         Log("[MGMA] Sending AuthToken");
-                        ReplyWithXML(s, "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n<success><token code=\"NEW_TOKEN\">SIxmvSLJSOwKPq5WZ3FL5KIRNJVCLp4Jgs_3mJcY2yJahXxR5mTRGUsi6PKhA4X1jpuVMxHJQv3WQ3HnQfvKeG60hRugA</token></success>");
+                        if (lines.Length > 5 && lines[5].StartsWith("x-server-key"))
+                            ReplyWithXML(s, "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n<success><token>" + lines[5].Split(':')[1].Trim() + "</token></success>");
+                        else
+                            ReplyWithXML(s, "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n<success><token code=\"NEW_TOKEN\">SIxmvSLJSOwKPq5WZ3FL5KIRNJVCLp4Jgs_3mJcY2yJahXxR5mTRGUsi6PKhA4X1jpuVMxHJQv3WQ3HnQfvKeG60hRugA</token></success>");
                         break;
                     case "/api/relationships/roster/nucleus":
                         Log("[MGMA] Sending Roster response");
@@ -110,6 +114,7 @@ namespace BFP4FLauncherWV
             sb.AppendLine("Connection: Keep-Alive");
             sb.AppendLine();
             sb.Append(c);
+            Log("[MGMA] Sending: \n" + sb.ToString());
             byte[] buf = Encoding.ASCII.GetBytes(sb.ToString());
             s.Write(buf, 0, buf.Length);
         }

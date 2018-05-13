@@ -47,6 +47,7 @@
             this.rtb4 = new System.Windows.Forms.RichTextBox();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.rtb5 = new System.Windows.Forms.RichTextBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.menuStrip3.SuspendLayout();
@@ -93,8 +94,9 @@
             this.rtb3.Name = "rtb3";
             this.rtb3.Size = new System.Drawing.Size(623, 315);
             this.rtb3.TabIndex = 5;
-            this.rtb3.Text = "+dedicated 1 \n+key \"eakey\" \n+eaAccountName \"login@ea.com\" \n+eaAccountPassword \"pa" +
-    "ss\" \n+ranked 0 \n+soldierName \"test-server\"";
+            this.rtb3.Text = "+key \"eakey\" \n+useServerMonitorTool 0\n+soldierName \"test-server\"\n+sessionId 1234 " +
+    "\n+magmaProtocol http\n+magmaHost \"127.0.0.1\"\n+magma 1\n+guid \"5678\"\n+secret \"secre" +
+    "t\"";
             // 
             // menuStrip3
             // 
@@ -156,6 +158,7 @@
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.rtb2);
+            this.tabPage2.Controls.Add(this.checkBox1);
             this.tabPage2.Controls.Add(this.menuStrip2);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
@@ -170,9 +173,9 @@
             this.rtb2.DetectUrls = false;
             this.rtb2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtb2.Font = new System.Drawing.Font("Consolas", 8.25F);
-            this.rtb2.Location = new System.Drawing.Point(3, 27);
+            this.rtb2.Location = new System.Drawing.Point(3, 44);
             this.rtb2.Name = "rtb2";
-            this.rtb2.Size = new System.Drawing.Size(623, 315);
+            this.rtb2.Size = new System.Drawing.Size(623, 298);
             this.rtb2.TabIndex = 5;
             this.rtb2.Text = "";
             // 
@@ -245,6 +248,17 @@
             this.rtb5.TabIndex = 8;
             this.rtb5.Text = "";
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.checkBox1.Location = new System.Drawing.Point(3, 27);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(623, 17);
+            this.checkBox1.TabIndex = 6;
+            this.checkBox1.Text = "Redirector uses SSL";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -293,6 +307,7 @@
         private System.Windows.Forms.RichTextBox rtb4;
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.RichTextBox rtb5;
+        private System.Windows.Forms.CheckBox checkBox1;
 
     }
 }
