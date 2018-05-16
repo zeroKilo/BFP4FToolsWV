@@ -205,6 +205,7 @@ namespace BlazeSharkWV
                                            p.QType.ToString("X4") + " " +
                                            p.ID.ToString("X4") + " " +
                                            p.extLength.ToString("X4") + " " + Blaze.PacketToDescriber(p));
+                    listBox1.SelectedIndex = listBox1.Items.Count - 1;
                 }
             }
         }

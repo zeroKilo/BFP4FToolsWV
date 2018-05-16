@@ -204,5 +204,28 @@ namespace BFP4FLauncherWV
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
         }
+
+        public static void NotifyGamePlayerStateChange(Blaze.Packet p, PlayerInfo pi, NetworkStream ns, long stat)
+        {
+            List<Blaze.Tdf> result = new List<Blaze.Tdf>();
+            result.Add(Blaze.TdfInteger.Create("GID\0", pi.game.id));
+            result.Add(Blaze.TdfInteger.Create("PID\0", pi.userId));
+            result.Add(Blaze.TdfInteger.Create("STAT", stat));
+            byte[] buff = Blaze.CreatePacket(0x4, 0x74, 0, 0x2000, 0, result);
+            ns.Write(buff, 0, buff.Length);
+            ns.Flush();
+        }
+
+
+
+        public static void PlayerJoinCompletedNotification(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
+        {
+            List<Blaze.Tdf> result = new List<Blaze.Tdf>();
+            result.Add(Blaze.TdfInteger.Create("GID\0", pi.game.id));
+            result.Add(Blaze.TdfInteger.Create("PID\0", pi.userId));
+            byte[] buff = Blaze.CreatePacket(0x4, 0x1E, 0, 0x2000, 0, result);
+            ns.Write(buff, 0, buff.Length);
+            ns.Flush();
+        }
     }
 }

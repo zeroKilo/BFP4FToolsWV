@@ -30,6 +30,9 @@ namespace BFP4FLauncherWV
                 case 0xf:
                     FinalizeGameCreation(p, pi, ns);
                     break;
+                case 0x1d:
+                    UpdateMeshConnection(p, pi, ns);
+                    break;
             }
         }
 
@@ -119,6 +122,20 @@ namespace BFP4FLauncherWV
 
             if (pi.isServer)
                 AsyncGameManager.NotifyPlatformHostInitialized(p, pi, ns);
+        }
+
+        public static void UpdateMeshConnection(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
+        {
+            List<Blaze.Tdf> input = Blaze.ReadPacketContent(p);
+            List<Blaze.TdfStruct> entries = (List<Blaze.TdfStruct>)((Blaze.TdfList)input[1]).List;
+            Blaze.TdfInteger stat = (Blaze.TdfInteger)entries[0].Values[2];
+            List<Blaze.Tdf> result = new List<Blaze.Tdf>();
+            byte[] buff = Blaze.CreatePacket(p.Component, p.Command, 0, 0x1000, p.ID, result);
+            ns.Write(buff, 0, buff.Length);
+            ns.Flush();
+
+            AsyncGameManager.NotifyGamePlayerStateChange(p, pi, pi.ns, stat.Value);
+            AsyncGameManager.PlayerJoinCompletedNotification(p, pi, pi.ns);
         }
     }
 }
