@@ -47,9 +47,3 @@ for more research chat: https://discordapp.com/invite/Wr2faSS
 # DEMO (v5 - end)
 
 [![Alt text](https://img.youtube.com/vi/LYBh2jf5TgU/0.jpg)](https://www.youtube.com/watch?v=LYBh2jf5TgU)
-
-
-
-latest build:
-
-https://drive.google.com/open?id=1TTOySbEt4a0zmtN3i9HchrHhLiTFhydJ

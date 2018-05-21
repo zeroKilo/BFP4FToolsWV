@@ -40,6 +40,7 @@
             this.launchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.rtb2 = new System.Windows.Forms.RichTextBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.menuStrip2 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.launchStandaloneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -47,7 +48,6 @@
             this.rtb4 = new System.Windows.Forms.RichTextBox();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.rtb5 = new System.Windows.Forms.RichTextBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.menuStrip3.SuspendLayout();
@@ -179,6 +179,17 @@
             this.rtb2.TabIndex = 5;
             this.rtb2.Text = "";
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.checkBox1.Location = new System.Drawing.Point(3, 27);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(623, 17);
+            this.checkBox1.TabIndex = 6;
+            this.checkBox1.Text = "Redirector uses SSL";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
             // menuStrip2
             // 
             this.menuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -247,17 +258,6 @@
             this.rtb5.Size = new System.Drawing.Size(623, 339);
             this.rtb5.TabIndex = 8;
             this.rtb5.Text = "";
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.checkBox1.Location = new System.Drawing.Point(3, 27);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(623, 17);
-            this.checkBox1.TabIndex = 6;
-            this.checkBox1.Text = "Redirector uses SSL";
-            this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
