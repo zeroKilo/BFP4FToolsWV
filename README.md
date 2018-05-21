@@ -2,7 +2,7 @@
 
 with this tool you can research the blaze side of the game and the server
 
--zlib dll is a proxy dll to bypass ssl cert checks and enable blaze logs
+-zlib dll is a proxy dll to bypass ssl cert checks and enable blaze logs, theres a version for 2010 and for 2015 client, both work with 2010 server
 
 -Launcher contains backend, magma server and a minimal webserver thats lets the game and server start with editable parameters
 

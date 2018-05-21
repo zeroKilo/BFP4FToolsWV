@@ -1,0 +1,1 @@
+void Hack_Init();
