@@ -27,6 +27,9 @@
     <ClInclude Include="detours.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Helper.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

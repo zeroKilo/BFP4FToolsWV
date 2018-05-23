@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #pragma comment(lib, "detours.lib")
 #include "detours.h"
+#include "Helper.h"
 
 bool isServer = false;
 DWORD ptrEnum, cntEnum;
@@ -159,6 +160,28 @@ DWORD WINAPI enable_ingame_console(LPVOID)
 	return 0;
 }
 
+DWORD bitBuffer, bitBuffSize;
+DWORD bitWriteRetAddr = 0x9FED35;
+
+void __declspec(naked) myWriteBits()
+{	
+	__asm{
+		mov eax, [esp + 4];
+		mov bitBuffer, eax;
+		mov eax, [esp + 8];
+		mov bitBuffSize, eax;
+		pushad;
+	}
+	hexdump((DWORD*)bitBuffer, bitBuffSize, "ClientUDPLogSend.txt");
+	__asm{
+		popad;
+		sub     esp, 0Ch
+		push    ebp
+		push    edi
+		jmp bitWriteRetAddr;
+	}
+}
+
 void Hack_Init()
 {
 	GetModuleFileName(NULL, szFileName, MAX_PATH + 1);
@@ -173,9 +196,11 @@ void Hack_Init()
 	{
 		DetourFunction((PBYTE)0xB18580, (PBYTE)VerifyCertificate);
 		DetourFunction((PBYTE)0xBB3E90, (PBYTE)EnumHook);
+		DetourFunction((PBYTE)0x9FED30, (PBYTE)myWriteBits);
 		DetourBlazeLogger(0xB247A0, (DWORD)BlazeLogger);
 		ClearFile("EnumLog.txt");
 		ClearFile("BlazeLog.txt");
+		ClearFile("ClientUDPLogSend.txt");
 		CreateThread(0, 0, enable_ingame_console, 0, 0, 0);
 	}
 	MessageBoxA(0, "Attach now!", 0, 0);
