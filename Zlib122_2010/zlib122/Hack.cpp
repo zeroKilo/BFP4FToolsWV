@@ -143,7 +143,7 @@ DWORD WINAPI enable_ingame_console(LPVOID)
 	DWORD dwRendDx9Base = 0;
 	while(dwRendDx9Base == 0)
 		dwRendDx9Base = (DWORD)GetModuleHandle(L"RendDX9.dll");
-	DWORD dwReadAt = dwRendDx9Base + 0x62C13C;
+	DWORD dwReadAt = dwRendDx9Base + 0x600968;
 	while(!dwClass)
 		ReadProcessMemory(hGame, (PVOID)dwReadAt, &dwClass, 4, NULL);	
 	pOpenAddress = (DWORD*)(dwClass + 4);
@@ -151,12 +151,20 @@ DWORD WINAPI enable_ingame_console(LPVOID)
 		ReadProcessMemory(hGame, (PVOID)(dwClass + 696), &dwInputAddress, 4, NULL);
 	dwInputAddress = dwInputAddress + 20;
 	while(!dwAccept)
-		ReadProcessMemory(hGame, (PVOID)dwInputAddress, &dwAccept, 4, NULL);		
+		ReadProcessMemory(hGame, (PVOID)dwInputAddress, &dwAccept, 4, NULL);
 	pAccept = (BYTE*)dwAccept;
 	CloseHandle(hGame);	
 	EnableConsole(false);
 	CreateThread(0, 0, InputThread, 0, 0, 0);
 	return 0;
+}
+
+void DisableSSL(DWORD offset)
+{	
+	DWORD oldProtect = 0;
+	VirtualProtect((LPVOID)offset, 1, PAGE_EXECUTE_READWRITE, &oldProtect);
+	BYTE* ptr = (BYTE*)offset;
+	*ptr = 0;
 }
 
 void Hack_Init()
@@ -168,6 +176,7 @@ void Hack_Init()
 		DetourFunction((PBYTE)0xAFA180, (PBYTE)VerifyCertificate);
 		DetourBlazeLogger(0xAFFB30, (DWORD)BlazeLogger);
 		ClearFile("BlazeLogServer.txt");
+		DisableSSL(0xB09E86);
 	}
 	else
 	{
@@ -177,7 +186,8 @@ void Hack_Init()
 		
 		//ClearFile("EnumLog.txt");
 		ClearFile("BlazeLog.txt");
-		//CreateThread(0, 0, enable_ingame_console, 0, 0, 0);
+		CreateThread(0, 0, enable_ingame_console, 0, 0, 0);
+		DisableSSL(0xABE7F6);
 	}
 	MessageBoxA(0, "Attach now!", 0, 0);
 }

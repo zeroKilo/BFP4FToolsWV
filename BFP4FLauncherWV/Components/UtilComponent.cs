@@ -52,8 +52,10 @@ namespace BFP4FLauncherWV
             else
                 pi.name = "test-player";
             Blaze.TdfStruct CINF = (Blaze.TdfStruct)input[1];
+            Blaze.TdfString CVER = (Blaze.TdfString)CINF.Values[4];
             Blaze.TdfInteger LOC = (Blaze.TdfInteger)CINF.Values[7];
             pi.loc = LOC.Value;
+            pi.version = CVER.Value;
             BlazeServer.Log("[CLNT] #" + pi.userId + " is a " + (pi.isServer ? "server" : "client"), System.Drawing.Color.Blue);
             List<Blaze.Tdf> Result = new List<Blaze.Tdf>();
             Result.Add(Blaze.TdfInteger.Create("ANON", 0));

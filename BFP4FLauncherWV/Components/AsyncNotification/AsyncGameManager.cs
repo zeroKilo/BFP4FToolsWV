@@ -155,8 +155,11 @@ namespace BFP4FLauncherWV
             result.Add(Blaze.TdfList.Create("PROS", 3, 2, PROS));
             List<Blaze.Tdf> VALU = new List<Blaze.Tdf>();
                 VALU.Add(Blaze.TdfInteger.Create("DCTX", 1));
-            result.Add(Blaze.TdfUnion.Create("REAS", 0, Blaze.TdfStruct.Create("VALU", VALU)));
-            byte[] buff = Blaze.CreatePacket(0x4, 0x16, 0, 0x2000, 0, result);
+            result.Add(Blaze.TdfUnion.Create("REAS", 0, Blaze.TdfStruct.Create("VALU", VALU)));            
+            ushort id = 0x16;
+            if (pi.version == "0.01.217848.3") //2010 client quirk?
+                id = 0x14;
+            byte[] buff = Blaze.CreatePacket(0x4, id, 0, 0x2000, 0, result);
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
         }

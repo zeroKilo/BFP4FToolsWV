@@ -10,6 +10,7 @@ namespace BFP4FLauncherWV
     public class PlayerInfo
     {
         public string name;
+        public string version;
         public long userId;
         public long exIp, exPort;
         public long inIp, inPort;
