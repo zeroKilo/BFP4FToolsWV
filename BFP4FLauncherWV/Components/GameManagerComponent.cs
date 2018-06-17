@@ -104,13 +104,13 @@ namespace BFP4FLauncherWV
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
 
+            pi.stat = 2;
+
             AsyncUserSessions.NotifyUserAdded(p, srv, ns);
             AsyncUserSessions.NotifyUserStatus(p, srv, ns);
             AsyncGameManager.NotifyGameSetup(p, pi, srv, ns);
 
             AsyncGameManager.NotifyPlayerJoining(p, pi, srv.ns);
-            AsyncGameManager.NotifyClaimingReservation(p, pi, srv.ns);
-            AsyncUserSessions.UserSessionExtendedDataUpdateNotification(p, pi, srv.ns);
         }
 
         public static void FinalizeGameCreation(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
@@ -128,14 +128,26 @@ namespace BFP4FLauncherWV
         {
             List<Blaze.Tdf> input = Blaze.ReadPacketContent(p);
             List<Blaze.TdfStruct> entries = (List<Blaze.TdfStruct>)((Blaze.TdfList)input[1]).List;
+            Blaze.TdfInteger pid = (Blaze.TdfInteger)entries[0].Values[1];
             Blaze.TdfInteger stat = (Blaze.TdfInteger)entries[0].Values[2];
             List<Blaze.Tdf> result = new List<Blaze.Tdf>();
             byte[] buff = Blaze.CreatePacket(p.Component, p.Command, 0, 0x1000, p.ID, result);
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
 
-            AsyncGameManager.NotifyGamePlayerStateChange(p, pi, pi.ns, stat.Value);
-            AsyncGameManager.PlayerJoinCompletedNotification(p, pi, pi.ns);
+            PlayerInfo target = null;
+            foreach (PlayerInfo info in BlazeServer.allClients)
+                if (info.userId == pid.Value)
+                {
+                    target = info;
+                    break;
+                }
+            if (target != null && stat.Value == 2)
+            {
+                AsyncUserSessions.UserSessionExtendedDataUpdateNotification(p, target, pi.ns);
+                AsyncGameManager.NotifyGamePlayerStateChange(p, target, pi.ns, 4);
+                AsyncGameManager.PlayerJoinCompletedNotification(p, target, pi.ns);
+            }
         }
     }
 }

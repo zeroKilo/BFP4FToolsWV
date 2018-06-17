@@ -110,7 +110,6 @@ namespace BFP4FLauncherWV
 
         public static void NotifyGameSetup(Blaze.Packet p, PlayerInfo pi, PlayerInfo srv, NetworkStream ns)
         {
-            pi.stat = 2;
             List<Blaze.Tdf> result = new List<Blaze.Tdf>();
             List<Blaze.Tdf> GAME = new List<Blaze.Tdf>();
                 GAME.Add(Blaze.TdfList.Create("ADMN", 0, 1, new List<long>(new long[] { srv.userId })));
@@ -166,7 +165,6 @@ namespace BFP4FLauncherWV
 
         public static void NotifyPlayerJoining(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
         {
-            pi.stat = 0;
             uint t = Blaze.GetUnixTimeStamp();
             List<Blaze.Tdf> result = new List<Blaze.Tdf>();
             result.Add(Blaze.TdfInteger.Create("GID\0", pi.game.id));
@@ -184,26 +182,6 @@ namespace BFP4FLauncherWV
                 PDAT.Add(Blaze.TdfInteger.Create("UID\0", pi.userId));                
             result.Add(Blaze.TdfStruct.Create("PDAT", PDAT));
             byte[] buff = Blaze.CreatePacket(0x4, 0x15, 0, 0x2000, 0, result);
-            ns.Write(buff, 0, buff.Length);
-            ns.Flush();
-        }
-
-        public static void NotifyClaimingReservation(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
-        {
-            List<Blaze.Tdf> result = new List<Blaze.Tdf>();
-            result.Add(Blaze.TdfInteger.Create("GID\0", pi.game.id));
-            List<Blaze.Tdf> PDAT = new List<Blaze.Tdf>();
-                PDAT.Add(Blaze.TdfInteger.Create("GID\0", pi.game.id));
-                PDAT.Add(Blaze.TdfInteger.Create("LOC\0", pi.loc));
-                PDAT.Add(Blaze.TdfString.Create("NAME", pi.name));
-                PDAT.Add(Blaze.TdfInteger.Create("PID\0", pi.userId));
-                PDAT.Add(BlazeHelper.CreateNETFieldUnion(pi, "PNET"));
-                PDAT.Add(Blaze.TdfInteger.Create("SID\0", pi.slot));
-                PDAT.Add(Blaze.TdfInteger.Create("STAT", pi.stat));
-                PDAT.Add(Blaze.TdfInteger.Create("TIDX", 0xFFFF));
-                PDAT.Add(Blaze.TdfInteger.Create("UID\0", pi.userId));
-            result.Add(Blaze.TdfStruct.Create("PDAT", PDAT));
-            byte[] buff = Blaze.CreatePacket(0x4, 0x19, 0, 0x2000, 0, result);
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
         }

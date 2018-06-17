@@ -21,6 +21,5 @@ namespace BFP4FLauncherWV
         public bool isServer;
         public GameInfo game;
         public NetworkStream ns;
-
     }
 }

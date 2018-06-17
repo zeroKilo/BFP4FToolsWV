@@ -159,12 +159,27 @@ DWORD WINAPI enable_ingame_console(LPVOID)
 	return 0;
 }
 
-void DisableSSL(DWORD offset)
-{	
+void WriteByte(DWORD offset, BYTE b)
+{
 	DWORD oldProtect = 0;
 	VirtualProtect((LPVOID)offset, 1, PAGE_EXECUTE_READWRITE, &oldProtect);
 	BYTE* ptr = (BYTE*)offset;
-	*ptr = 0;
+	*ptr = b;
+}
+
+void DisableSSL(DWORD offset)
+{	
+	WriteByte(offset, 0x00);
+}
+
+void PatchQOSTimeout()
+{
+	WriteByte(0xBF0ECB, 0xEB);
+}
+
+void PatchServerSetup()
+{
+	WriteByte(0xB4FEBA, 0x00);
 }
 
 void Hack_Init()
@@ -177,14 +192,15 @@ void Hack_Init()
 		DetourBlazeLogger(0xAFFB30, (DWORD)BlazeLogger);
 		ClearFile("BlazeLogServer.txt");
 		DisableSSL(0xB09E86);
+		PatchQOSTimeout();
+		PatchServerSetup();
 	}
 	else
 	{
 		DetourFunction((PBYTE)0xAAE540, (PBYTE)VerifyCertificate);
 		DetourBlazeLogger(0x00AB4410, (DWORD)BlazeLogger);
-		//DetourFunction((PBYTE)0xBB3E90, (PBYTE)EnumHook);//Offset has to be determined
-		
-		//ClearFile("EnumLog.txt");
+		DetourFunction((PBYTE)0xB3A070, (PBYTE)EnumHook);		
+		ClearFile("EnumLog.txt");
 		ClearFile("BlazeLog.txt");
 		CreateThread(0, 0, enable_ingame_console, 0, 0, 0);
 		DisableSSL(0xABE7F6);
