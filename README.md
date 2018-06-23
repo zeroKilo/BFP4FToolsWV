@@ -44,6 +44,6 @@ for more research chat: https://discordapp.com/invite/Wr2faSS
 
 [![Alt text](https://img.youtube.com/vi/BtnpACHK07w/0.jpg)](https://www.youtube.com/watch?v=BtnpACHK07w)
 
-# DEMO (v5 - end)
+# First Joining
 
-[![Alt text](https://img.youtube.com/vi/LYBh2jf5TgU/0.jpg)](https://www.youtube.com/watch?v=LYBh2jf5TgU)
+[![Alt text](https://img.youtube.com/vi/EX3aHWkbB6o/0.jpg)](https://www.youtube.com/watch?v=EX3aHWkbB6o)
