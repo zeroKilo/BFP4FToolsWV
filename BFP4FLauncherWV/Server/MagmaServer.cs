@@ -44,8 +44,8 @@ namespace BFP4FLauncherWV
             try
             {
                 Log("[MGMA] starting...");
-                lMagma = new TcpListener(IPAddress.Parse("127.0.0.1"), 80);
-                Log("[MGMA] bound to port 80");
+                lMagma = new TcpListener(IPAddress.Parse(ProviderInfo.backendIP), 80);
+                Log("[MGMA] bound to  " + ProviderInfo.backendIP + ":80");
                 lMagma.Start();
                 Log("[MGMA] listening...");
                 TcpClient client;

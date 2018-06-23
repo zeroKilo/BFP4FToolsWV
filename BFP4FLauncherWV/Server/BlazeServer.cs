@@ -50,8 +50,8 @@ namespace BFP4FLauncherWV
             {
                 Log("[MAIN] Blaze starting...");
                 Profiles.Refresh();
-                lBlaze = new TcpListener(IPAddress.Parse(ProviderInfo.ip), 30001);
-                Log("[MAIN] Blaze bound to " + ProviderInfo.ip + ":30001");
+                lBlaze = new TcpListener(IPAddress.Parse(ProviderInfo.backendIP), 30001);
+                Log("[MAIN] Blaze bound to " + ProviderInfo.backendIP + ":30001");
                 lBlaze.Start();
                 Log("[MAIN] Blaze listening...");
                 TcpClient client;

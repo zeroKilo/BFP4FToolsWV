@@ -65,6 +65,7 @@ namespace BFP4FLauncherWV
 
         private void Start()
         {
+            ProviderInfo.backendIP = toolStripTextBox3.Text;
             RedirectorServer.box =
             BlazeServer.box = rtb2;
             Webserver.box = rtb5;
@@ -75,6 +76,7 @@ namespace BFP4FLauncherWV
             MagmaServer.Start();
             Webserver.Start();
             tabControl1.TabPages.Add(tabPage6);
+            RefreshProfileList();
         }
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
@@ -128,6 +130,7 @@ namespace BFP4FLauncherWV
             string args = Resources.Resource1.client_startup;
             args = args.Replace("#SESSION#", p.sessionId.ToString());
             args = args.Replace("#PLAYER#", p.name);
+            args = args.Replace("#IP#", toolStripTextBox2.Text);
             RunShell("bfp4f.exe", args);
         }
     }

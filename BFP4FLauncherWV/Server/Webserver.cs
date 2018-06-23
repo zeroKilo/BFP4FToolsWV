@@ -44,8 +44,8 @@ namespace BFP4FLauncherWV
             try
             {
                 Log("[WEBS] starting...");
-                lHttp = new TcpListener(IPAddress.Parse("127.0.0.1"), 1234);
-                Log("[WEBS] bound to port 1234");
+                lHttp = new TcpListener(IPAddress.Parse(ProviderInfo.backendIP), 1234);
+                Log("[WEBS] bound to  " + ProviderInfo.backendIP + ":1234");
                 lHttp.Start();
                 Log("[WEBS] listening...");
                 TcpClient client;

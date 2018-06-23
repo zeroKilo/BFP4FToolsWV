@@ -57,6 +57,10 @@
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripTextBox2 = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripTextBox3 = new System.Windows.Forms.ToolStripTextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.menuStrip3.SuspendLayout();
@@ -185,9 +189,9 @@
             this.rtb2.DetectUrls = false;
             this.rtb2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtb2.Font = new System.Drawing.Font("Consolas", 8.25F);
-            this.rtb2.Location = new System.Drawing.Point(3, 44);
+            this.rtb2.Location = new System.Drawing.Point(3, 45);
             this.rtb2.Name = "rtb2";
-            this.rtb2.Size = new System.Drawing.Size(623, 298);
+            this.rtb2.Size = new System.Drawing.Size(623, 297);
             this.rtb2.TabIndex = 5;
             this.rtb2.Text = "";
             // 
@@ -195,7 +199,7 @@
             // 
             this.checkBox1.AutoSize = true;
             this.checkBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.checkBox1.Location = new System.Drawing.Point(3, 27);
+            this.checkBox1.Location = new System.Drawing.Point(3, 28);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(623, 17);
             this.checkBox1.TabIndex = 6;
@@ -206,24 +210,26 @@
             // 
             this.menuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1,
-            this.launchStandaloneToolStripMenuItem});
+            this.launchStandaloneToolStripMenuItem,
+            this.toolStripLabel2,
+            this.toolStripTextBox3});
             this.menuStrip2.Location = new System.Drawing.Point(3, 3);
             this.menuStrip2.Name = "menuStrip2";
-            this.menuStrip2.Size = new System.Drawing.Size(623, 24);
+            this.menuStrip2.Size = new System.Drawing.Size(623, 25);
             this.menuStrip2.TabIndex = 4;
             this.menuStrip2.Text = "menuStrip2";
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(167, 20);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(167, 21);
             this.toolStripMenuItem1.Text = "Launch for use with Blazeshark";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // launchStandaloneToolStripMenuItem
             // 
             this.launchStandaloneToolStripMenuItem.Name = "launchStandaloneToolStripMenuItem";
-            this.launchStandaloneToolStripMenuItem.Size = new System.Drawing.Size(110, 20);
+            this.launchStandaloneToolStripMenuItem.Size = new System.Drawing.Size(110, 21);
             this.launchStandaloneToolStripMenuItem.Text = "Launch Standalone";
             this.launchStandaloneToolStripMenuItem.Click += new System.EventHandler(this.launchStandaloneToolStripMenuItem_Click);
             // 
@@ -304,7 +310,9 @@
             this.toolStripButton2,
             this.toolStripButton3,
             this.toolStripSeparator1,
-            this.toolStripButton4});
+            this.toolStripButton4,
+            this.toolStripLabel1,
+            this.toolStripTextBox2});
             this.toolStrip1.Location = new System.Drawing.Point(3, 3);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(623, 25);
@@ -361,6 +369,30 @@
             this.toolStripButton4.Size = new System.Drawing.Size(114, 22);
             this.toolStripButton4.Text = "Launch Game with";
             this.toolStripButton4.Click += new System.EventHandler(this.toolStripButton4_Click);
+            // 
+            // toolStripLabel1
+            // 
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(21, 22);
+            this.toolStripLabel1.Text = "IP:";
+            // 
+            // toolStripTextBox2
+            // 
+            this.toolStripTextBox2.Name = "toolStripTextBox2";
+            this.toolStripTextBox2.Size = new System.Drawing.Size(100, 25);
+            this.toolStripTextBox2.Text = "127.0.0.1";
+            // 
+            // toolStripLabel2
+            // 
+            this.toolStripLabel2.Name = "toolStripLabel2";
+            this.toolStripLabel2.Size = new System.Drawing.Size(21, 18);
+            this.toolStripLabel2.Text = "IP:";
+            // 
+            // toolStripTextBox3
+            // 
+            this.toolStripTextBox3.Name = "toolStripTextBox3";
+            this.toolStripTextBox3.Size = new System.Drawing.Size(100, 21);
+            this.toolStripTextBox3.Text = "127.0.0.1";
             // 
             // Form1
             // 
@@ -424,6 +456,10 @@
         private System.Windows.Forms.ToolStripButton toolStripButton3;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton toolStripButton4;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
+        private System.Windows.Forms.ToolStripTextBox toolStripTextBox2;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel2;
+        private System.Windows.Forms.ToolStripTextBox toolStripTextBox3;
 
     }
 }

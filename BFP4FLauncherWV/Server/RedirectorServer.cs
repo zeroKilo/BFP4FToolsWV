@@ -52,8 +52,8 @@ namespace BFP4FLauncherWV
             try
             {
                 Log("[REDI] Redirector starting...");
-                lRedirector = new TcpListener(IPAddress.Parse(ProviderInfo.ip), 42127);
-                Log("[REDI] Redirector bound to  " + ProviderInfo.ip + ":42127");
+                lRedirector = new TcpListener(IPAddress.Parse(ProviderInfo.backendIP), 42127);
+                Log("[REDI] Redirector bound to  " + ProviderInfo.backendIP + ":42127");
                 lRedirector.Start();
                 if (useSSL)
                 {
@@ -114,8 +114,8 @@ namespace BFP4FLauncherWV
         {
             List<Blaze.Tdf> Result = new List<Blaze.Tdf>();
             List<Blaze.Tdf> VALU = new List<Blaze.Tdf>();
-            VALU.Add(Blaze.TdfString.Create("HOST", ProviderInfo.ip));
-            VALU.Add(Blaze.TdfInteger.Create("IP\0\0", Blaze.GetIPfromString(ProviderInfo.ip)));
+            VALU.Add(Blaze.TdfString.Create("HOST", ProviderInfo.backendIP));
+            VALU.Add(Blaze.TdfInteger.Create("IP\0\0", Blaze.GetIPfromString(ProviderInfo.backendIP)));
             VALU.Add(Blaze.TdfInteger.Create("PORT", targetPort));
             Blaze.TdfUnion ADDR = Blaze.TdfUnion.Create("ADDR", 0, Blaze.TdfStruct.Create("VALU", VALU));
             Result.Add(ADDR);
