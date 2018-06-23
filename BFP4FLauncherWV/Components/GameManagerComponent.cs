@@ -50,6 +50,7 @@ namespace BFP4FLauncherWV
             pi.game.id = 1;
             pi.game.isRunning = true;
             pi.game.GSTA = 7;
+            pi.game.players[0] = pi;
 
             List<Blaze.Tdf> result = new List<Blaze.Tdf>();
             result.Add(Blaze.TdfInteger.Create("GID\0", pi.game.id));
@@ -101,7 +102,14 @@ namespace BFP4FLauncherWV
             }
             pi.game = srv.game;
             pi.slot = srv.game.getNextSlot();
+            BlazeServer.Log("[CLNT] #" + pi.userId + " : assigned Slot Id " + pi.slot, System.Drawing.Color.Blue);
+            if (pi.slot == 255)
+            {
+                BlazeServer.Log("[CLNT] #" + pi.userId + " : server full!", System.Drawing.Color.Red);
+                return;
+            }
             srv.game.setNextSlot((int)pi.userId);
+            srv.game.players[pi.slot] = pi;
 
             List<Blaze.Tdf> result = new List<Blaze.Tdf>();
             result.Add(Blaze.TdfInteger.Create("GID\0", srv.game.id));
@@ -111,9 +119,12 @@ namespace BFP4FLauncherWV
             ns.Flush();
 
             pi.stat = 2;
-
-            AsyncUserSessions.NotifyUserAdded(p, srv, ns);
-            AsyncUserSessions.NotifyUserStatus(p, srv, ns);
+            foreach(PlayerInfo peer in srv.game.players)
+                if (peer != null && peer.userId != pi.userId)
+                {
+                    AsyncUserSessions.NotifyUserAdded(p, peer, ns);
+                    AsyncUserSessions.NotifyUserStatus(p, peer, ns);
+                }
             AsyncGameManager.NotifyClientGameSetup(p, pi, srv, ns);
 
             AsyncUserSessions.NotifyUserAdded(p, pi, srv.ns);

@@ -19,9 +19,11 @@ namespace BFP4FLauncherWV
         public string VSTR;
         public string GNAM;
         public int[] slotUse;
+        public PlayerInfo[] players;
 
         public GameInfo()
         {
+            players = new PlayerInfo[32];
             slotUse = new int[32];
             for (int i = 0; i < 32; i++)
                 slotUse[i] = -1;

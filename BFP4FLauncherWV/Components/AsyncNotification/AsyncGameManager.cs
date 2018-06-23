@@ -143,22 +143,24 @@ namespace BFP4FLauncherWV
                     THST.Add(Blaze.TdfInteger.Create("HPID", srv.userId));
                     THST.Add(Blaze.TdfInteger.Create("HSLT", srv.slot));
                 GAME.Add(Blaze.TdfStruct.Create("THST", THST));
-                GAME.Add(Blaze.TdfList.Create("TIDS", 0, 2, new List<long>(new long[] { 1, 2 })));
+                List<long> playerIdList = new List<long>();
+                for (int i = 0; i < 32; i++)
+                    if (srv.game.slotUse[i] != -1)
+                        playerIdList.Add(srv.game.slotUse[i]);
+                GAME.Add(Blaze.TdfList.Create("TIDS", 0, 2, playerIdList));
                 GAME.Add(Blaze.TdfString.Create("UUID", "f5193367-c991-4429-aee4-8d5f3adab938"));
                 GAME.Add(Blaze.TdfInteger.Create("VOIP", srv.game.VOIP));
                 GAME.Add(Blaze.TdfString.Create("VSTR", srv.game.VSTR));
             result.Add(Blaze.TdfStruct.Create("GAME", GAME));
             List<Blaze.TdfStruct> PROS = new List<Blaze.TdfStruct>();
-                PROS.Add(BlazeHelper.MakePROSEntry(0, srv));
-                PROS.Add(BlazeHelper.MakePROSEntry(1, pi));
-            result.Add(Blaze.TdfList.Create("PROS", 3, 2, PROS));
+            for (int i = 0; i < 32; i++)
+                if (srv.game.players[i] != null)
+                    PROS.Add(BlazeHelper.MakePROSEntry(i, srv.game.players[i]));
+            result.Add(Blaze.TdfList.Create("PROS", 3, PROS.Count, PROS));
             List<Blaze.Tdf> VALU = new List<Blaze.Tdf>();
                 VALU.Add(Blaze.TdfInteger.Create("DCTX", reas));
-            result.Add(Blaze.TdfUnion.Create("REAS", 0, Blaze.TdfStruct.Create("VALU", VALU)));            
-            ushort id = 0x16;
-            if (pi.version == "0.01.217848.3") //2010 client quirk?
-                id = 0x14;
-            byte[] buff = Blaze.CreatePacket(0x4, id, 0, 0x2000, 0, result);
+            result.Add(Blaze.TdfUnion.Create("REAS", 0, Blaze.TdfStruct.Create("VALU", VALU)));  
+            byte[] buff = Blaze.CreatePacket(0x4, 0x14, 0, 0x2000, 0, result);
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
         }
