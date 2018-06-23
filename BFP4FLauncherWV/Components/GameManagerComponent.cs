@@ -27,11 +27,17 @@ namespace BFP4FLauncherWV
                 case 0x9:
                     JoinGame(p, pi, ns);
                     break;
+                case 0xD:
+                    StartMatchmaking(p, pi, ns);
+                    break;
                 case 0xf:
                     FinalizeGameCreation(p, pi, ns);
                     break;
                 case 0x1d:
                     UpdateMeshConnection(p, pi, ns);
+                    break;
+                case 0x67:
+                    GetFullGameData(p, pi, ns);
                     break;
             }
         }
@@ -53,7 +59,7 @@ namespace BFP4FLauncherWV
             ns.Flush();
 
             AsyncGameManager.NotifyGameStateChange(p, pi, ns);
-            AsyncGameManager.NotifyGameSetup(p, pi, ns);
+            AsyncGameManager.NotifyServerGameSetup(p, pi, ns);
         }
         
         public static void AdvanceGameState(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
@@ -108,9 +114,12 @@ namespace BFP4FLauncherWV
 
             AsyncUserSessions.NotifyUserAdded(p, srv, ns);
             AsyncUserSessions.NotifyUserStatus(p, srv, ns);
-            AsyncGameManager.NotifyGameSetup(p, pi, srv, ns);
+            AsyncGameManager.NotifyClientGameSetup(p, pi, srv, ns);
 
+            AsyncUserSessions.NotifyUserAdded(p, pi, srv.ns);
+            AsyncUserSessions.NotifyUserStatus(p, pi, srv.ns);
             AsyncGameManager.NotifyPlayerJoining(p, pi, srv.ns);
+            AsyncUserSessions.UserSessionExtendedDataUpdateNotification(p, pi, srv.ns);
         }
 
         public static void FinalizeGameCreation(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
@@ -146,8 +155,112 @@ namespace BFP4FLauncherWV
             {
                 AsyncUserSessions.UserSessionExtendedDataUpdateNotification(p, target, pi.ns);
                 AsyncGameManager.NotifyGamePlayerStateChange(p, target, pi.ns, 4);
-                AsyncGameManager.PlayerJoinCompletedNotification(p, target, pi.ns);
+                if (pi.isServer)
+                    AsyncGameManager.PlayerJoinCompletedNotification(p, target, pi.ns);
+                else
+                    AsyncGameManager.PlayerJoinCompletedNotification(p, pi, pi.ns);
             }
+        }
+
+        public static void GetFullGameData(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
+        {
+            PlayerInfo srv = null;
+            foreach (PlayerInfo info in BlazeServer.allClients)
+                if (info.isServer)
+                {
+                    srv = info;
+                    break;
+                }
+            if (srv == null)
+            {
+                BlazeServer.Log("[CLNT] #" + pi.userId + " : cant find game to join!", System.Drawing.Color.Red);
+                return;
+            }
+            pi.game = srv.game;
+            pi.slot = srv.game.getNextSlot();
+            srv.game.setNextSlot((int)pi.userId);
+
+            List<Blaze.Tdf> result = new List<Blaze.Tdf>();
+                List<Blaze.TdfStruct> LGAM = new List<Blaze.TdfStruct>();
+                    List<Blaze.Tdf> ee0 = new List<Blaze.Tdf>();
+                        List<Blaze.Tdf> GAME = new List<Blaze.Tdf>();
+                            GAME.Add(Blaze.TdfList.Create("ADMN", 0, 1, new List<long>(new long[] { srv.userId })));
+                            GAME.Add(srv.game.ATTR);
+                            GAME.Add(Blaze.TdfList.Create("CAP\0", 0, 2, new List<long>(new long[] { 0x20, 0 })));
+                            GAME.Add(Blaze.TdfInteger.Create("GID\0", pi.game.id));
+                            GAME.Add(Blaze.TdfString.Create("GNAM", pi.game.GNAM));
+                            GAME.Add(Blaze.TdfInteger.Create("GPVH", 666));
+                            GAME.Add(Blaze.TdfInteger.Create("GSET", pi.game.GSET));
+                            GAME.Add(Blaze.TdfInteger.Create("GSID", 1));
+                            GAME.Add(Blaze.TdfInteger.Create("GSTA", pi.game.GSTA));
+                            GAME.Add(Blaze.TdfString.Create("GTYP", "AssaultStandard"));
+                            GAME.Add(BlazeHelper.CreateNETField(srv, "HNET"));
+                            GAME.Add(Blaze.TdfInteger.Create("HSES", 13666));
+                            GAME.Add(Blaze.TdfInteger.Create("IGNO", 0));
+                            GAME.Add(Blaze.TdfInteger.Create("MCAP", 0x20));
+                            GAME.Add(BlazeHelper.CreateNQOSField(srv, "NQOS"));
+                            GAME.Add(Blaze.TdfInteger.Create("NRES", 0));
+                            GAME.Add(Blaze.TdfInteger.Create("NTOP", 1));
+                            GAME.Add(Blaze.TdfString.Create("PGID", ""));
+                            List<Blaze.Tdf> PHST = new List<Blaze.Tdf>();
+                            PHST.Add(Blaze.TdfInteger.Create("HPID", srv.userId));
+                            PHST.Add(Blaze.TdfInteger.Create("HSLT", srv.slot));
+                            GAME.Add(Blaze.TdfStruct.Create("PHST", PHST));
+                            GAME.Add(Blaze.TdfInteger.Create("PRES", 1));
+                            GAME.Add(Blaze.TdfString.Create("PSAS", "wv"));
+                            GAME.Add(Blaze.TdfInteger.Create("QCAP", 0x10));
+                            GAME.Add(Blaze.TdfInteger.Create("SEED", 0x2CF2048F));
+                            GAME.Add(Blaze.TdfInteger.Create("TCAP", 0x10));
+                            List<Blaze.Tdf> THST = new List<Blaze.Tdf>();
+                            THST.Add(Blaze.TdfInteger.Create("HPID", srv.userId));
+                            THST.Add(Blaze.TdfInteger.Create("HPID", srv.slot));
+                            GAME.Add(Blaze.TdfStruct.Create("THST", THST));
+                            GAME.Add(Blaze.TdfString.Create("UUID", "f5193367-c991-4429-aee4-8d5f3adab938"));
+                            GAME.Add(Blaze.TdfInteger.Create("VOIP", pi.game.VOIP));
+                            GAME.Add(Blaze.TdfString.Create("VSTR", pi.game.VSTR));
+                        ee0.Add(Blaze.TdfStruct.Create("GAME", GAME));
+                    LGAM.Add(Blaze.TdfStruct.Create("0", ee0));
+            result.Add(Blaze.TdfList.Create("LGAM", 3, 1, LGAM));
+            byte[] buff = Blaze.CreatePacket(p.Component, 0x67, 0, 0x1000, p.ID, result);
+            ns.Write(buff, 0, buff.Length);
+            ns.Flush();
+        }
+
+        public static void StartMatchmaking(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
+        {
+            PlayerInfo srv = null;
+            foreach (PlayerInfo info in BlazeServer.allClients)
+                if (info.isServer)
+                {
+                    srv = info;
+                    break;
+                }
+            if (srv == null)
+            {
+                BlazeServer.Log("[CLNT] #" + pi.userId + " : cant find game to join!", System.Drawing.Color.Red);
+                return;
+            }
+            pi.game = srv.game;
+            pi.slot = srv.game.getNextSlot();
+            srv.game.setNextSlot((int)pi.userId);
+            
+            List<Blaze.Tdf> result = new List<Blaze.Tdf>();
+            result.Add(Blaze.TdfInteger.Create("MSID", pi.userId));
+            byte[] buff = Blaze.CreatePacket(p.Component, p.Command, 0, 0x1000, p.ID, result);
+            ns.Write(buff, 0, buff.Length);
+            ns.Flush();
+
+
+            pi.stat = 2;
+
+            AsyncUserSessions.NotifyUserAdded(p, srv, ns);
+            AsyncUserSessions.NotifyUserStatus(p, srv, ns);
+            AsyncGameManager.NotifyClientGameSetup(p, pi, srv, ns);
+
+            AsyncUserSessions.NotifyUserAdded(p, pi, srv.ns);
+            AsyncUserSessions.NotifyUserStatus(p, pi, srv.ns);
+            AsyncGameManager.NotifyPlayerJoining(p, pi, srv.ns);
+            AsyncUserSessions.UserSessionExtendedDataUpdateNotification(p, pi, srv.ns);
         }
     }
 }

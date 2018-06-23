@@ -1080,6 +1080,7 @@ namespace BlazeLibWV
                     break;
                 }
             }
+            cname = "[" + p.Component.ToString("X4") + ":" + p.Command.ToString("X4") + "] " + cname;
             switch (p.Component)
             {
                 case 0x1:

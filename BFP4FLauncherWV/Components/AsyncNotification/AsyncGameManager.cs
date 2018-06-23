@@ -31,7 +31,7 @@ namespace BFP4FLauncherWV
             ns.Flush();
         }
 
-        public static void NotifyGameSetup(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
+        public static void NotifyServerGameSetup(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
         {
             List<Blaze.Tdf> input = Blaze.ReadPacketContent(p);
             uint t = Blaze.GetUnixTimeStamp();
@@ -84,7 +84,7 @@ namespace BFP4FLauncherWV
                     ee0.Add(BlazeHelper.CreateNETFieldUnion(pi, "PNET"));
                     ee0.Add(Blaze.TdfInteger.Create("SID\0", pi.slot));
                     ee0.Add(Blaze.TdfInteger.Create("SLOT", 0));
-                    ee0.Add(Blaze.TdfInteger.Create("STAT", 4));
+                    ee0.Add(Blaze.TdfInteger.Create("STAT", 2));
                     ee0.Add(Blaze.TdfInteger.Create("TIDX", 0xFFFF));
                     ee0.Add(Blaze.TdfInteger.Create("TIME", t));
                     ee0.Add(Blaze.TdfInteger.Create("UID\0", pi.userId));
@@ -108,7 +108,7 @@ namespace BFP4FLauncherWV
             ns.Flush();
         }
 
-        public static void NotifyGameSetup(Blaze.Packet p, PlayerInfo pi, PlayerInfo srv, NetworkStream ns)
+        public static void NotifyClientGameSetup(Blaze.Packet p, PlayerInfo pi, PlayerInfo srv, NetworkStream ns, long reas = 1)
         {
             List<Blaze.Tdf> result = new List<Blaze.Tdf>();
             List<Blaze.Tdf> GAME = new List<Blaze.Tdf>();
@@ -153,7 +153,7 @@ namespace BFP4FLauncherWV
                 PROS.Add(BlazeHelper.MakePROSEntry(1, pi));
             result.Add(Blaze.TdfList.Create("PROS", 3, 2, PROS));
             List<Blaze.Tdf> VALU = new List<Blaze.Tdf>();
-                VALU.Add(Blaze.TdfInteger.Create("DCTX", 1));
+                VALU.Add(Blaze.TdfInteger.Create("DCTX", reas));
             result.Add(Blaze.TdfUnion.Create("REAS", 0, Blaze.TdfStruct.Create("VALU", VALU)));            
             ushort id = 0x16;
             if (pi.version == "0.01.217848.3") //2010 client quirk?
@@ -196,9 +196,7 @@ namespace BFP4FLauncherWV
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
         }
-
-
-
+        
         public static void PlayerJoinCompletedNotification(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
         {
             List<Blaze.Tdf> result = new List<Blaze.Tdf>();
