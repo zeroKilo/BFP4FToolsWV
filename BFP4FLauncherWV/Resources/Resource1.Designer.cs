@@ -61,12 +61,21 @@ namespace BFP4FLauncherWV.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die 10.04.2018 16:21:24,89 
+        ///   Sucht eine lokalisierte Zeichenfolge, die 23.06.2018_2033 
         /// ähnelt.
         /// </summary>
         internal static string BuildDate {
             get {
                 return ResourceManager.GetString("BuildDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die +webSiteHostName &quot;localhost&quot; +battleFundsHostName &quot;localhost&quot; +survey 0 +dc 1 +sessionId #SESSION# +lang en +soldierName &quot;#PLAYER#&quot; +multi 1 +frontendUrl &quot;http://localhost:1234/&quot; +autoLogin 1 +loggedIn &quot;true&quot; +webBrowser 0 +magmaProtocol http +magmaHost 127.0.0.1 +punkBuster 0 ähnelt.
+        /// </summary>
+        internal static string client_startup {
+            get {
+                return ResourceManager.GetString("client_startup", resourceCulture);
             }
         }
         

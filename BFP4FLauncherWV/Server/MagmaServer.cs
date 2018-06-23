@@ -87,7 +87,7 @@ namespace BFP4FLauncherWV
                         if (lines.Length > 5 && lines[5].StartsWith("x-server-key"))
                             ReplyWithXML(s, "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n<success><token>" + lines[5].Split(':')[1].Trim() + "</token></success>");
                         else
-                            ReplyWithXML(s, "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n<success><token code=\"NEW_TOKEN\">SIxmvSLJSOwKPq5WZ3FL5KIRNJVCLp4Jgs_3mJcY2yJahXxR5mTRGUsi6PKhA4X1jpuVMxHJQv3WQ3HnQfvKeG60hRugA</token></success>");
+                            ReplyWithXML(s, "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n<success><token code=\"NEW_TOKEN\">" + lines[4].Split('=')[1] + "</token></success>");
                         break;
                     case "/api/relationships/roster/nucleus":
                         Log("[MGMA] Sending Roster response");

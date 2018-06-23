@@ -49,8 +49,6 @@ namespace BFP4FLauncherWV
                 pi.game = new GameInfo();
                 pi.name = "test-server";
             }
-            else
-                pi.name = "test-player" + pi.userId;
             Blaze.TdfStruct CINF = (Blaze.TdfStruct)input[1];
             Blaze.TdfString CVER = (Blaze.TdfString)CINF.Values[4];
             Blaze.TdfInteger LOC = (Blaze.TdfInteger)CINF.Values[7];
