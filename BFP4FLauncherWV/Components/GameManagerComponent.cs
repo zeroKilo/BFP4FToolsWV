@@ -164,12 +164,17 @@ namespace BFP4FLauncherWV
                 }
             if (target != null && stat.Value == 2)
             {
-                AsyncUserSessions.UserSessionExtendedDataUpdateNotification(p, target, pi.ns);
-                AsyncGameManager.NotifyGamePlayerStateChange(p, target, pi.ns, 4);
                 if (pi.isServer)
+                {
+                    AsyncUserSessions.UserSessionExtendedDataUpdateNotification(p, target, pi.ns);
+                    AsyncGameManager.NotifyGamePlayerStateChange(p, target, pi.ns, 4);
                     AsyncGameManager.PlayerJoinCompletedNotification(p, target, pi.ns);
+                }
                 else
+                {
+                    AsyncGameManager.NotifyGamePlayerStateChange(p, pi, pi.ns, 4);
                     AsyncGameManager.PlayerJoinCompletedNotification(p, pi, pi.ns);
+                }
             }
         }
 
