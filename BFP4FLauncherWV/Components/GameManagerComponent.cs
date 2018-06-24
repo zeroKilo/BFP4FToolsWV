@@ -18,6 +18,9 @@ namespace BFP4FLauncherWV
                 case 0x1:
                     CreateGame(p, pi, ns);
                     break;
+                case 0x2:
+                    DestroyGame(p, pi, ns);
+                    break;
                 case 0x3:
                     AdvanceGameState(p, pi, ns);
                     break;
@@ -61,6 +64,15 @@ namespace BFP4FLauncherWV
 
             AsyncGameManager.NotifyGameStateChange(p, pi, ns);
             AsyncGameManager.NotifyServerGameSetup(p, pi, ns);
+        }
+
+        public static void DestroyGame(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
+        {
+            List<Blaze.Tdf> result = new List<Blaze.Tdf>();
+            result.Add(Blaze.ReadPacketContent(p)[0]);
+            byte[] buff = Blaze.CreatePacket(p.Component, p.Command, 0, 0x1000, p.ID, result);
+            ns.Write(buff, 0, buff.Length);
+            ns.Flush();
         }
         
         public static void AdvanceGameState(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
