@@ -30,17 +30,26 @@ namespace BFP4FLauncherWV
                 case 0x9:
                     JoinGame(p, pi, ns);
                     break;
+                case 0xB:
+                    RemovePlayer(p, pi, ns);
+                    break;
                 case 0xD:
                     StartMatchmaking(p, pi, ns);
                     break;
                 case 0xf:
                     FinalizeGameCreation(p, pi, ns);
                     break;
+                case 0x13:
+                    ReplayGame(p, pi, ns);
+                    break;
                 case 0x1d:
                     UpdateMeshConnection(p, pi, ns);
                     break;
                 case 0x67:
                     GetFullGameData(p, pi, ns);
+                    break;
+                case 0x6C:
+                    SetPlayerTeam(p, pi, ns);
                     break;
             }
         }
@@ -145,6 +154,18 @@ namespace BFP4FLauncherWV
             AsyncUserSessions.UserSessionExtendedDataUpdateNotification(p, pi, srv.ns);
         }
 
+        public static void RemovePlayer(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
+        {
+            List<Blaze.Tdf> input = Blaze.ReadPacketContent(p);
+            Blaze.TdfInteger PID = (Blaze.TdfInteger)input[3];
+            pi.game.removePlayer((int)PID.Value);
+            pi.game = null;
+            GC.Collect();
+            byte[] buff = Blaze.CreatePacket(p.Component, p.Command, 0, 0x1000, p.ID, new List<Blaze.Tdf>());
+            ns.Write(buff, 0, buff.Length);
+            ns.Flush();
+        }
+
         public static void FinalizeGameCreation(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
         {
             List<Blaze.Tdf> result = new List<Blaze.Tdf>();
@@ -154,6 +175,13 @@ namespace BFP4FLauncherWV
 
             if (pi.isServer)
                 AsyncGameManager.NotifyPlatformHostInitialized(p, pi, ns);
+        }
+
+        public static void ReplayGame(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
+        {
+            byte[] buff = Blaze.CreatePacket(p.Component, p.Command, 0, 0x1000, p.ID, new List<Blaze.Tdf>());
+            ns.Write(buff, 0, buff.Length);
+            ns.Flush();
         }
 
         public static void UpdateMeshConnection(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
@@ -289,6 +317,13 @@ namespace BFP4FLauncherWV
             AsyncUserSessions.NotifyUserStatus(p, pi, srv.ns);
             AsyncGameManager.NotifyPlayerJoining(p, pi, srv.ns);
             AsyncUserSessions.UserSessionExtendedDataUpdateNotification(p, pi, srv.ns);
+        }
+
+        public static void SetPlayerTeam(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
+        {
+            byte[] buff = Blaze.CreatePacket(p.Component, p.Command, 0, 0x1000, p.ID, new List<Blaze.Tdf>());
+            ns.Write(buff, 0, buff.Length);
+            ns.Flush();
         }
     }
 }

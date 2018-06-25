@@ -46,5 +46,16 @@ namespace BFP4FLauncherWV
                     return;
                 }
         }
+
+        public void removePlayer(int id)
+        {            
+            for (byte i = 0; i < 32; i++)
+                if (slotUse[i] == id)
+                {
+                    slotUse[i] = -1;
+                    players[i] = null;
+                    return;
+                }
+        }
     }
 }
