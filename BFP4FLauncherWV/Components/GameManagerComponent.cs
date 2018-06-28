@@ -140,18 +140,14 @@ namespace BFP4FLauncherWV
             ns.Flush();
 
             pi.stat = 2;
-            foreach(PlayerInfo peer in srv.game.players)
-                if (peer != null && peer.userId != pi.userId)
-                {
-                    AsyncUserSessions.NotifyUserAdded(p, peer, ns);
-                    AsyncUserSessions.NotifyUserStatus(p, peer, ns);
-                }
+
+            AsyncUserSessions.NotifyUserAdded(p, pi, ns);
+            AsyncUserSessions.NotifyUserStatus(p, pi, ns);
             AsyncGameManager.NotifyClientGameSetup(p, pi, srv, ns);
 
             AsyncUserSessions.NotifyUserAdded(p, pi, srv.ns);
             AsyncUserSessions.NotifyUserStatus(p, pi, srv.ns);
             AsyncGameManager.NotifyPlayerJoining(p, pi, srv.ns);
-            AsyncUserSessions.UserSessionExtendedDataUpdateNotification(p, pi, srv.ns);
         }
 
         public static void RemovePlayer(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)

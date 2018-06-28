@@ -44,6 +44,9 @@
             this.menuStrip2 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.launchStandaloneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripTextBox3 = new System.Windows.Forms.ToolStripTextBox();
+            this.killRunningProcessesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.rtb4 = new System.Windows.Forms.RichTextBox();
             this.tabPage5 = new System.Windows.Forms.TabPage();
@@ -59,8 +62,6 @@
             this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripTextBox2 = new System.Windows.Forms.ToolStripTextBox();
-            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripTextBox3 = new System.Windows.Forms.ToolStripTextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.menuStrip3.SuspendLayout();
@@ -212,7 +213,8 @@
             this.toolStripMenuItem1,
             this.launchStandaloneToolStripMenuItem,
             this.toolStripLabel2,
-            this.toolStripTextBox3});
+            this.toolStripTextBox3,
+            this.killRunningProcessesToolStripMenuItem});
             this.menuStrip2.Location = new System.Drawing.Point(3, 3);
             this.menuStrip2.Name = "menuStrip2";
             this.menuStrip2.Size = new System.Drawing.Size(623, 25);
@@ -232,6 +234,26 @@
             this.launchStandaloneToolStripMenuItem.Size = new System.Drawing.Size(110, 21);
             this.launchStandaloneToolStripMenuItem.Text = "Launch Standalone";
             this.launchStandaloneToolStripMenuItem.Click += new System.EventHandler(this.launchStandaloneToolStripMenuItem_Click);
+            // 
+            // toolStripLabel2
+            // 
+            this.toolStripLabel2.Name = "toolStripLabel2";
+            this.toolStripLabel2.Size = new System.Drawing.Size(21, 18);
+            this.toolStripLabel2.Text = "IP:";
+            // 
+            // toolStripTextBox3
+            // 
+            this.toolStripTextBox3.Name = "toolStripTextBox3";
+            this.toolStripTextBox3.Size = new System.Drawing.Size(100, 21);
+            this.toolStripTextBox3.Text = "127.0.0.1";
+            // 
+            // killRunningProcessesToolStripMenuItem
+            // 
+            this.killRunningProcessesToolStripMenuItem.ForeColor = System.Drawing.Color.Red;
+            this.killRunningProcessesToolStripMenuItem.Name = "killRunningProcessesToolStripMenuItem";
+            this.killRunningProcessesToolStripMenuItem.Size = new System.Drawing.Size(190, 21);
+            this.killRunningProcessesToolStripMenuItem.Text = "Kill Running Client/Server Processes";
+            this.killRunningProcessesToolStripMenuItem.Click += new System.EventHandler(this.killRunningProcessesToolStripMenuItem_Click);
             // 
             // tabPage4
             // 
@@ -382,18 +404,6 @@
             this.toolStripTextBox2.Size = new System.Drawing.Size(100, 25);
             this.toolStripTextBox2.Text = "127.0.0.1";
             // 
-            // toolStripLabel2
-            // 
-            this.toolStripLabel2.Name = "toolStripLabel2";
-            this.toolStripLabel2.Size = new System.Drawing.Size(21, 18);
-            this.toolStripLabel2.Text = "IP:";
-            // 
-            // toolStripTextBox3
-            // 
-            this.toolStripTextBox3.Name = "toolStripTextBox3";
-            this.toolStripTextBox3.Size = new System.Drawing.Size(100, 21);
-            this.toolStripTextBox3.Text = "127.0.0.1";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -460,6 +470,7 @@
         private System.Windows.Forms.ToolStripTextBox toolStripTextBox2;
         private System.Windows.Forms.ToolStripLabel toolStripLabel2;
         private System.Windows.Forms.ToolStripTextBox toolStripTextBox3;
+        private System.Windows.Forms.ToolStripMenuItem killRunningProcessesToolStripMenuItem;
 
     }
 }
