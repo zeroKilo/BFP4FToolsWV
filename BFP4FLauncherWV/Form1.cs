@@ -145,7 +145,7 @@ namespace BFP4FLauncherWV
             foreach (var process in Process.GetProcessesByName("bfp4f_w32ded"))
             {
                 process.Kill();
-                countClient++;
+                countServer++;
             }
             MessageBox.Show("Killed\nClient: " + countClient + "\nServer: " + countServer + "\nProcesses");
         }

@@ -88,11 +88,62 @@ namespace BFP4FLauncherWV
                             ReplyWithXML(s, "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n<success><token>" + lines[5].Split(':')[1].Trim() + "</token></success>");
                         else
                             ReplyWithXML(s, "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n<success><token code=\"NEW_TOKEN\">" + lines[4].Split('=')[1] + "</token></success>");
-                        break;
+                        return;
                     case "/api/relationships/roster/nucleus":
                         Log("[MGMA] Sending Roster response");
                         ReplyWithXML(s, "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n<roster relationships=\"0\"/><success code=\"SUCCESS\"/>");
-                        break;
+                        return;
+                }
+                if (url.StartsWith("/api/nucleus/name/"))
+                {
+                    int id = Convert.ToInt32(url.Substring(18));
+                    Log("[MGMA] Sending name response for PID " + id);
+                    PlayerInfo p = null;
+                    foreach(PlayerInfo pi in BlazeServer.allClients)
+                        if (pi.userId == id)
+                        {
+                            p = pi;
+                            break;
+                        }
+                    if (p == null)
+                    {
+                        Log("[MGMA] Cant find player id!");
+                        return;
+                    }
+                    ReplyWithXML(s, "<name>" + p.name + "</name>");
+                }
+                if (url.StartsWith("/api/nucleus/entitlements/"))
+                {
+                    int id = Convert.ToInt32(url.Substring(26));
+                    Log("[MGMA] Sending entitlement response for PID " + id);
+                    PlayerInfo p = null;
+                    foreach (PlayerInfo pi in BlazeServer.allClients)
+                        if (pi.userId == id)
+                        {
+                            p = pi;
+                            break;
+                        }
+                    if (p == null)
+                    {
+                        Log("[MGMA] Cant find player id!");
+                        return;
+                    }
+                    string response = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><entitlements count=\"18\">";
+                    string[] ids = "3001 3005 2023 3004 3024 2017 3013 3003 2004 3012 3018 2021 2054 3008 3006 3027 2005 2168".Split(' ');
+                    int i = 1;
+                    foreach (var entitlement in ids)
+                    {
+                        response += "<entitlement><entitlementId>" 
+                                 + Convert.ToString(i) 
+                                 + "</entitlementId><entitlementTag>" 
+                                 + entitlement 
+                                 + "-UNLM-</entitlementTag><useCount>0</useCount><grantDate>" 
+                                 + DateTime.UtcNow.ToString("MMM-dd-yyyy HH:mm:ss UTC") 
+                                 + "</grantDate><terminationDate></terminationDate><status>ACTIVE</status></entitlement>";
+                        i++;
+                    }
+                    response += "</entitlements>";
+                    ReplyWithXML(s, response);
                 }
             }
             if (cmd == "POST")
