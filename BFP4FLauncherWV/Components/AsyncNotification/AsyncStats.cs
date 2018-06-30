@@ -28,9 +28,14 @@ namespace BFP4FLauncherWV
                     e0.Add(Blaze.TdfInteger.Create("POFF", 0));
                     List<string> values = new List<string>();
                     if (statSpace == "crit")
-                        values.AddRange(new string[] { "1", "806", "0" });
+                        values.AddRange(new string[] { pi.profile.level.ToString(), 
+                                                       pi.profile.xp.ToString(), 
+                                                       "0" });
                     else
-                        values.AddRange(new string[] { "3", "10", "90", "161" });
+                        values.AddRange(new string[] { pi.profile.kit.ToString(), 
+                                                       pi.profile.head.ToString(), 
+                                                       pi.profile.face.ToString(), 
+                                                       pi.profile.shirt.ToString()});
                     e0.Add(Blaze.TdfList.Create("STAT", 1, values.Count, values));
                     STAT.Add(Blaze.TdfStruct.Create("0", e0));
                 STS.Add(Blaze.TdfList.Create("STAT", 3, STAT.Count, STAT));

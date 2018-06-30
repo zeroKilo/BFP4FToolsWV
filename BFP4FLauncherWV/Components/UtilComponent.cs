@@ -47,7 +47,7 @@ namespace BFP4FLauncherWV
             if (pi.isServer)
             {
                 pi.game = new GameInfo();
-                pi.name = "test-server";
+                pi.profile = Profiles.Create("test-server", 1234);
             }
             Blaze.TdfStruct CINF = (Blaze.TdfStruct)input[1];
             Blaze.TdfString CVER = (Blaze.TdfString)CINF.Values[4];

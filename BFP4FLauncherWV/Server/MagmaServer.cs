@@ -112,7 +112,7 @@ namespace BFP4FLauncherWV
                         Log("[MGMA] Cant find player id!");
                         return;
                     }
-                    ReplyWithXML(s, "<name>" + p.name + "</name>");
+                    ReplyWithXML(s, "<name>" + p.profile.name + "</name>");
                 }
                 if (url.StartsWith("/api/nucleus/entitlements/"))
                 {

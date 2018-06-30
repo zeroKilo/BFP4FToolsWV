@@ -31,17 +31,20 @@ namespace BFP4FLauncherWV
                 List<Blaze.Tdf> input = Blaze.ReadPacketContent(p);
                 Blaze.TdfString TOKN = (Blaze.TdfString)input[3];
                 long id = Convert.ToInt32(TOKN.Value);
-                pi.name = "";
                 foreach (Profile profile in Profiles.profiles)
-                    if (profile.sessionId == id)
-                        pi.name = profile.name;
-                if (pi.name == "")
+                    if (profile.id == id)
+                    {
+                        pi.profile = profile;
+                        break;
+                    }
+                if (pi.profile == null)
                 {
                     BlazeServer.Log("[CLNT] #" + pi.userId + " Could not find player profile!", System.Drawing.Color.Red);
                     return;
                 }
                 else
-                    BlazeServer.Log("[CLNT] #" + pi.userId + " Client Playername = \"" + pi.name + "\"", System.Drawing.Color.Blue);
+                    BlazeServer.Log("[CLNT] #" + pi.userId + " Client Playername = \"" + pi.profile.name + "\"", System.Drawing.Color.Blue);
+                
             }
             uint t = Blaze.GetUnixTimeStamp();
             List<Blaze.Tdf> Result = new List<Blaze.Tdf>();
@@ -50,7 +53,7 @@ namespace BFP4FLauncherWV
             Result.Add(Blaze.TdfString.Create("PCTK", ""));
             List<Blaze.TdfStruct> playerentries = new List<Blaze.TdfStruct>();
             List<Blaze.Tdf> PlayerEntry = new List<Blaze.Tdf>();
-            PlayerEntry.Add(Blaze.TdfString.Create("DSNM", pi.name));
+            PlayerEntry.Add(Blaze.TdfString.Create("DSNM", pi.profile.name));
             PlayerEntry.Add(Blaze.TdfInteger.Create("LAST", t));
             PlayerEntry.Add(Blaze.TdfInteger.Create("PID\0", pi.userId));
             PlayerEntry.Add(Blaze.TdfInteger.Create("STAS", 2));
@@ -79,7 +82,7 @@ namespace BFP4FLauncherWV
             SESS.Add(Blaze.TdfInteger.Create("LLOG", t));
             SESS.Add(Blaze.TdfString.Create("MAIL", ""));
             List<Blaze.Tdf> PDTL = new List<Blaze.Tdf>();
-            PDTL.Add(Blaze.TdfString.Create("DSNM", pi.name));
+            PDTL.Add(Blaze.TdfString.Create("DSNM", pi.profile.name));
             PDTL.Add(Blaze.TdfInteger.Create("LAST", t));
             PDTL.Add(Blaze.TdfInteger.Create("PID\0", pi.userId));
             PDTL.Add(Blaze.TdfInteger.Create("STAS", 0));

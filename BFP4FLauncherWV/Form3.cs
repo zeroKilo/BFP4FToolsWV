@@ -28,12 +28,13 @@ namespace BFP4FLauncherWV
             Profiles.Refresh();
             listBox1.Items.Clear();
             foreach (Profile p in Profiles.profiles)
-                listBox1.Items.Add(p.sessionId + ": " + p.name);
+                listBox1.Items.Add(p.ToString());
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
             string name = toolStripTextBox1.Text;
+            Profiles.Refresh();
             Profiles.Create(name);
             Profiles.Refresh();
             RefreshProfiles();
@@ -45,7 +46,7 @@ namespace BFP4FLauncherWV
             if (n == -1)
                 return;
             Profile p = Profiles.profiles[n];
-            string path = "backend\\profiles\\" + p.sessionId.ToString("X8") + "_profile.txt";
+            string path = Profiles.getProfilePath(p.id);
             if (File.Exists(path))
                 File.Delete(path);
             Profiles.Refresh();

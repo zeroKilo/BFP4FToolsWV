@@ -31,7 +31,7 @@ namespace BFP4FLauncherWV
             Profiles.Refresh();
             comboBox1.Items.Clear();
             foreach (Profile p in Profiles.profiles)
-                comboBox1.Items.Add(p.sessionId + ": " + p.name);
+                comboBox1.Items.Add(p.id + ": " + p.name);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -79,7 +79,7 @@ namespace BFP4FLauncherWV
                 return;
             Profile p = Profiles.profiles[n];
             string args = Resources.Resource1.client_startup;
-            args = args.Replace("#SESSION#", p.sessionId.ToString());
+            args = args.Replace("#SESSION#", p.id.ToString());
             args = args.Replace("#PLAYER#", p.name);
             args = args.Replace("#IP#", textBox1.Text);
             Helper.RunShell("bfp4f.exe", args);

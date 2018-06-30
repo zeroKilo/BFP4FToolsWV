@@ -33,7 +33,7 @@ namespace BFP4FLauncherWV
             result.Add(Blaze.TdfInteger.Create("EXID", pi.userId));
             result.Add(Blaze.TdfInteger.Create("GID\0", pi.game.id));
             result.Add(Blaze.TdfInteger.Create("LOC\0", pi.loc));
-            result.Add(Blaze.TdfString.Create("NAME", pi.name));
+            result.Add(Blaze.TdfString.Create("NAME", pi.profile.name));
             result.Add(Blaze.TdfInteger.Create("PID\0", pi.userId));
             result.Add(BlazeHelper.CreateNETFieldUnion(pi, "PNET"));
             result.Add(Blaze.TdfInteger.Create("SID\0", pi.slot));
@@ -104,7 +104,7 @@ namespace BFP4FLauncherWV
             USER.Add(Blaze.TdfInteger.Create("ALOC", pi.loc));
             USER.Add(Blaze.TdfInteger.Create("EXID\0", pi.userId));
             USER.Add(Blaze.TdfInteger.Create("ID\0\0", pi.userId));
-            USER.Add(Blaze.TdfString.Create("NAME", pi.name));
+            USER.Add(Blaze.TdfString.Create("NAME", pi.profile.name));
             return Blaze.TdfStruct.Create("USER", USER);
         }
 
