@@ -14,6 +14,7 @@ namespace BFP4FLauncherWV
 {
     public static class MagmaServer
     {
+        public static bool basicMode = false;
         public static readonly object _sync = new object();
         public static bool _exit;
         public static RichTextBox box = null;
@@ -56,7 +57,8 @@ namespace BFP4FLauncherWV
                     NetworkStream ns = client.GetStream();
                     byte[] data = Helper.ReadContentTCP(ns);
                     Log("[MGMA] Received " + data.Length + " bytes of data");
-                    Log("[MGMA] Recvdump:\n" + Encoding.ASCII.GetString(data));
+                    if(!basicMode)
+                        Log("[MGMA] Recvdump:\n" + Encoding.ASCII.GetString(data));
                     try
                     {
                         ProcessMagma(Encoding.ASCII.GetString(data), ns);
@@ -146,7 +148,7 @@ namespace BFP4FLauncherWV
                     ReplyWithXML(s, response);
                 }
             }
-            if (cmd == "POST")
+            if (cmd == "POST" && !basicMode)
             {
                 int pos = data.IndexOf("\r\n\r\n");
                 if (pos != -1)
@@ -165,7 +167,10 @@ namespace BFP4FLauncherWV
             sb.AppendLine("Connection: Keep-Alive");
             sb.AppendLine();
             sb.Append(c);
-            Log("[MGMA] Sending: \n" + sb.ToString());
+            if (!basicMode)
+            {
+                Log("[MGMA] Sending: \n" + sb.ToString());
+            }
             byte[] buf = Encoding.ASCII.GetBytes(sb.ToString());
             s.Write(buf, 0, buf.Length);
         }

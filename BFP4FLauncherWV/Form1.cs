@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -17,19 +16,21 @@ namespace BFP4FLauncherWV
         public Form1()
         {
             InitializeComponent();
-            tabControl1.TabPages.Remove(tabPage6);
-            tabControl1.SelectTab("TabPage2");
-            this.Text += " - Build " + Resources.Resource1.BuildDate;
         }
 
-        public static void RunShell(string file, string command)
+        private void Form1_Load(object sender, EventArgs e)
         {
-            Process process = new System.Diagnostics.Process();
-            ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
-            startInfo.FileName = file;
-            startInfo.Arguments = command;
-            process.StartInfo = startInfo;
-            process.Start();
+            tabControl1.SelectTab("TabPage2");
+            this.Text += " - Build " + Resources.Resource1.BuildDate;
+            RefreshProfiles();
+        }
+
+        private void RefreshProfiles()
+        {
+            Profiles.Refresh();
+            toolStripComboBox1.Items.Clear();
+            foreach (Profile p in Profiles.profiles)
+                toolStripComboBox1.Items.Add(p.sessionId + ": " + p.name);
         }
 
         private void launchToolStripMenuItem_Click_1(object sender, EventArgs e)
@@ -37,7 +38,7 @@ namespace BFP4FLauncherWV
             string args = rtb1.Text.Replace("\r", "").Replace("\n", " ");
             while (args.Contains("  "))
                 args = args.Replace("  ", " ");
-            RunShell("bfp4f.exe", args);
+            Helper.RunShell("bfp4f.exe", args);
         }
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
@@ -75,8 +76,6 @@ namespace BFP4FLauncherWV
             BlazeServer.Start();
             MagmaServer.Start();
             Webserver.Start();
-            tabControl1.TabPages.Add(tabPage6);
-            RefreshProfileList();
         }
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
@@ -84,70 +83,32 @@ namespace BFP4FLauncherWV
             string args = rtb3.Text.Replace("\r", "").Replace("\n", " ");
             while (args.Contains("  "))
                 args = args.Replace("  ", " ");
-            RunShell("bfp4f_w32ded.exe", args);
+            Helper.RunShell("bfp4f_w32ded.exe", args);
         }
 
-        private void toolStripButton1_Click(object sender, EventArgs e)
+        private void killRunningProcessesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string name = toolStripTextBox1.Text;
-            Profiles.Create(name);
-            Profiles.Refresh();
-            RefreshProfileList();
+            Helper.KillRunningProcesses();
         }
 
-        private void RefreshProfileList()
+        private void toolStripButton5_Click(object sender, EventArgs e)
         {
-            listBox1.Items.Clear();
-            foreach (Profile p in Profiles.profiles)
-                listBox1.Items.Add(p.sessionId + ": " + p.name);
-        }
-
-        private void toolStripButton3_Click(object sender, EventArgs e)
-        {
-            Profiles.Refresh();
-            RefreshProfileList();
-        }
-
-        private void toolStripButton2_Click(object sender, EventArgs e)
-        {
-            int n = listBox1.SelectedIndex;
-            if (n == -1)
-                return;
-            Profile p = Profiles.profiles[n];
-            string path = "backend\\profiles\\" + p.sessionId.ToString("X8") + "_profile.txt";
-            if (File.Exists(path))
-                File.Delete(path);
-            Profiles.Refresh();
-            RefreshProfileList();
-        }
-
-        private void toolStripButton4_Click(object sender, EventArgs e)
-        {
-            int n = listBox1.SelectedIndex;
+            int n = toolStripComboBox1.SelectedIndex;
             if (n == -1)
                 return;
             Profile p = Profiles.profiles[n];
             string args = Resources.Resource1.client_startup;
             args = args.Replace("#SESSION#", p.sessionId.ToString());
             args = args.Replace("#PLAYER#", p.name);
-            args = args.Replace("#IP#", toolStripTextBox2.Text);
-            RunShell("bfp4f.exe", args);
+            args = args.Replace("#IP#", toolStripTextBox4.Text);
+            Helper.RunShell("bfp4f.exe", args);
         }
 
-        private void killRunningProcessesToolStripMenuItem_Click(object sender, EventArgs e)
+        private void toolStripMenuItem3_Click(object sender, EventArgs e)
         {
-            int countClient = 0, countServer = 0;
-            foreach (var process in Process.GetProcessesByName("bfp4f"))
-            {
-                process.Kill();
-                countClient++;
-            }
-            foreach (var process in Process.GetProcessesByName("bfp4f_w32ded"))
-            {
-                process.Kill();
-                countServer++;
-            }
-            MessageBox.Show("Killed\nClient: " + countClient + "\nServer: " + countServer + "\nProcesses");
+            Form3 f = new Form3();
+            f.ShowDialog();
+            RefreshProfiles();
         }
     }
 }
