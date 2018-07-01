@@ -61,7 +61,7 @@ namespace BFP4FLauncherWV.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die 23.06.2018_2054 
+        ///   Sucht eine lokalisierte Zeichenfolge, die 01.07.2018_1227 
         /// ähnelt.
         /// </summary>
         internal static string BuildDate {
@@ -86,6 +86,28 @@ namespace BFP4FLauncherWV.Resources {
             get {
                 object obj = ResourceManager.GetObject("redi", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die #IP#    jeff.easylocaldev.com
+        ///#IP#    battlefield.play4free.com
+        ///#IP#    dev.easy.ea.com
+        ///#IP#    dev2.easy.ea.com
+        ///#IP#    dev3.easy.ea.com
+        ///#IP#    dev4.easy.ea.com
+        ///#IP#    playtest1.easy.ea.com
+        ///#IP#    playtest1.easy.ea.com
+        ///#IP#    private.battlefield.play4free.com
+        ///#IP#    preprod.battlefield.play4free.com
+        ///#IP#    pte.battlefield.play4free.com
+        ///#IP#    gosredirector.ea.com
+        ///#IP#    peach.online.ea.com
+        ///#IP#    nexus.passport.com ähnelt.
+        /// </summary>
+        internal static string template_hosts_file {
+            get {
+                return ResourceManager.GetString("template_hosts_file", resourceCulture);
             }
         }
     }

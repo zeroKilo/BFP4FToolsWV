@@ -1,12 +1,15 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace BFP4FLauncherWV
 {
@@ -36,7 +39,8 @@ namespace BFP4FLauncherWV
 
         private void button1_Click(object sender, EventArgs e)
         {
-            button1.Enabled = false;
+            button1.Enabled =
+            button6.Enabled = false;
             ProviderInfo.backendIP = textBox1.Text;
             RedirectorServer.useSSL = checkBox1.Checked;
             if (!checkBox2.Checked)
@@ -103,6 +107,61 @@ namespace BFP4FLauncherWV
             Form f = new Form1();
             f.ShowDialog();
             this.Close();
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            Button btnSender = (Button)sender;
+            Point ptLowerLeft = new Point(0, btnSender.Height);
+            ptLowerLeft = btnSender.PointToScreen(ptLowerLeft);
+            contextMenuStrip1.Show(ptLowerLeft);
+        }
+
+        private void sethostsFileToIPToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            string ip = textBox1.Text.Trim();
+            if (MessageBox.Show("This will overwrite your current 'hosts' file in 'C:\\Windows\\System32\\drivers\\etc\\', are you sure?", "Security Warning", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
+            {
+                string content = Resources.Resource1.template_hosts_file.Replace("#IP#", ip);
+                File.WriteAllText("C:\\Windows\\System32\\drivers\\etc\\hosts", content);
+                MessageBox.Show("Done.");
+            }
+        }
+
+        private void syncPlayerProfilesToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("This will overwrite your local player profiles, are you sure?", "Security Warning", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
+            {
+                try
+                {
+                    using (WebClient client = new WebClient())
+                    {
+                        string ip = textBox1.Text.Trim();
+                        string xml = client.DownloadString("http://" + ip + "/wv/getProfiles");
+                        XmlDocument xmlDoc = new XmlDocument();
+                        xmlDoc.LoadXml(xml);
+                        XmlNodeList list = xmlDoc.SelectNodes("//profile");
+                        string[] oldFiles = Directory.GetFiles("backend\\profiles\\");
+                        foreach (string oldFile in oldFiles)
+                            File.Delete(oldFile);
+                        foreach (XmlNode node in list)
+                        {
+                            XmlAttribute attr = node.Attributes[0];
+                            byte[] tmp = Convert.FromBase64String(node.InnerText);
+                            File.WriteAllText(attr.Value, Encoding.Unicode.GetString(tmp));
+                        }
+                        Profiles.Refresh();
+                        RefreshProfiles();
+                        if (Profiles.profiles.Count != 0)
+                            comboBox1.SelectedIndex = 0;
+                        MessageBox.Show("Done");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error loading profiles: \n" + ex.Message);
+                }
+            }
         }
     }
 }

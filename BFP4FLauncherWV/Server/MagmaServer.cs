@@ -95,6 +95,16 @@ namespace BFP4FLauncherWV
                         Log("[MGMA] Sending Roster response");
                         ReplyWithXML(s, "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n<roster relationships=\"0\"/><success code=\"SUCCESS\"/>");
                         return;
+                    case "/wv/getProfiles":
+                        Log("[MGMA] Sending Player Profiles");
+                        StringBuilder sb = new StringBuilder();
+                        Profiles.Refresh();
+                        sb.Append("<profiles>\r\n");
+                        foreach (Profile p in Profiles.profiles)
+                            sb.Append("<profile name='" + Profiles.getProfilePath(p.id) + "'>" + Convert.ToBase64String(Encoding.Unicode.GetBytes(p._raw)) + "</profile>\r\n");
+                        sb.Append("</profiles>\r\n");
+                        ReplyWithXML(s, "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\r\n" + sb.ToString());
+                        break;
                 }
                 if (url.StartsWith("/api/nucleus/name/"))
                 {

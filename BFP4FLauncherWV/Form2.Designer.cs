@@ -28,7 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.button7 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
@@ -42,10 +44,14 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.rtb1 = new System.Windows.Forms.RichTextBox();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.sethostsFileToIPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.syncPlayerProfilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -60,6 +66,7 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.BackColor = System.Drawing.Color.White;
+            this.splitContainer1.Panel1.Controls.Add(this.button7);
             this.splitContainer1.Panel1.Controls.Add(this.button6);
             this.splitContainer1.Panel1.Controls.Add(this.button5);
             this.splitContainer1.Panel1.Controls.Add(this.button4);
@@ -82,11 +89,24 @@
             this.splitContainer1.SplitterWidth = 1;
             this.splitContainer1.TabIndex = 0;
             // 
+            // button7
+            // 
+            this.button7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button7.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button7.Location = new System.Drawing.Point(84, 314);
+            this.button7.Margin = new System.Windows.Forms.Padding(0);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(102, 23);
+            this.button7.TabIndex = 12;
+            this.button7.Text = "More...";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
             // button6
             // 
             this.button6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button6.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button6.Location = new System.Drawing.Point(12, 314);
+            this.button6.Location = new System.Drawing.Point(12, 379);
             this.button6.Margin = new System.Windows.Forms.Padding(0);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(102, 23);
@@ -239,6 +259,28 @@
             this.rtb1.Text = "";
             this.rtb1.WordWrap = false;
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.sethostsFileToIPToolStripMenuItem,
+            this.syncPlayerProfilesToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 70);
+            // 
+            // sethostsFileToIPToolStripMenuItem
+            // 
+            this.sethostsFileToIPToolStripMenuItem.Name = "sethostsFileToIPToolStripMenuItem";
+            this.sethostsFileToIPToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.sethostsFileToIPToolStripMenuItem.Text = "Set \'hosts\' file to IP...";
+            this.sethostsFileToIPToolStripMenuItem.Click += new System.EventHandler(this.sethostsFileToIPToolStripMenuItem_Click_1);
+            // 
+            // syncPlayerProfilesToolStripMenuItem
+            // 
+            this.syncPlayerProfilesToolStripMenuItem.Name = "syncPlayerProfilesToolStripMenuItem";
+            this.syncPlayerProfilesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.syncPlayerProfilesToolStripMenuItem.Text = "Sync player profiles...";
+            this.syncPlayerProfilesToolStripMenuItem.Click += new System.EventHandler(this.syncPlayerProfilesToolStripMenuItem_Click_1);
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -255,6 +297,7 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -275,5 +318,9 @@
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem sethostsFileToIPToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem syncPlayerProfilesToolStripMenuItem;
     }
 }

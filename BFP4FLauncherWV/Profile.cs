@@ -9,6 +9,7 @@ namespace BFP4FLauncherWV
 {
     public class Profile
     {
+        public string _raw;
         public string name;
         public long id;
         public long level = 1;
@@ -21,6 +22,7 @@ namespace BFP4FLauncherWV
         {
             string[] lines = File.ReadAllLines(filename);
             Profile p = new Profile();
+            p._raw = File.ReadAllText(filename);
             foreach (string line in lines)
             {
                 string[] parts = line.Split('=');

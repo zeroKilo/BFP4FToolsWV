@@ -127,4 +127,20 @@
   <data name="redi" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>redi.pfx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="template_hosts_file" xml:space="preserve">
+    <value>#IP#    jeff.easylocaldev.com
+#IP#    battlefield.play4free.com
+#IP#    dev.easy.ea.com
+#IP#    dev2.easy.ea.com
+#IP#    dev3.easy.ea.com
+#IP#    dev4.easy.ea.com
+#IP#    playtest1.easy.ea.com
+#IP#    playtest1.easy.ea.com
+#IP#    private.battlefield.play4free.com
+#IP#    preprod.battlefield.play4free.com
+#IP#    pte.battlefield.play4free.com
+#IP#    gosredirector.ea.com
+#IP#    peach.online.ea.com
+#IP#    nexus.passport.com</value>
+  </data>
 </root>
