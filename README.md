@@ -18,13 +18,6 @@ with this tool you can research the blaze side of the game and the server
 # THIS IS UNFINISHED AND FOR RESEARCH ONLY!!!
 
 
-get the starterpack for research, it contains useful notes and links, also the exe used for zlib dll (ALSR removed)
-
-https://drive.google.com/open?id=1urCsc9hZjGWz_rxMdRy3R0JsfP3J23bm
-
-pw: warrantyvoider
-
-
 for more research chat: https://discordapp.com/invite/Wr2faSS
 
 
