@@ -77,6 +77,8 @@ namespace BFP4FLauncherWV
             pi.userId = idCounter++;
             pi.exIp = 0;
             pi.ns = ns;
+            pi.timeout = new System.Diagnostics.Stopwatch();
+            pi.timeout.Start();
             Log("[CLNT] #" + pi.userId + " Handler started");
             try
             {
@@ -86,6 +88,8 @@ namespace BFP4FLauncherWV
                     if (data != null && data.Length != 0)
                         ProcessPackets(data, pi, ns);
                     Thread.Sleep(1);
+                    if (pi.timeout.ElapsedMilliseconds > 1000 * 60)
+                        throw new Exception("Client timed out!");
                 }
             }
             catch (Exception ex)
@@ -94,6 +98,7 @@ namespace BFP4FLauncherWV
             }
             client.Close();
             Log("[CLNT] #" + pi.userId + " Client disconnected");
+            BlazeServer.allClients.Remove(pi);
         }
 
         public static void ProcessPackets(byte[] data, PlayerInfo pi, NetworkStream ns)

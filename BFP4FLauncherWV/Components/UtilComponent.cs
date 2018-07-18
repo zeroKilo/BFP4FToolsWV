@@ -15,7 +15,7 @@ namespace BFP4FLauncherWV
             switch (p.Command)
             {
                 case 2:
-                    Ping(p, ns);
+                    Ping(p, pi, ns);
                     break;
                 case 7:
                     PreAuth(p, pi, ns);
@@ -28,9 +28,10 @@ namespace BFP4FLauncherWV
                     break;
             }
         }
-        
-        private static void Ping(Blaze.Packet p, NetworkStream ns)
+
+        private static void Ping(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
         {
+            pi.timeout.Restart();
             List<Blaze.Tdf> Result = new List<Blaze.Tdf>();
             Result.Add(Blaze.TdfInteger.Create("STIM", Blaze.GetUnixTimeStamp()));
             byte[] buff = Blaze.CreatePacket(p.Component, p.Command, 0, 0x1000, p.ID, Result);

@@ -92,7 +92,9 @@ namespace BFP4FLauncherWV
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
 
-            AsyncGameManager.NotifyGameStateChange(p, pi, ns);
+            foreach (PlayerInfo peer in pi.game.players)
+                if (peer != null)
+                    AsyncGameManager.NotifyGameStateChange(p, pi, peer.ns);
         }
 
         public static void SetGameAttributes(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
@@ -104,7 +106,9 @@ namespace BFP4FLauncherWV
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
 
-            AsyncGameManager.NotifyGameSettingsChange(p, pi, ns);
+            foreach (PlayerInfo peer in pi.game.players)
+                if (peer != null)
+                    AsyncGameManager.NotifyGameSettingsChange(p, pi, peer.ns);
         }
 
         public static void JoinGame(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
@@ -178,6 +182,10 @@ namespace BFP4FLauncherWV
             byte[] buff = Blaze.CreatePacket(p.Component, p.Command, 0, 0x1000, p.ID, new List<Blaze.Tdf>());
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
+            pi.game.GSTA = 130;
+            foreach (PlayerInfo peer in pi.game.players)
+                if (peer != null)
+                    AsyncGameManager.NotifyGameStateChange(p, pi, peer.ns);
         }
 
         public static void UpdateMeshConnection(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)

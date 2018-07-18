@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net.Sockets;
+using System.Diagnostics;
 
 namespace BFP4FLauncherWV
 {
@@ -21,5 +22,6 @@ namespace BFP4FLauncherWV
         public GameInfo game;
         public NetworkStream ns;
         public Profile profile;
+        public Stopwatch timeout;
     }
 }
