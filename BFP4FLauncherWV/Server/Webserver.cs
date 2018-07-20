@@ -48,27 +48,31 @@ namespace BFP4FLauncherWV
                 Log("[WEBS] bound to  " + ProviderInfo.backendIP + ":1234");
                 lHttp.Start();
                 Log("[WEBS] listening...");
-                TcpClient client;
                 while (!GetExit())
                 {
-                    client = lHttp.AcceptTcpClient();
-                    Log("[WEBS] Client connected");
-                    NetworkStream ns = client.GetStream();
-                    byte[] data = Helper.ReadContentTCP(ns);
-                    Log("[WEBS] Received " + data.Length + " bytes of data");
-                    try
-                    {
-                        ProcessHttp(Encoding.ASCII.GetString(data), ns);
-                    }
-                    catch { }
-                    client.Close();
-                    Log("[WEBS] Client disconnected");
+                    new Thread(tHTTPClientHandler).Start(lHttp.AcceptTcpClient());
                 }
             }
             catch (Exception ex)
             {
                 LogError("WEBS", ex);
             }
+        }
+
+        public static void tHTTPClientHandler(object obj)
+        {
+            TcpClient client = (TcpClient)obj;
+            Log("[WEBS] Client connected");
+            NetworkStream ns = client.GetStream();
+            byte[] data = Helper.ReadContentTCP(ns);
+            Log("[WEBS] Received " + data.Length + " bytes of data");
+            try
+            {
+                ProcessHttp(Encoding.ASCII.GetString(data), ns);
+            }
+            catch { }
+            client.Close();
+            Log("[WEBS] Client disconnected");
         }
 
         public static void ProcessHttp(string data, Stream s)
@@ -177,6 +181,7 @@ namespace BFP4FLauncherWV
                 {
                     string stamp = DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString() + " : ";
                     box.Text += stamp + s + "\n";
+                    BackendLog.Write(stamp + s + "\n");
                     box.SelectionStart = box.Text.Length;
                     box.ScrollToCaret();
                 }));

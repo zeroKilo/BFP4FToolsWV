@@ -163,6 +163,7 @@ namespace BFP4FLauncherWV
                     box.SelectionLength = 0;
                     box.SelectionColor = c;
                     box.AppendText(stamp + s + "\n");
+                    BackendLog.Write(stamp + s + "\n");
                     box.SelectionColor = box.ForeColor;
                     box.ScrollToCaret();
                 }));

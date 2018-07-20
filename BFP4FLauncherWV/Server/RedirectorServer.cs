@@ -151,6 +151,7 @@ namespace BFP4FLauncherWV
                 {
                     string stamp = DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString() + " : ";
                     box.Text += stamp + s + "\n";
+                    BackendLog.Write(stamp + s + "\n");
                     box.SelectionStart = box.Text.Length;
                     box.ScrollToCaret();
                 }));

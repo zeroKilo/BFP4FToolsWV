@@ -41,6 +41,7 @@ namespace BFP4FLauncherWV
         {
             button1.Enabled =
             button6.Enabled = false;
+            BackendLog.Clear();
             ProviderInfo.backendIP = textBox1.Text;
             RedirectorServer.useSSL = checkBox1.Checked;
             if (!checkBox2.Checked)

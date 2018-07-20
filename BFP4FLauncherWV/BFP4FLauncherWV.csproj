@@ -80,6 +80,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource1.resx</DependentUpon>
     </Compile>
+    <Compile Include="Server\BackendLog.cs" />
     <Compile Include="Server\BlazeServer.cs" />
     <Compile Include="Components\AuthenticationComponent.cs" />
     <Compile Include="Components\BlazeHelper.cs" />

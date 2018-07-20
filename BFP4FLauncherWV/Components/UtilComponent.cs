@@ -23,6 +23,9 @@ namespace BFP4FLauncherWV
                 case 8:
                     PostAuth(p, pi, ns);
                     break;
+                case 0x16:
+                    SetClientMetrics(p, pi, ns);
+                    break;
                 case 0xC:
                     UserSettingsLoadAll(p, pi, ns);
                     break;
@@ -144,6 +147,13 @@ namespace BFP4FLauncherWV
             List<string> Data = new List<string>() { "350;0;349;0;0", "0", "3012;3006;3027;2021;2054;2168;8000;8002;0;0" };
             Result.Add(Blaze.TdfDoubleList.Create("SMAP", 1, 1, Keys, Data, Keys.Count));
             byte[] buff = Blaze.CreatePacket(p.Component, p.Command, 0, 0x1000, p.ID, Result);
+            ns.Write(buff, 0, buff.Length);
+            ns.Flush();
+        }
+
+        private static void SetClientMetrics(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
+        {
+            byte[] buff = Blaze.CreatePacket(p.Component, p.Command, 0, 0x1000, p.ID, new List<Blaze.Tdf>());
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
         }

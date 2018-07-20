@@ -183,6 +183,7 @@ namespace BFP4FLauncherWV
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
             pi.game.GSTA = 130;
+            pi.timeout.Restart();
             foreach (PlayerInfo peer in pi.game.players)
                 if (peer != null)
                     AsyncGameManager.NotifyGameStateChange(p, pi, peer.ns);

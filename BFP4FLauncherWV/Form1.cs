@@ -66,6 +66,7 @@ namespace BFP4FLauncherWV
 
         private void Start()
         {
+            BackendLog.Clear();
             ProviderInfo.backendIP = toolStripTextBox3.Text;
             RedirectorServer.box =
             BlazeServer.box = rtb2;
