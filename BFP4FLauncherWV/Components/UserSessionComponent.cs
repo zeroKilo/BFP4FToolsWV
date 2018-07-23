@@ -33,7 +33,6 @@ namespace BFP4FLauncherWV
             pi.exPort = pi.inPort = (uint)((Blaze.TdfInteger)inip.Values[1]).Value;
             Blaze.TdfStruct nqos = (Blaze.TdfStruct)input[2];
             pi.nat = ((Blaze.TdfInteger)nqos.Values[1]).Value;
-            pi.exIp = pi.inIp;
             byte[] buff = Blaze.CreatePacket(p.Component, p.Command, 0, 0x1000, p.ID, new List<Blaze.Tdf>());
             ns.Write(buff, 0, buff.Length);
             ns.Flush();

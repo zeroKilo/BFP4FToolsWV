@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #pragma comment(lib, "detours.lib")
 #include "detours.h"
+#include "UDPMon.h"
 
 bool isServer = false;
 DWORD ptrEnum, cntEnum;
@@ -194,6 +195,11 @@ void Hack_Init()
 		DisableSSL(0xB09E86);
 		PatchQOSTimeout();
 		PatchServerSetup();
+		if(InitUDPMon())
+		{
+			DetourFunction((PBYTE)0x9FC280, (PBYTE)BitStreamRead);
+			DetourFunction((PBYTE)0x9FCB00, (PBYTE)BitStreamWrite);
+		}
 	}
 	else
 	{
