@@ -3,3 +3,10 @@
 ################################################################################
 
 /BFP4FLauncherWV/bin/Release/CLIENT
+/BFP4FLauncherWV/bin/Release/SERVER
+/BFP4FLauncherWV/bin/Release/SERVER/BlazeLibWV.dll
+/BFP4FLauncherWV/bin/Release/SERVER/BFP4FLauncherWV.pdb
+/BFP4FLauncherWV/bin/Release/SERVER/BFP4FLauncherWV.exe.config
+/BFP4FLauncherWV/bin/Release/SERVER/BFP4FLauncherWV.exe
+/BFP4FLauncherWV/bin/Release/SERVER
+/BFP4FLauncherWV/bin/Release/SERVER

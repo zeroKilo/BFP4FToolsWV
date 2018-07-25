@@ -1,0 +1,12 @@
+C:\Users\Piotr\Downloads\BFP4FToolsWV\BFP4FLauncherWV\obj\Release\BFP4FLauncherWV.csprojResolveAssemblyReference.cache
+C:\Users\Piotr\Downloads\BFP4FToolsWV\BFP4FLauncherWV\obj\Release\BFP4FLauncherWV.Form1.resources
+C:\Users\Piotr\Downloads\BFP4FToolsWV\BFP4FLauncherWV\obj\Release\BFP4FLauncherWV.Form2.resources
+C:\Users\Piotr\Downloads\BFP4FToolsWV\BFP4FLauncherWV\obj\Release\BFP4FLauncherWV.Form3.resources
+C:\Users\Piotr\Downloads\BFP4FToolsWV\BFP4FLauncherWV\obj\Release\BFP4FLauncherWV.Resources.Resource1.resources
+C:\Users\Piotr\Downloads\BFP4FToolsWV\BFP4FLauncherWV\obj\Release\BFP4FLauncherWV.csproj.GenerateResource.Cache
+C:\Users\Piotr\Downloads\BFP4FToolsWV\BFP4FLauncherWV\bin\Release\BFP4FLauncherWV.exe.config
+C:\Users\Piotr\Downloads\BFP4FToolsWV\BFP4FLauncherWV\bin\Release\BFP4FLauncherWV.exe
+C:\Users\Piotr\Downloads\BFP4FToolsWV\BFP4FLauncherWV\bin\Release\BFP4FLauncherWV.pdb
+C:\Users\Piotr\Downloads\BFP4FToolsWV\BFP4FLauncherWV\bin\Release\BlazeLibWV.dll
+C:\Users\Piotr\Downloads\BFP4FToolsWV\BFP4FLauncherWV\obj\Release\BFP4FLauncherWV.exe
+C:\Users\Piotr\Downloads\BFP4FToolsWV\BFP4FLauncherWV\obj\Release\BFP4FLauncherWV.pdb

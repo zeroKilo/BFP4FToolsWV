@@ -89,7 +89,22 @@ namespace BFP4FLauncherWV
                         case ".jpg":
                         case ".gif":
                         case ".bmp":
+                        case ".ttf":
+                        case ".eot":
+                        case ".woff":
+                        case ".wav":
                             ReplyWithBinary(s, GetBinaryFile(url.Replace("/", "\\")));
+                            break;
+                        case ".css":
+                            ReplyWithCss(s, GetTextFile(url.Replace("/", "\\")));
+                            break;
+                        case ".json":
+                            int index = url.LastIndexOf("?");
+                            if (index > 0)
+                            {
+                                url = url.Substring(0, index);
+                            }
+                            ReplyWithJson(s, GetTextFile(url.Replace("/", "\\")));
                             break;
                         default:
                             ReplyWithText(s, GetTextFile(url.Replace("/", "\\")));
@@ -131,6 +146,43 @@ namespace BFP4FLauncherWV
             byte[] buf = Encoding.ASCII.GetBytes(sb.ToString());
             s.Write(buf, 0, buf.Length);
             Log("[WEBS] Reply: " + buf.Length + " Bytes");
+        }
+
+        public static void ReplyWithCss(Stream s, string c)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("HTTP/1.1 200 OK");
+            sb.AppendLine("Date: " + DateTime.Now.ToUniversalTime().ToString("r"));
+            sb.AppendLine("Server: Warranty Voiders");
+            sb.AppendLine("Content-Type: text/css; charset=UTF-8");
+            sb.AppendLine("Content-Encoding: UTF-8");
+            sb.AppendLine("Content-Length: " + c.Length);
+            sb.AppendLine("Keep-Alive: timeout=5, max=100");
+            sb.AppendLine("Connection: close");
+            sb.AppendLine();
+            sb.Append(c);
+            byte[] buf = Encoding.ASCII.GetBytes(sb.ToString());
+            s.Write(buf, 0, buf.Length);
+            Log("[WEBS] Reply: " + buf.Length + " Bytes");
+        }
+
+        public static void ReplyWithJson(Stream s, string c)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("HTTP/1.1 200 OK");
+            sb.AppendLine("Date: " + DateTime.Now.ToUniversalTime().ToString("r"));
+            sb.AppendLine("Server: Warranty Voiders");
+            sb.AppendLine("Content-Type: text/json; charset=UTF-8");
+            sb.AppendLine("Content-Encoding: UTF-8");
+            sb.AppendLine("Content-Length: " + c.Length);
+            sb.AppendLine("Access-Control-Allow-Origin: *");
+            sb.AppendLine("Keep-Alive: timeout=5, max=100");
+            sb.AppendLine("Connection: close");
+            sb.AppendLine();
+            sb.Append(c);
+            byte[] buf = Encoding.ASCII.GetBytes(sb.ToString());
+            s.Write(buf, 0, buf.Length);
+            Log("[WEBS] ReplyJSON: " + buf.Length + " Bytes");
         }
 
         public static void ReplyWithBinary(Stream s, byte[] b)

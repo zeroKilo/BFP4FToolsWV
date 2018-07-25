@@ -141,15 +141,23 @@ namespace BFP4FLauncherWV
                         return;
                     }
                     string response = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><entitlements count=\"18\">";
-                    string[] ids = "3001 3005 2023 3004 3024 2017 3013 3003 2004 3012 3018 2021 2054 3008 3006 3027 2005 2168".Split(' ');
+                    string[] ids = "3001 3007 3019 3023 2048 3033 3005 2023 2024 2058 2034 3004 3024 2017 3013 3003 2004 3012 3018 2021 2054 3008 3006 3027 2005 2168 2007 2008".Split(' ');
                     int i = 1;
                     foreach (var entitlement in ids)
                     {
+                        int useCount = 0;
+                        int entitlementInt = Int32.Parse(entitlement);
+                        if (entitlementInt >= 2000 && entitlementInt < 3000)
+                        {
+                            useCount = 1;
+                        }
                         response += "<entitlement><entitlementId>" 
                                  + Convert.ToString(i) 
                                  + "</entitlementId><entitlementTag>" 
                                  + entitlement 
-                                 + "-UNLM-</entitlementTag><useCount>0</useCount><grantDate>" 
+                                 + "-UNLM-</entitlementTag><useCount>"
+                                 + useCount 
+                                 + "</useCount><grantDate>" 
                                  + DateTime.UtcNow.ToString("MMM-dd-yyyy HH:mm:ss UTC") 
                                  + "</grantDate><terminationDate></terminationDate><status>ACTIVE</status></entitlement>";
                         i++;

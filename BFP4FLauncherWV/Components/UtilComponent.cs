@@ -23,6 +23,9 @@ namespace BFP4FLauncherWV
                 case 8:
                     PostAuth(p, pi, ns);
                     break;
+                case 0x16:
+                    SetClientMetrics(p, pi, ns);
+                    break;
                 case 0xC:
                     UserSettingsLoadAll(p, pi, ns);
                     break;
@@ -136,7 +139,15 @@ namespace BFP4FLauncherWV
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
         }
-        
+
+        private static void SetClientMetrics(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
+        {
+            //TODO: Save user's metrics
+            byte[] buff = Blaze.CreatePacket(p.Component, p.Command, 0, 0x1000, p.ID, new List<Blaze.Tdf>());
+            ns.Write(buff, 0, buff.Length);
+            ns.Flush();
+        }
+
         private static void UserSettingsLoadAll(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
         {
             List<Blaze.Tdf> Result = new List<Blaze.Tdf>();

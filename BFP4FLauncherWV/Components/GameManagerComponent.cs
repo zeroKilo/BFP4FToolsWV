@@ -24,6 +24,12 @@ namespace BFP4FLauncherWV
                 case 0x3:
                     AdvanceGameState(p, pi, ns);
                     break;
+                case 0x4:
+                    SetGameSettings(p, pi, ns);
+                    break;
+                case 0x5:
+                    SetPlayerCapacity(p, pi, ns);
+                    break;
                 case 0x7:
                     SetGameAttributes(p, pi, ns);
                     break;
@@ -52,6 +58,16 @@ namespace BFP4FLauncherWV
                     SetPlayerTeam(p, pi, ns);
                     break;
             }
+        }
+
+        private static void SetPlayerCapacity(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void SetGameSettings(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
+        {
+            throw new NotImplementedException();
         }
 
         public static void CreateGame(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)

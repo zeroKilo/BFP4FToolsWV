@@ -60,6 +60,7 @@ namespace BFP4FLauncherWV
                 GAME.Add(Blaze.TdfString.Create("PGID", ""));
                 List<Blaze.Tdf> PHST = new List<Blaze.Tdf>();
                     PHST.Add(Blaze.TdfInteger.Create("HPID", pi.userId));
+                    PHST.Add(Blaze.TdfInteger.Create("HSLT", 0));
                 GAME.Add(Blaze.TdfStruct.Create("PHST", PHST));
                 GAME.Add(Blaze.TdfInteger.Create("PRES", 1));
                 GAME.Add(Blaze.TdfString.Create("PSAS", "wv"));
@@ -68,6 +69,7 @@ namespace BFP4FLauncherWV
                 GAME.Add(Blaze.TdfInteger.Create("TCAP", 0x10));
                 List<Blaze.Tdf> THST = new List<Blaze.Tdf>();
                     THST.Add(Blaze.TdfInteger.Create("HPID", pi.userId));
+                    THST.Add(Blaze.TdfInteger.Create("HSLT", 0));
                 GAME.Add(Blaze.TdfStruct.Create("THST", THST));
                 GAME.Add(Blaze.TdfList.Create("TIDS", 0, 2, new List<long>(new long[] { 1, 2 })));
                 GAME.Add(Blaze.TdfString.Create("UUID", "f5193367-c991-4429-aee4-8d5f3adab938"));
@@ -127,7 +129,7 @@ namespace BFP4FLauncherWV
                 GAME.Add(Blaze.TdfInteger.Create("IGNO", 0));
                 GAME.Add(Blaze.TdfInteger.Create("MCAP", 0x20));
                 GAME.Add(BlazeHelper.CreateNQOSField(srv, "NQOS"));
-                GAME.Add(Blaze.TdfInteger.Create("NRES", 0));
+                GAME.Add(Blaze.TdfInteger.Create("NRES", 0)); //1
                 GAME.Add(Blaze.TdfInteger.Create("NTOP", 1));
                 GAME.Add(Blaze.TdfString.Create("PGID", ""));
                 List<Blaze.Tdf> PHST = new List<Blaze.Tdf>();

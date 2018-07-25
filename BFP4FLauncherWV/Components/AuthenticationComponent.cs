@@ -85,7 +85,7 @@ namespace BFP4FLauncherWV
             PDTL.Add(Blaze.TdfString.Create("DSNM", pi.profile.name));
             PDTL.Add(Blaze.TdfInteger.Create("LAST", t));
             PDTL.Add(Blaze.TdfInteger.Create("PID\0", pi.userId));
-            PDTL.Add(Blaze.TdfInteger.Create("STAS", 0));
+            PDTL.Add(Blaze.TdfInteger.Create("STAS", 2));
             PDTL.Add(Blaze.TdfInteger.Create("XREF", 0));
             PDTL.Add(Blaze.TdfInteger.Create("XTYP", 0));
             SESS.Add(Blaze.TdfStruct.Create("PDTL", PDTL));
