@@ -14,8 +14,8 @@ const BYTE JZ		= 0x74;
 const BYTE JNZ		= 0x75;
 DWORD* pOpenAddress;
 BYTE* pAccept;
-DWORD patch1 = 0x9EF9C7;
-DWORD patch2 = 0x9EFA1F;
+DWORD patch1 = 0x98F499;
+DWORD patch2 = 0x98F4EF;
 bool conIsOpen = false;
 
 void OpenConsole()
