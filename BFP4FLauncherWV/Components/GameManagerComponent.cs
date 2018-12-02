@@ -108,7 +108,15 @@ namespace BFP4FLauncherWV
 
             foreach (PlayerInfo peer in pi.game.players)
                 if (peer != null)
-                    AsyncGameManager.NotifyGameSettingsChange(p, pi, peer.ns);
+                    try
+                    {
+                        AsyncGameManager.NotifyGameSettingsChange(p, pi, peer.ns);
+                    }
+                    catch
+                    {
+                        pi.game.removePlayer((int)peer.userId);
+                        BlazeServer.Log("[CLNT] #" + pi.userId + " : 'SetGameAttributes' peer crashed!", System.Drawing.Color.Red);
+                    }
         }
 
         public static void JoinGame(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
@@ -157,13 +165,30 @@ namespace BFP4FLauncherWV
         public static void RemovePlayer(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
         {
             List<Blaze.Tdf> input = Blaze.ReadPacketContent(p);
+            Blaze.TdfInteger CNTX = (Blaze.TdfInteger)input[1];
             Blaze.TdfInteger PID = (Blaze.TdfInteger)input[3];
+            Blaze.TdfInteger REAS = (Blaze.TdfInteger)input[4];
             pi.game.removePlayer((int)PID.Value);
-            pi.game = null;
             GC.Collect();
+            List<Blaze.Tdf> result = new List<Blaze.Tdf>();
+            result.Add(Blaze.TdfInteger.Create("GID\0", pi.game.id));
+            result.Add(Blaze.TdfInteger.Create("GSTA", pi.game.GSTA));
             byte[] buff = Blaze.CreatePacket(p.Component, p.Command, 0, 0x1000, p.ID, new List<Blaze.Tdf>());
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
+            foreach (PlayerInfo player in BlazeServer.allClients)
+                if (player != null && player.userId == PID.Value)
+                    player.cntx = CNTX.Value;
+            foreach (PlayerInfo player in pi.game.players)
+                if (player != null && player.userId != PID.Value)
+                    try
+                    {
+                        AsyncGameManager.NotifyPlayerRemoved(p, player, player.ns, PID.Value, CNTX.Value, REAS.Value);
+                    }
+                    catch
+                    {
+                        BlazeServer.Log("[CLNT] #" + pi.userId + " : 'RemovePlayer' peer crashed!", System.Drawing.Color.Red);
+                    }
         }
 
         public static void FinalizeGameCreation(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
@@ -207,19 +232,24 @@ namespace BFP4FLauncherWV
                     target = info;
                     break;
                 }
-            if (target != null && stat.Value == 2)
+            if (target != null)
             {
-                if (pi.isServer)
+                if (stat.Value == 2)
                 {
-                    AsyncUserSessions.UserSessionExtendedDataUpdateNotification(p, target, pi.ns);
-                    AsyncGameManager.NotifyGamePlayerStateChange(p, target, pi.ns, 4);
-                    AsyncGameManager.PlayerJoinCompletedNotification(p, target, pi.ns);
+                    if (pi.isServer)
+                    {
+                        AsyncUserSessions.UserSessionExtendedDataUpdateNotification(p, target, ns);
+                        AsyncGameManager.NotifyGamePlayerStateChange(p, target, ns, 4);
+                        AsyncGameManager.PlayerJoinCompletedNotification(p, target, ns);
+                    }
+                    else
+                    {
+                        AsyncGameManager.NotifyGamePlayerStateChange(p, pi, ns, 4);
+                        AsyncGameManager.PlayerJoinCompletedNotification(p, pi, ns);
+                    }
                 }
                 else
-                {
-                    AsyncGameManager.NotifyGamePlayerStateChange(p, pi, pi.ns, 4);
-                    AsyncGameManager.PlayerJoinCompletedNotification(p, pi, pi.ns);
-                }
+                    AsyncGameManager.NotifyPlayerRemoved(p, target, ns, target.userId, target.cntx, 1);
             }
         }
 

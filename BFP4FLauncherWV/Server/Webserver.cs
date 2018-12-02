@@ -62,7 +62,6 @@ namespace BFP4FLauncherWV
         public static void tHTTPClientHandler(object obj)
         {
             TcpClient client = (TcpClient)obj;
-            Log("[WEBS] Client connected");
             NetworkStream ns = client.GetStream();
             byte[] data = Helper.ReadContentTCP(ns);
             Log("[WEBS] Received " + data.Length + " bytes of data");
@@ -72,7 +71,6 @@ namespace BFP4FLauncherWV
             }
             catch { }
             client.Close();
-            Log("[WEBS] Client disconnected");
         }
 
         public static void ProcessHttp(string data, Stream s)
@@ -180,7 +178,7 @@ namespace BFP4FLauncherWV
                 box.Invoke(new Action(delegate
                 {
                     string stamp = DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString() + " : ";
-                    box.Text += stamp + s + "\n";
+                    box.AppendText(stamp + s + "\n");
                     BackendLog.Write(stamp + s + "\n");
                     box.SelectionStart = box.Text.Length;
                     box.ScrollToCaret();

@@ -208,5 +208,17 @@ namespace BFP4FLauncherWV
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
         }
+
+        public static void NotifyPlayerRemoved(Blaze.Packet p, PlayerInfo pi, NetworkStream ns, long pid, long cntx, long reas)
+        {
+            List<Blaze.Tdf> result = new List<Blaze.Tdf>();
+            result.Add(Blaze.TdfInteger.Create("CNTX", cntx));
+            result.Add(Blaze.TdfInteger.Create("GID\0", pi.game.id));
+            result.Add(Blaze.TdfInteger.Create("PID\0", pid));
+            result.Add(Blaze.TdfInteger.Create("REAS", reas));
+            byte[] buff = Blaze.CreatePacket(4, 0x28, 0, 0x2000, 0, result);
+            ns.Write(buff, 0, buff.Length);
+            ns.Flush();
+        }
     }
 }

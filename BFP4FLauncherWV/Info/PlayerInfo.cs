@@ -18,6 +18,7 @@ namespace BFP4FLauncherWV
         public long loc;
         public long slot;
         public long stat;
+        public long cntx;
         public bool isServer;
         public GameInfo game;
         public NetworkStream ns;

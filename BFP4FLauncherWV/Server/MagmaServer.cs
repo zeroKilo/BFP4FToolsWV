@@ -53,7 +53,6 @@ namespace BFP4FLauncherWV
                 while (!GetExit())
                 {
                     client = lMagma.AcceptTcpClient();
-                    Log("[MGMA] Client connected");
                     NetworkStream ns = client.GetStream();
                     byte[] data = Helper.ReadContentTCP(ns);
                     Log("[MGMA] Received " + data.Length + " bytes of data");
@@ -65,7 +64,6 @@ namespace BFP4FLauncherWV
                     }
                     catch { }
                     client.Close();
-                    Log("[MGMA] Client disconnected");
                 }
             }
             catch (Exception ex)
@@ -211,7 +209,7 @@ namespace BFP4FLauncherWV
                 box.Invoke(new Action(delegate
                 {
                     string stamp = DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString() + " : ";
-                    box.Text += stamp + s + "\n";
+                    box.AppendText(stamp + s + "\n");
                     BackendLog.Write(stamp + s + "\n");
                     box.SelectionStart = box.Text.Length;
                     box.ScrollToCaret();
