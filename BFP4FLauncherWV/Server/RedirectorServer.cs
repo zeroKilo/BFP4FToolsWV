@@ -69,38 +69,27 @@ namespace BFP4FLauncherWV
                     if (useSSL)
                     {
                         SslStream sslStream = new SslStream(client.GetStream(), false);
-                        Log("[REDI] Authenticating...");
                         sslStream.AuthenticateAsServer(cert, false, SslProtocols.Ssl3, false);
-                        Log("[REDI] Reading data...");
                         byte[] data = Helper.ReadContentSSL(sslStream);
-                        Log("[REDI] Received " + data.Length + " bytes of data");
                         MemoryStream m = new MemoryStream();
                         m.Write(data, 0, data.Length);
                         data = CreateRedirectorPacket();
                         m.Write(data, 0, data.Length);
-                        Log("[REDI] Sending response");
                         sslStream.Write(data);
                         sslStream.Flush();
                         client.Close();
-                        Log("[REDI] Client disconnected");
-                        File.WriteAllBytes("redidump.bin", m.ToArray());
                     }
                     else
                     {
                         NetworkStream stream = client.GetStream();
-                        Log("[REDI] Reading data...");
                         byte[] data = Helper.ReadContentTCP(stream);
-                        Log("[REDI] Received " + data.Length + " bytes of data");
                         MemoryStream m = new MemoryStream();
                         m.Write(data, 0, data.Length);
                         data = CreateRedirectorPacket();
                         m.Write(data, 0, data.Length);
-                        Log("[REDI] Sending response");
                         stream.Write(data, 0, data.Length);
                         stream.Flush();
                         client.Close();
-                        Log("[REDI] Client disconnected");
-                        File.WriteAllBytes("redidump.bin", m.ToArray());
                     }
                 }
             }

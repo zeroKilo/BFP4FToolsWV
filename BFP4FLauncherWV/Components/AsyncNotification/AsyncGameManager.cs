@@ -10,7 +10,7 @@ namespace BFP4FLauncherWV
 {
     public static class AsyncGameManager
     {
-        public static void NotifyPlatformHostInitialized(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
+        public static void NotifyPlatformHostInitialized(PlayerInfo src, Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
         {
             List<Blaze.Tdf> result = new List<Blaze.Tdf>();
             result.Add(Blaze.TdfInteger.Create("GID\0", pi.game.id));
@@ -19,9 +19,10 @@ namespace BFP4FLauncherWV
             byte[] buff = Blaze.CreatePacket(4, 0x47, 0, 0x2000, 0, result);
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
+            BlazeServer.Log("[CLNT] #" + src.userId + " [0004:0047] NotifyPlatformHostInitialized", System.Drawing.Color.Black);
         }
 
-        public static void NotifyGameStateChange(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
+        public static void NotifyGameStateChange(PlayerInfo src, Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
         {
             List<Blaze.Tdf> result = new List<Blaze.Tdf>();
             result.Add(Blaze.TdfInteger.Create("GID\0", pi.game.id));
@@ -29,9 +30,10 @@ namespace BFP4FLauncherWV
             byte[] buff = Blaze.CreatePacket(4, 0x64, 0, 0x2000, 0, result);
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
+            BlazeServer.Log("[CLNT] #" + src.userId + " [0004:0064] NotifyGameStateChange", System.Drawing.Color.Black);
         }
 
-        public static void NotifyServerGameSetup(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
+        public static void NotifyServerGameSetup(PlayerInfo src, Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
         {
             List<Blaze.Tdf> input = Blaze.ReadPacketContent(p);
             uint t = Blaze.GetUnixTimeStamp();
@@ -96,9 +98,10 @@ namespace BFP4FLauncherWV
             byte[] buff = Blaze.CreatePacket(p.Component, 0x14, 0, 0x2000, 0, result);
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
+            BlazeServer.Log("[CLNT] #" + src.userId + " [0004:0014] NotifyServerGameSetup", System.Drawing.Color.Black);
         }
 
-        public static void NotifyGameSettingsChange(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
+        public static void NotifyGameSettingsChange(PlayerInfo src, Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
         {
             List<Blaze.Tdf> result = new List<Blaze.Tdf>();
             result.Add(Blaze.TdfInteger.Create("ATTR", pi.game.GSET));
@@ -106,9 +109,10 @@ namespace BFP4FLauncherWV
             byte[] buff = Blaze.CreatePacket(p.Component, 0x6E, 0, 0x2000, 0, result);
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
+            BlazeServer.Log("[CLNT] #" + src.userId + " [0004:006E] NotifyGameSettingsChange", System.Drawing.Color.Black);
         }
 
-        public static void NotifyClientGameSetup(Blaze.Packet p, PlayerInfo pi, PlayerInfo srv, NetworkStream ns, long reas = 1)
+        public static void NotifyClientGameSetup(PlayerInfo src, Blaze.Packet p, PlayerInfo pi, PlayerInfo srv, NetworkStream ns, long reas = 1)
         {
             List<Blaze.Tdf> result = new List<Blaze.Tdf>();
             List<Blaze.Tdf> GAME = new List<Blaze.Tdf>();
@@ -163,9 +167,10 @@ namespace BFP4FLauncherWV
             byte[] buff = Blaze.CreatePacket(0x4, 0x14, 0, 0x2000, 0, result);
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
+            BlazeServer.Log("[CLNT] #" + src.userId + " [0004:0014] NotifyClientGameSetup", System.Drawing.Color.Black);
         }
 
-        public static void NotifyPlayerJoining(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
+        public static void NotifyPlayerJoining(PlayerInfo src, Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
         {
             uint t = Blaze.GetUnixTimeStamp();
             List<Blaze.Tdf> result = new List<Blaze.Tdf>();
@@ -186,9 +191,10 @@ namespace BFP4FLauncherWV
             byte[] buff = Blaze.CreatePacket(0x4, 0x15, 0, 0x2000, 0, result);
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
+            BlazeServer.Log("[CLNT] #" + src.userId + " [0004:0015] NotifyPlayerJoining", System.Drawing.Color.Black);
         }
 
-        public static void NotifyGamePlayerStateChange(Blaze.Packet p, PlayerInfo pi, NetworkStream ns, long stat)
+        public static void NotifyGamePlayerStateChange(PlayerInfo src, Blaze.Packet p, PlayerInfo pi, NetworkStream ns, long stat)
         {
             List<Blaze.Tdf> result = new List<Blaze.Tdf>();
             result.Add(Blaze.TdfInteger.Create("GID\0", pi.game.id));
@@ -197,9 +203,10 @@ namespace BFP4FLauncherWV
             byte[] buff = Blaze.CreatePacket(0x4, 0x74, 0, 0x2000, 0, result);
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
+            BlazeServer.Log("[CLNT] #" + src.userId + " [0004:0074] NotifyGamePlayerStateChange", System.Drawing.Color.Black);
         }
-        
-        public static void PlayerJoinCompletedNotification(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
+
+        public static void NotifyPlayerJoinCompleted(PlayerInfo src, Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
         {
             List<Blaze.Tdf> result = new List<Blaze.Tdf>();
             result.Add(Blaze.TdfInteger.Create("GID\0", pi.game.id));
@@ -207,9 +214,10 @@ namespace BFP4FLauncherWV
             byte[] buff = Blaze.CreatePacket(0x4, 0x1E, 0, 0x2000, 0, result);
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
+            BlazeServer.Log("[CLNT] #" + src.userId + " [0004:001E] NotifyPlayerJoinCompleted", System.Drawing.Color.Black);
         }
 
-        public static void NotifyPlayerRemoved(Blaze.Packet p, PlayerInfo pi, NetworkStream ns, long pid, long cntx, long reas)
+        public static void NotifyPlayerRemoved(PlayerInfo src, Blaze.Packet p, PlayerInfo pi, NetworkStream ns, long pid, long cntx, long reas)
         {
             List<Blaze.Tdf> result = new List<Blaze.Tdf>();
             result.Add(Blaze.TdfInteger.Create("CNTX", cntx));
@@ -219,6 +227,8 @@ namespace BFP4FLauncherWV
             byte[] buff = Blaze.CreatePacket(4, 0x28, 0, 0x2000, 0, result);
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
+            BlazeServer.Log("[CLNT] #" + src.userId + " [0004:001E] NotifyPlayerRemoved", System.Drawing.Color.Black);
         }
+
     }
 }

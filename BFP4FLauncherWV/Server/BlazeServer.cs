@@ -58,7 +58,6 @@ namespace BFP4FLauncherWV
                 while (!GetExit())
                 {
                     client = lBlaze.AcceptTcpClient();
-                    Log("[MAIN] Client connected");
                     new Thread(tBlazeClientHandler).Start(client);
                 }
             }
@@ -75,6 +74,8 @@ namespace BFP4FLauncherWV
             PlayerInfo pi = new PlayerInfo();
             allClients.Add(pi);
             pi.userId = idCounter++;
+            if (idCounter > 100)
+                idCounter = 0;
             pi.exIp = 0;
             pi.ns = ns;
             pi.timeout = new System.Diagnostics.Stopwatch();
@@ -88,7 +89,7 @@ namespace BFP4FLauncherWV
                     if (data != null && data.Length != 0)
                         ProcessPackets(data, pi, ns);
                     Thread.Sleep(1);
-                    if (pi.timeout.ElapsedMilliseconds > 1000 * 60)
+                    if (pi.timeout.ElapsedMilliseconds > 5000 * 60)
                         throw new Exception("Client timed out!");
                 }
             }

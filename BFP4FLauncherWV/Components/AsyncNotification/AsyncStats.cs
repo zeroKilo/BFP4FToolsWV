@@ -44,6 +44,7 @@ namespace BFP4FLauncherWV
             byte[] buff = Blaze.CreatePacket(7, 0x32, 0, 0x2000, 0, Result);
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
+            BlazeServer.Log("[CLNT] #" + pi.userId + " [0007:0032] GetStatsAsyncNotification", System.Drawing.Color.Black);
         }
     }
 }

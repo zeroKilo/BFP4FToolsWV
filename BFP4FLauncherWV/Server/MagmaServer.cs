@@ -55,7 +55,6 @@ namespace BFP4FLauncherWV
                     client = lMagma.AcceptTcpClient();
                     NetworkStream ns = client.GetStream();
                     byte[] data = Helper.ReadContentTCP(ns);
-                    Log("[MGMA] Received " + data.Length + " bytes of data");
                     if(!basicMode)
                         Log("[MGMA] Recvdump:\n" + Encoding.ASCII.GetString(data));
                     try

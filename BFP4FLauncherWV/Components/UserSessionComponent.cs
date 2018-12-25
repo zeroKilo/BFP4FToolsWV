@@ -36,7 +36,7 @@ namespace BFP4FLauncherWV
             byte[] buff = Blaze.CreatePacket(p.Component, p.Command, 0, 0x1000, p.ID, new List<Blaze.Tdf>());
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
-            AsyncUserSessions.UserSessionExtendedDataUpdateNotification(p, pi, ns);
+            AsyncUserSessions.UserSessionExtendedDataUpdateNotification(pi, p, pi, ns);
         }
     }
 }

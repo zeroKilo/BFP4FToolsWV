@@ -71,8 +71,8 @@ namespace BFP4FLauncherWV
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
 
-            AsyncGameManager.NotifyGameStateChange(p, pi, ns);
-            AsyncGameManager.NotifyServerGameSetup(p, pi, ns);
+            AsyncGameManager.NotifyGameStateChange(pi, p, pi, ns);
+            AsyncGameManager.NotifyServerGameSetup(pi, p, pi, ns);
         }
 
         public static void DestroyGame(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
@@ -94,7 +94,7 @@ namespace BFP4FLauncherWV
 
             foreach (PlayerInfo peer in pi.game.players)
                 if (peer != null)
-                    AsyncGameManager.NotifyGameStateChange(p, pi, peer.ns);
+                    AsyncGameManager.NotifyGameStateChange(peer, p, pi, peer.ns);
         }
 
         public static void SetGameAttributes(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
@@ -105,12 +105,12 @@ namespace BFP4FLauncherWV
             byte[] buff = Blaze.CreatePacket(p.Component, p.Command, 0, 0x1000, p.ID, result);
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
-
+            
             foreach (PlayerInfo peer in pi.game.players)
                 if (peer != null)
                     try
                     {
-                        AsyncGameManager.NotifyGameSettingsChange(p, pi, peer.ns);
+                        AsyncGameManager.NotifyGameSettingsChange(peer, p, pi, peer.ns);
                     }
                     catch
                     {
@@ -153,13 +153,15 @@ namespace BFP4FLauncherWV
 
             pi.stat = 2;
 
-            AsyncUserSessions.NotifyUserAdded(p, pi, ns);
-            AsyncUserSessions.NotifyUserStatus(p, pi, ns);
-            AsyncGameManager.NotifyClientGameSetup(p, pi, srv, ns);
+            AsyncUserSessions.NotifyUserAdded(pi, p, pi, ns);
+            AsyncUserSessions.NotifyUserStatus(pi, p, pi, ns);
+            AsyncGameManager.NotifyClientGameSetup(pi, p, pi, srv, ns);
 
-            AsyncUserSessions.NotifyUserAdded(p, pi, srv.ns);
-            AsyncUserSessions.NotifyUserStatus(p, pi, srv.ns);
-            AsyncGameManager.NotifyPlayerJoining(p, pi, srv.ns);
+            AsyncUserSessions.NotifyUserAdded(srv, p, pi, srv.ns);
+            AsyncUserSessions.NotifyUserStatus(srv, p, pi, srv.ns);
+            AsyncUserSessions.UserSessionExtendedDataUpdateNotification(srv, p, pi, srv.ns);
+            AsyncGameManager.NotifyPlayerJoining(srv, p, pi, srv.ns);
+
         }
 
         public static void RemovePlayer(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
@@ -170,9 +172,6 @@ namespace BFP4FLauncherWV
             Blaze.TdfInteger REAS = (Blaze.TdfInteger)input[4];
             pi.game.removePlayer((int)PID.Value);
             GC.Collect();
-            List<Blaze.Tdf> result = new List<Blaze.Tdf>();
-            result.Add(Blaze.TdfInteger.Create("GID\0", pi.game.id));
-            result.Add(Blaze.TdfInteger.Create("GSTA", pi.game.GSTA));
             byte[] buff = Blaze.CreatePacket(p.Component, p.Command, 0, 0x1000, p.ID, new List<Blaze.Tdf>());
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
@@ -181,14 +180,14 @@ namespace BFP4FLauncherWV
                     player.cntx = CNTX.Value;
             foreach (PlayerInfo player in pi.game.players)
                 if (player != null && player.userId != PID.Value)
-                    try
-                    {
-                        AsyncGameManager.NotifyPlayerRemoved(p, player, player.ns, PID.Value, CNTX.Value, REAS.Value);
-                    }
-                    catch
-                    {
-                        BlazeServer.Log("[CLNT] #" + pi.userId + " : 'RemovePlayer' peer crashed!", System.Drawing.Color.Red);
-                    }
+                        try
+                        {
+                            AsyncGameManager.NotifyPlayerRemoved(player, p, player, player.ns, PID.Value, CNTX.Value, REAS.Value);
+                        }
+                        catch
+                        {
+                            BlazeServer.Log("[CLNT] #" + pi.userId + " : 'RemovePlayer' peer crashed!", System.Drawing.Color.Red);
+                        }
         }
 
         public static void FinalizeGameCreation(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
@@ -199,7 +198,7 @@ namespace BFP4FLauncherWV
             ns.Flush();
 
             if (pi.isServer)
-                AsyncGameManager.NotifyPlatformHostInitialized(p, pi, ns);
+                AsyncGameManager.NotifyPlatformHostInitialized(pi, p, pi, ns);
         }
 
         public static void ReplayGame(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
@@ -211,7 +210,7 @@ namespace BFP4FLauncherWV
             pi.timeout.Restart();
             foreach (PlayerInfo peer in pi.game.players)
                 if (peer != null)
-                    AsyncGameManager.NotifyGameStateChange(p, pi, peer.ns);
+                    AsyncGameManager.NotifyGameStateChange(peer, p, pi, peer.ns);
         }
 
         public static void UpdateMeshConnection(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
@@ -220,8 +219,7 @@ namespace BFP4FLauncherWV
             List<Blaze.TdfStruct> entries = (List<Blaze.TdfStruct>)((Blaze.TdfList)input[1]).List;
             Blaze.TdfInteger pid = (Blaze.TdfInteger)entries[0].Values[1];
             Blaze.TdfInteger stat = (Blaze.TdfInteger)entries[0].Values[2];
-            List<Blaze.Tdf> result = new List<Blaze.Tdf>();
-            byte[] buff = Blaze.CreatePacket(p.Component, p.Command, 0, 0x1000, p.ID, result);
+            byte[] buff = Blaze.CreatePacket(p.Component, p.Command, 0, 0x1000, p.ID,  new List<Blaze.Tdf>());
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
 
@@ -238,18 +236,18 @@ namespace BFP4FLauncherWV
                 {
                     if (pi.isServer)
                     {
-                        AsyncUserSessions.UserSessionExtendedDataUpdateNotification(p, target, ns);
-                        AsyncGameManager.NotifyGamePlayerStateChange(p, target, ns, 4);
-                        AsyncGameManager.PlayerJoinCompletedNotification(p, target, ns);
+                        AsyncUserSessions.UserSessionExtendedDataUpdateNotification(pi, p, target, ns);
+                        AsyncGameManager.NotifyGamePlayerStateChange(pi, p, target, ns, 4);
+                        AsyncGameManager.NotifyPlayerJoinCompleted(pi, p, target, ns);
                     }
                     else
                     {
-                        AsyncGameManager.NotifyGamePlayerStateChange(p, pi, ns, 4);
-                        AsyncGameManager.PlayerJoinCompletedNotification(p, pi, ns);
+                        AsyncGameManager.NotifyGamePlayerStateChange(pi, p, pi, ns, 4);
+                        AsyncGameManager.NotifyPlayerJoinCompleted(pi, p, pi, ns);
                     }
                 }
                 else
-                    AsyncGameManager.NotifyPlayerRemoved(p, target, ns, target.userId, target.cntx, 1);
+                    AsyncUserSessions.NotifyUserRemoved(pi, p, pid.Value, ns);
             }
         }
 
@@ -344,14 +342,14 @@ namespace BFP4FLauncherWV
 
             pi.stat = 2;
 
-            AsyncUserSessions.NotifyUserAdded(p, srv, ns);
-            AsyncUserSessions.NotifyUserStatus(p, srv, ns);
-            AsyncGameManager.NotifyClientGameSetup(p, pi, srv, ns);
+            AsyncUserSessions.NotifyUserAdded(pi, p, srv, ns);
+            AsyncUserSessions.NotifyUserStatus(pi, p, srv, ns);
+            AsyncGameManager.NotifyClientGameSetup(pi, p, pi, srv, ns);
 
-            AsyncUserSessions.NotifyUserAdded(p, pi, srv.ns);
-            AsyncUserSessions.NotifyUserStatus(p, pi, srv.ns);
-            AsyncGameManager.NotifyPlayerJoining(p, pi, srv.ns);
-            AsyncUserSessions.UserSessionExtendedDataUpdateNotification(p, pi, srv.ns);
+            AsyncUserSessions.NotifyUserAdded(srv, p, pi, srv.ns);
+            AsyncUserSessions.NotifyUserStatus(srv, p, pi, srv.ns);
+            AsyncGameManager.NotifyPlayerJoining(srv, p, pi, srv.ns);
+            AsyncUserSessions.UserSessionExtendedDataUpdateNotification(srv, p, pi, srv.ns);
         }
 
         public static void SetPlayerTeam(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)

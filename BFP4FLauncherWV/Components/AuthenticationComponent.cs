@@ -39,11 +39,21 @@ namespace BFP4FLauncherWV
                     }
                 if (pi.profile == null)
                 {
-                    BlazeServer.Log("[CLNT] #" + pi.userId + " Could not find player profile!", System.Drawing.Color.Red);
+                    BlazeServer.Log("[CLNT] #" + pi.userId + " Could not find player profile for token 0x" + id.ToString("X") + "!", System.Drawing.Color.Red);
+                    pi.userId = 0;
                     return;
                 }
                 else
-                    BlazeServer.Log("[CLNT] #" + pi.userId + " Client Playername = \"" + pi.profile.name + "\"", System.Drawing.Color.Blue);
+                {
+                    for(int i=0;i<BlazeServer.allClients.Count;i++)
+                        if (BlazeServer.allClients[i].userId == id)
+                        {
+                            BlazeServer.allClients.RemoveAt(i);
+                            i--;
+                        }
+                    pi.userId = id;
+                    BlazeServer.Log("[CLNT] New ID #" + pi.userId + " Client Playername = \"" + pi.profile.name + "\"", System.Drawing.Color.Blue);
+                }
                 
             }
             uint t = Blaze.GetUnixTimeStamp();
@@ -94,8 +104,8 @@ namespace BFP4FLauncherWV
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
 
-            AsyncUserSessions.NotifyUserAdded(p, pi, ns);
-            AsyncUserSessions.NotifyUserStatus(p, pi, ns);
+            AsyncUserSessions.NotifyUserAdded(pi, p, pi, ns);
+            AsyncUserSessions.NotifyUserStatus(pi, p, pi, ns);
         }
 
     }

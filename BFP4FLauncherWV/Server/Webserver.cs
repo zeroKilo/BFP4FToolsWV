@@ -64,7 +64,6 @@ namespace BFP4FLauncherWV
             TcpClient client = (TcpClient)obj;
             NetworkStream ns = client.GetStream();
             byte[] data = Helper.ReadContentTCP(ns);
-            Log("[WEBS] Received " + data.Length + " bytes of data");
             try
             {
                 ProcessHttp(Encoding.ASCII.GetString(data), ns);
@@ -132,7 +131,6 @@ namespace BFP4FLauncherWV
             sb.Append(c);
             byte[] buf = Encoding.ASCII.GetBytes(sb.ToString());
             s.Write(buf, 0, buf.Length);
-            Log("[WEBS] Reply: " + buf.Length + " Bytes");
         }
 
         public static void ReplyWithBinary(Stream s, byte[] b)
@@ -149,7 +147,6 @@ namespace BFP4FLauncherWV
             byte[] buf = Encoding.ASCII.GetBytes(sb.ToString());
             s.Write(buf, 0, buf.Length);
             s.Write(b, 0, b.Length);
-            Log("[WEBS] Reply: " + buf.Length + " Bytes");
         }
 
         public static void SetExit(bool state)
