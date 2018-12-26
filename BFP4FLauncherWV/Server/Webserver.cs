@@ -80,6 +80,8 @@ namespace BFP4FLauncherWV
             string url = lines[0].Split(' ')[1].Split(':')[0];
             if (cmd == "GET")
             {
+                if (url.Contains("?"))
+                    url = url.Split('?')[0];
                 if (url == "/")
                     ReplyWithText(s, GetTextFile("\\index.html"));
                 else

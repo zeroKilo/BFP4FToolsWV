@@ -168,6 +168,14 @@ void WriteByte(DWORD offset, BYTE b)
 	*ptr = b;
 }
 
+void WriteDWord(DWORD offset, DWORD d)
+{
+	DWORD oldProtect = 0;
+	VirtualProtect((LPVOID)offset, 4, PAGE_EXECUTE_READWRITE, &oldProtect);
+	DWORD* ptr = (DWORD*)offset;
+	*ptr = d;
+}
+
 void DisableSSL(DWORD offset)
 {	
 	WriteByte(offset, 0x00);
@@ -181,6 +189,12 @@ void PatchQOSTimeout()
 void PatchServerSetup()
 {
 	WriteByte(0xB4FEBA, 0x00);
+}
+
+void ReplaceURLs()
+{
+	WriteDWord(0x405258, (DWORD)&"https://github.com/zeroKilo/BFP4FToolsWV");
+	WriteDWord(0x405246, (DWORD)&"It appears the game client was not started properly...For more information visit the wiki at https://github.com/zeroKilo/BFP4FToolsWV");
 }
 
 void Hack_Init()
@@ -210,6 +224,7 @@ void Hack_Init()
 		ClearFile("BlazeLog.txt");
 		CreateThread(0, 0, enable_ingame_console, 0, 0, 0);
 		DisableSSL(0xABE7F6);
+		ReplaceURLs();
 	}
 	MessageBoxA(0, "Attach now!", 0, 0);
 }
