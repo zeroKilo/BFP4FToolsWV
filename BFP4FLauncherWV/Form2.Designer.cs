@@ -47,6 +47,7 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.sethostsFileToIPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.syncPlayerProfilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -66,6 +67,7 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.BackColor = System.Drawing.Color.White;
+            this.splitContainer1.Panel1.Controls.Add(this.checkBox3);
             this.splitContainer1.Panel1.Controls.Add(this.button7);
             this.splitContainer1.Panel1.Controls.Add(this.button6);
             this.splitContainer1.Panel1.Controls.Add(this.button5);
@@ -93,7 +95,7 @@
             // 
             this.button7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button7.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button7.Location = new System.Drawing.Point(84, 314);
+            this.button7.Location = new System.Drawing.Point(83, 342);
             this.button7.Margin = new System.Windows.Forms.Padding(0);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(102, 23);
@@ -119,7 +121,7 @@
             // 
             this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button5.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button5.Location = new System.Drawing.Point(84, 160);
+            this.button5.Location = new System.Drawing.Point(83, 188);
             this.button5.Margin = new System.Windows.Forms.Padding(0);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(102, 21);
@@ -134,7 +136,7 @@
             this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button4.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button4.ForeColor = System.Drawing.Color.Red;
-            this.button4.Location = new System.Drawing.Point(12, 264);
+            this.button4.Location = new System.Drawing.Point(11, 292);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(174, 47);
             this.button4.TabIndex = 9;
@@ -146,7 +148,7 @@
             // 
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button3.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.Location = new System.Drawing.Point(12, 211);
+            this.button3.Location = new System.Drawing.Point(11, 239);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(174, 47);
             this.button3.TabIndex = 8;
@@ -160,7 +162,7 @@
             this.comboBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.comboBox1.Font = new System.Drawing.Font("Courier New", 8.25F);
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(12, 184);
+            this.comboBox1.Location = new System.Drawing.Point(11, 212);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(174, 22);
             this.comboBox1.TabIndex = 7;
@@ -169,7 +171,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(11, 161);
+            this.label2.Location = new System.Drawing.Point(10, 189);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(71, 16);
             this.label2.TabIndex = 6;
@@ -179,7 +181,7 @@
             // 
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button2.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(12, 110);
+            this.button2.Location = new System.Drawing.Point(11, 138);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(174, 47);
             this.button2.TabIndex = 5;
@@ -191,7 +193,7 @@
             // 
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(12, 57);
+            this.button1.Location = new System.Drawing.Point(11, 85);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(174, 47);
             this.button1.TabIndex = 4;
@@ -265,12 +267,12 @@
             this.sethostsFileToIPToolStripMenuItem,
             this.syncPlayerProfilesToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 48);
             // 
             // sethostsFileToIPToolStripMenuItem
             // 
             this.sethostsFileToIPToolStripMenuItem.Name = "sethostsFileToIPToolStripMenuItem";
-            this.sethostsFileToIPToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.sethostsFileToIPToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.sethostsFileToIPToolStripMenuItem.Text = "Set \'hosts\' file to IP...";
             this.sethostsFileToIPToolStripMenuItem.Click += new System.EventHandler(this.sethostsFileToIPToolStripMenuItem_Click_1);
             // 
@@ -280,6 +282,20 @@
             this.syncPlayerProfilesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.syncPlayerProfilesToolStripMenuItem.Text = "Sync player profiles...";
             this.syncPlayerProfilesToolStripMenuItem.Click += new System.EventHandler(this.syncPlayerProfilesToolStripMenuItem_Click_1);
+            // 
+            // checkBox3
+            // 
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Checked = true;
+            this.checkBox3.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkBox3.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBox3.Location = new System.Drawing.Point(14, 59);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(133, 20);
+            this.checkBox3.TabIndex = 13;
+            this.checkBox3.Text = "use internal Webserver";
+            this.checkBox3.UseVisualStyleBackColor = true;
             // 
             // Form2
             // 
@@ -322,5 +338,6 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem sethostsFileToIPToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem syncPlayerProfilesToolStripMenuItem;
+        private System.Windows.Forms.CheckBox checkBox3;
     }
 }

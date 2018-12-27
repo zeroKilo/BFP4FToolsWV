@@ -39,6 +39,9 @@ namespace BFP4FLauncherWV
 
         private void button1_Click(object sender, EventArgs e)
         {
+            checkBox1.Enabled =
+            checkBox2.Enabled = 
+            checkBox3.Enabled = 
             button1.Enabled =
             button6.Enabled = false;
             BackendLog.Clear();
@@ -54,7 +57,8 @@ namespace BFP4FLauncherWV
             RedirectorServer.Start();
             BlazeServer.Start();
             MagmaServer.Start();
-            Webserver.Start();
+            if(checkBox3.Checked)
+                Webserver.Start();
         }
 
         private void Form2_FormClosing(object sender, FormClosingEventArgs e)
@@ -62,7 +66,8 @@ namespace BFP4FLauncherWV
             RedirectorServer.Stop();
             BlazeServer.Stop();
             MagmaServer.Stop();
-            Webserver.Stop();
+            if (checkBox3.Checked)
+                Webserver.Stop();
         }
 
         private void button2_Click(object sender, EventArgs e)
