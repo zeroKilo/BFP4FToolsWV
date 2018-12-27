@@ -117,7 +117,8 @@ namespace BFP4FLauncherWV
             List<Blaze.Tdf> result = new List<Blaze.Tdf>();
             List<Blaze.Tdf> GAME = new List<Blaze.Tdf>();
                 GAME.Add(Blaze.TdfList.Create("ADMN", 0, 1, new List<long>(new long[] { srv.userId })));
-                GAME.Add(srv.game.ATTR);
+                if(srv.game.ATTR != null)
+                    GAME.Add(srv.game.ATTR);
                 GAME.Add(Blaze.TdfList.Create("CAP\0", 0, 2, new List<long>(new long[] { 0x20, 0 })));
                 GAME.Add(Blaze.TdfInteger.Create("GID\0", srv.game.id));
                 GAME.Add(Blaze.TdfString.Create("GNAM", srv.game.GNAM));
