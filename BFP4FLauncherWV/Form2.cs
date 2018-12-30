@@ -25,6 +25,8 @@ namespace BFP4FLauncherWV
             RefreshProfiles();
             if (comboBox1.Items.Count > 0)
                 comboBox1.SelectedIndex = 0;
+            if (comboBox1.Items.Count > 1)
+                comboBox1.SelectedIndex = 1;
             this.Text += " - Build " + Resources.Resource1.BuildDate;
             button6.Top = splitContainer1.Panel1.Height - button6.Height - 10;
         }

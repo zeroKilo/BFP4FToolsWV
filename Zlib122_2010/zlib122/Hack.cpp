@@ -197,6 +197,21 @@ void ReplaceURLs()
 	WriteDWord(0x405246, (DWORD)&"It appears the game client was not started properly...For more information visit the wiki at https://github.com/zeroKilo/BFP4FToolsWV");
 }
 
+void LoadPlugins()
+{
+	WIN32_FIND_DATA ffd;
+	HANDLE hFind = INVALID_HANDLE_VALUE;
+	hFind = FindFirstFile(L"*.plugindll", &ffd);
+	if(hFind == INVALID_HANDLE_VALUE)
+		return;
+	do
+	{
+		if ((ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0)
+			LoadLibrary(ffd.cFileName);
+	}
+	while (FindNextFile(hFind, &ffd) != 0);
+}
+
 void Hack_Init()
 {
 	GetModuleFileName(NULL, szFileName, MAX_PATH + 1);
@@ -226,5 +241,6 @@ void Hack_Init()
 		DisableSSL(0xABE7F6);
 		ReplaceURLs();
 	}
+	LoadPlugins();
 	MessageBoxA(0, "Attach now!", 0, 0);
 }
