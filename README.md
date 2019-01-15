@@ -48,3 +48,7 @@ for more research chat: https://discordapp.com/invite/Wr2faSS
 # DEMO (v5)
 
 [![Alt text](https://img.youtube.com/vi/iVllQPzRs1M/0.jpg)](https://www.youtube.com/watch?v=iVllQPzRs1M)
+
+# BFP4F Explorer WV
+
+[![Alt text](https://img.youtube.com/vi/QyG3_AOVW5Q/0.jpg)](https://www.youtube.com/watch?v=QyG3_AOVW5Q)
