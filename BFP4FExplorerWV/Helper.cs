@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SharpDX.Mathematics.Interop;
@@ -66,6 +67,14 @@ namespace BFP4FExplorerWV
             byte[] data = new byte[len];
             s.Read(data, 0, (int)len);
             return Encoding.ASCII.GetString(data);
+        }
+
+        public static Bitmap LoadBitmapUnlocked(string file_name)
+        {
+            using (Bitmap bm = new Bitmap(file_name))
+            {
+                return new Bitmap(bm);
+            }
         }
 
         public static TreeNode FindNext(TreeNode t, string text)

@@ -119,7 +119,6 @@ namespace BFP4FExplorerWV
         private void renderTimer_Tick(object sender, EventArgs e)
         {
             engine.Render();
-            engine.CamRot += 0.01f;
         }
 
         private void pic2_SizeChanged(object sender, EventArgs e)
@@ -154,15 +153,15 @@ namespace BFP4FExplorerWV
             {
                 case ".staticmesh":
                     BF2StaticMesh stm = new BF2StaticMesh(data);
-                    engine.objects.AddRange(stm.ConvertForEngine(engine));
+                    engine.objects.AddRange(stm.ConvertForEngine(engine, toolStripButton3.Checked));
                     break;
                 case ".bundledmesh":
                     BF2BundledMesh bm = new BF2BundledMesh(data);
-                    engine.objects.AddRange(bm.ConvertForEngine(engine));
+                    engine.objects.AddRange(bm.ConvertForEngine(engine, toolStripButton3.Checked));
                     break;
                 case ".skinnedmesh":
                     BF2SkinnedMesh skm = new BF2SkinnedMesh(data);
-                    engine.objects.AddRange(skm.ConvertForEngine(engine));
+                    engine.objects.AddRange(skm.ConvertForEngine(engine, toolStripButton3.Checked));
                     break;
                 case ".collisionmesh":
                     BF2CollisionMesh cm = new BF2CollisionMesh(data);
@@ -295,6 +294,32 @@ namespace BFP4FExplorerWV
                 }
                 Log.WriteLine(dlg.FileName + " exported.");
             }
+        }
+
+        bool mouseUp = true;
+        Point lastMousePos = new Point(0, 0);
+
+        private void pic2_MouseDown(object sender, MouseEventArgs e)
+        {
+            mouseUp = false;
+            lastMousePos = e.Location;
+        }
+
+        private void pic2_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (!mouseUp)
+            {
+                int dx = e.X - lastMousePos.X;
+                int dy = e.Y - lastMousePos.Y;
+                engine.CamDis *= 1 + (dy * 0.01f);
+                engine.CamRot += dx * 0.01f;
+                lastMousePos = e.Location;
+            }
+        }
+
+        private void pic2_MouseUp(object sender, MouseEventArgs e)
+        {
+            mouseUp = true;
         }
     }
 }

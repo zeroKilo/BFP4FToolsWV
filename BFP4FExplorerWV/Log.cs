@@ -27,8 +27,8 @@ namespace BFP4FExplorerWV
                 box.AppendText(s);
                 box.SelectionStart = box.Text.Length;
                 box.ScrollToCaret();
-                Application.DoEvents();
             });
+            Application.DoEvents();
         }
 
         public static void SetProgress(int min, int max, int value)
@@ -40,9 +40,8 @@ namespace BFP4FExplorerWV
                 pb.Minimum = min;
                 pb.Maximum = max;
                 pb.Value = value;
-                Application.DoEvents();
             });
-
+            Application.DoEvents();
         }
     }
 }

@@ -195,6 +195,25 @@ namespace BFP4FExplorerWV
             return entry;
         }
 
+        public static BF2FSEntry FindEntryFromIngamePath(string path)
+        {
+            BF2FSEntry entry = null;
+            foreach (BF2FSEntry e in clientFS)
+                if (e.inFSPath == path)
+                {
+                    entry = e;
+                    break;
+                }
+            if (entry == null)
+                foreach (BF2FSEntry e in serverFS)
+                    if (e.inFSPath == path)
+                    {
+                        entry = e;
+                        break;
+                    }
+            return entry;
+        }
+
         public static void SetFileFromNode(TreeNode t, byte[] datanew)
         {
             BF2FSEntry entry = FindEntryFromNode(t);

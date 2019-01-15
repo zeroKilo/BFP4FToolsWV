@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SharpDX.Mathematics.Interop;
+using System.Windows.Forms;
 using SharpDX;
+using SharpDX.Direct3D11;
+using SharpDX.Mathematics.Interop;
 
 namespace BFP4FExplorerWV
 {
@@ -33,13 +35,26 @@ namespace BFP4FExplorerWV
                 geomat.Add(new Helper.BF2MeshBMGeometryMaterial(m));
         }
 
-        public List<RenderObject> ConvertForEngine(Engine3D engine)
+        public List<RenderObject> ConvertForEngine(Engine3D engine, bool loadTextures)
         {
             List<RenderObject> result = new List<RenderObject>();
             Helper.BF2MeshBMGeometryMaterial lod0 = geomat[0];
             for (int i = 0; i < lod0.numMaterials; i++)
             {
                 Helper.BF2MeshBMMaterial mat = lod0.materials[i];
+                Texture2D texture = null;
+                if (loadTextures)
+                    foreach (string path in mat.textureMapFiles)
+                    {
+                        texture = engine.FindTextureByPath(path);
+                        if (texture != null)
+                        {
+                            Log.WriteLine("Loaded texture " + path);
+                            break;
+                        }
+                    }
+                if (texture == null)
+                    texture = engine.defaultTexture;
                 List<RenderObject.Vertex> list = new List<RenderObject.Vertex>();
                 List<RawVector3> list2 = new List<RawVector3>();
                 int m = geometry.vertices.Count / (int)geometry.numVertices;
@@ -51,11 +66,11 @@ namespace BFP4FExplorerWV
                 }
                 if (mat.numIndicies != 0)
                 {
-                    RenderObject o = new RenderObject(engine.device, RenderObject.RenderType.TriListTextured, engine.defaultTexture, engine);
+                    RenderObject o = new RenderObject(engine.device, RenderObject.RenderType.TriListTextured, texture, engine);
                     o.verticesTextured = list.ToArray();
                     o.InitGeometry();
                     result.Add(o);
-                    RenderObject o2 = new RenderObject(engine.device, RenderObject.RenderType.TriListWired, engine.defaultTexture, engine);
+                    RenderObject o2 = new RenderObject(engine.device, RenderObject.RenderType.TriListWired, texture, engine);
                     o2.vertices = list2.ToArray();
                     o2.InitGeometry();
                     result.Add(o2);
