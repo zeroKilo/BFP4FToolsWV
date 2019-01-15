@@ -1,6 +1,6 @@
-# Battle Field Play 4 Free Blaze Backend by Warranty Voider
+# Battle Field Play 4 Free Blaze Backend and Tools by Warranty Voider
 
-with this tool you can research the blaze side of the game and the server
+with these tool you can research the blaze side of the game and the server, aswell as the gamefiles
 
 -zlib dll is a proxy dll to bypass ssl cert checks and enable blaze logs, theres a version for 2010 and for 2015 client, both work with 2010 server
 
@@ -11,6 +11,8 @@ with this tool you can research the blaze side of the game and the server
 -BlazeLibWV is a library for reading and creating blaze packets, also for creating log dumps
 
 -UDP Monitor WV - Tool for examining the highspeed bitstream of the game traffic over udp
+
+-BFP4F Explorer WV - Tool for editing game content and export
 
 -"Other" contain the minimal frontend files that need to be hosted via xampp or internal webbrowser, and other files
 
