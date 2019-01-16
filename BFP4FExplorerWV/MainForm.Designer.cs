@@ -56,11 +56,17 @@
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             this.pic2 = new System.Windows.Forms.PictureBox();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
+            this.tv3 = new System.Windows.Forms.TreeView();
+            this.splitContainer5 = new System.Windows.Forms.SplitContainer();
+            this.pic3 = new System.Windows.Forms.PictureBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileSystemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mountLevelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.consoleBox = new System.Windows.Forms.RichTextBox();
-            this.renderTimer = new System.Windows.Forms.Timer(this.components);
+            this.renderTimerMeshes = new System.Windows.Forms.Timer(this.components);
+            this.renderTimerLevel = new System.Windows.Forms.Timer(this.components);
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -83,6 +89,15 @@
             this.contextMenuMeshes.SuspendLayout();
             this.toolStrip2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pic2)).BeginInit();
+            this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
+            this.splitContainer4.Panel1.SuspendLayout();
+            this.splitContainer4.Panel2.SuspendLayout();
+            this.splitContainer4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).BeginInit();
+            this.splitContainer5.Panel1.SuspendLayout();
+            this.splitContainer5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pic3)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -124,6 +139,7 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 24);
             this.tabControl1.Name = "tabControl1";
@@ -374,6 +390,71 @@
             this.pic2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pic2_MouseMove);
             this.pic2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pic2_MouseUp);
             // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.splitContainer4);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(739, 446);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Level Explorer";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // splitContainer4
+            // 
+            this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer4.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer4.Name = "splitContainer4";
+            // 
+            // splitContainer4.Panel1
+            // 
+            this.splitContainer4.Panel1.Controls.Add(this.tv3);
+            // 
+            // splitContainer4.Panel2
+            // 
+            this.splitContainer4.Panel2.Controls.Add(this.splitContainer5);
+            this.splitContainer4.Size = new System.Drawing.Size(733, 440);
+            this.splitContainer4.SplitterDistance = 177;
+            this.splitContainer4.TabIndex = 0;
+            // 
+            // tv3
+            // 
+            this.tv3.ContextMenuStrip = this.contextMenuMeshes;
+            this.tv3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tv3.Font = new System.Drawing.Font("Courier New", 8.25F);
+            this.tv3.HideSelection = false;
+            this.tv3.Location = new System.Drawing.Point(0, 0);
+            this.tv3.Name = "tv3";
+            this.tv3.Size = new System.Drawing.Size(177, 440);
+            this.tv3.TabIndex = 1;
+            // 
+            // splitContainer5
+            // 
+            this.splitContainer5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer5.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer5.Name = "splitContainer5";
+            // 
+            // splitContainer5.Panel1
+            // 
+            this.splitContainer5.Panel1.Controls.Add(this.pic3);
+            this.splitContainer5.Size = new System.Drawing.Size(552, 440);
+            this.splitContainer5.SplitterDistance = 403;
+            this.splitContainer5.TabIndex = 0;
+            // 
+            // pic3
+            // 
+            this.pic3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pic3.Location = new System.Drawing.Point(0, 0);
+            this.pic3.Name = "pic3";
+            this.pic3.Size = new System.Drawing.Size(403, 440);
+            this.pic3.TabIndex = 1;
+            this.pic3.TabStop = false;
+            this.pic3.SizeChanged += new System.EventHandler(this.pic3_SizeChanged);
+            this.pic3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pic3_MouseDown);
+            this.pic3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pic3_MouseMove);
+            this.pic3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pic3_MouseUp);
+            // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -410,11 +491,17 @@
             this.consoleBox.Size = new System.Drawing.Size(747, 114);
             this.consoleBox.TabIndex = 0;
             this.consoleBox.Text = "";
+            this.consoleBox.WordWrap = false;
             // 
-            // renderTimer
+            // renderTimerMeshes
             // 
-            this.renderTimer.Interval = 50;
-            this.renderTimer.Tick += new System.EventHandler(this.renderTimer_Tick);
+            this.renderTimerMeshes.Interval = 50;
+            this.renderTimerMeshes.Tick += new System.EventHandler(this.renderTimer_Tick);
+            // 
+            // renderTimerLevel
+            // 
+            this.renderTimerLevel.Interval = 50;
+            this.renderTimerLevel.Tick += new System.EventHandler(this.renderTimerLevel_Tick);
             // 
             // MainForm
             // 
@@ -458,6 +545,15 @@
             this.toolStrip2.ResumeLayout(false);
             this.toolStrip2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pic2)).EndInit();
+            this.tabPage3.ResumeLayout(false);
+            this.splitContainer4.Panel1.ResumeLayout(false);
+            this.splitContainer4.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
+            this.splitContainer4.ResumeLayout(false);
+            this.splitContainer5.Panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).EndInit();
+            this.splitContainer5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pic3)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -484,7 +580,7 @@
         private System.Windows.Forms.SplitContainer splitContainer3;
         private System.Windows.Forms.TreeView tv2;
         private System.Windows.Forms.PictureBox pic2;
-        private System.Windows.Forms.Timer renderTimer;
+        private System.Windows.Forms.Timer renderTimerMeshes;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileSystemToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem mountLevelToolStripMenuItem;
@@ -498,5 +594,11 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuMeshes;
         private System.Windows.Forms.ToolStripMenuItem exportAsObjToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton toolStripButton3;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.SplitContainer splitContainer4;
+        private System.Windows.Forms.TreeView tv3;
+        private System.Windows.Forms.SplitContainer splitContainer5;
+        private System.Windows.Forms.PictureBox pic3;
+        private System.Windows.Forms.Timer renderTimerLevel;
     }
 }

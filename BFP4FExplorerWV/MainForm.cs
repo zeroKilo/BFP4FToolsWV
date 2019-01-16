@@ -15,7 +15,12 @@ namespace BFP4FExplorerWV
     public partial class MainForm : Form
     {
         private bool init = false;
-        private Engine3D engine;
+        private bool meshMouseUp = true;
+        private bool levelMouseUp = true;
+        private Point meshLastMousePos = new Point(0, 0);
+        private Point levelLastMousePos = new Point(0, 0);
+        private Engine3D engineMeshExplorer;
+        private Engine3D engineLevelExplorer;
 
         public MainForm()
         {
@@ -35,8 +40,11 @@ namespace BFP4FExplorerWV
             BF2FileSystem.Load();
             Log.WriteLine("Done. Loaded " + (BF2FileSystem.clientFS.Count() + BF2FileSystem.serverFS.Count()) + " files");
             RefreshTrees();
-            engine = new Engine3D(pic2);
-            renderTimer.Enabled = true;
+            engineMeshExplorer = new Engine3D(pic2);
+            engineLevelExplorer = new Engine3D(pic3);
+            engineLevelExplorer.renderLevel = true;
+            renderTimerMeshes.Enabled = true;
+            renderTimerLevel.Enabled = true;
             init = true;
         }
 
@@ -46,6 +54,8 @@ namespace BFP4FExplorerWV
             tv1.Nodes.Add(BF2FileSystem.MakeFSTree());
             tv2.Nodes.Clear();
             tv2.Nodes.Add(BF2FileSystem.MakeFSTreeFiltered(new string[] { ".staticmesh", ".bundledmesh", ".skinnedmesh", ".collisionmesh" }));
+            tv3.Nodes.Clear();
+            tv3.Nodes.Add(BF2Level.MakeTree());
         }
 
         private void tv1_AfterSelect(object sender, TreeViewEventArgs e)
@@ -118,13 +128,18 @@ namespace BFP4FExplorerWV
 
         private void renderTimer_Tick(object sender, EventArgs e)
         {
-            engine.Render();
+            engineMeshExplorer.Render();
+        }
+
+        private void renderTimerLevel_Tick(object sender, EventArgs e)
+        {
+            engineLevelExplorer.Render();
         }
 
         private void pic2_SizeChanged(object sender, EventArgs e)
         {
-            if (engine != null)
-                engine.Resize(pic2);
+            if (engineMeshExplorer != null)
+                engineMeshExplorer.Resize(pic2);
         }
 
         private void mountLevelToolStripMenuItem_Click(object sender, EventArgs e)
@@ -134,17 +149,21 @@ namespace BFP4FExplorerWV
             ls.ShowDialog();
             if (ls._exitOK)
             {
+                mountLevelToolStripMenuItem.Enabled = false;
                 consoleBox.Text = "";
                 BF2FileSystem.Load();
                 BF2FileSystem.LoadLevel(ls.result);
+                BF2Level.engine = engineLevelExplorer;                
+                BF2Level.Load();
                 Log.WriteLine("Done. Loaded " + (BF2FileSystem.clientFS.Count() + BF2FileSystem.serverFS.Count()) + " files");
                 RefreshTrees();
+                mountLevelToolStripMenuItem.Enabled = true;
             }
         }
 
         private void tv2_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            engine.ClearScene();
+            engineMeshExplorer.ClearScene();
             byte[] data = BF2FileSystem.GetFileFromNode(tv2.SelectedNode);
             if (data == null)
                 return;
@@ -153,27 +172,27 @@ namespace BFP4FExplorerWV
             {
                 case ".staticmesh":
                     BF2StaticMesh stm = new BF2StaticMesh(data);
-                    engine.objects.AddRange(stm.ConvertForEngine(engine, toolStripButton3.Checked));
+                    engineMeshExplorer.objects.AddRange(stm.ConvertForEngine(engineMeshExplorer, toolStripButton3.Checked));
                     break;
                 case ".bundledmesh":
                     BF2BundledMesh bm = new BF2BundledMesh(data);
-                    engine.objects.AddRange(bm.ConvertForEngine(engine, toolStripButton3.Checked));
+                    engineMeshExplorer.objects.AddRange(bm.ConvertForEngine(engineMeshExplorer, toolStripButton3.Checked));
                     break;
                 case ".skinnedmesh":
                     BF2SkinnedMesh skm = new BF2SkinnedMesh(data);
-                    engine.objects.AddRange(skm.ConvertForEngine(engine, toolStripButton3.Checked));
+                    engineMeshExplorer.objects.AddRange(skm.ConvertForEngine(engineMeshExplorer, toolStripButton3.Checked));
                     break;
                 case ".collisionmesh":
                     BF2CollisionMesh cm = new BF2CollisionMesh(data);
-                    engine.objects.AddRange(cm.ConvertForEngine(engine));
+                    engineMeshExplorer.objects.AddRange(cm.ConvertForEngine(engineMeshExplorer));
                     break;
                 default:
-                    RenderObject o = new RenderObject(engine.device, RenderObject.RenderType.TriListWired, engine.defaultTexture, engine);
+                    RenderObject o = new RenderObject(engineMeshExplorer.device, RenderObject.RenderType.TriListWired, engineMeshExplorer.defaultTexture, engineMeshExplorer);
                     o.InitGeometry();
-                    engine.objects.Add(o);
+                    engineMeshExplorer.objects.Add(o);
                     break;
             }
-            engine.ResetCameraDistance();
+            engineMeshExplorer.ResetCameraDistance();
         }
 
         private void tv1_DoubleClick(object sender, EventArgs e)
@@ -296,30 +315,56 @@ namespace BFP4FExplorerWV
             }
         }
 
-        bool mouseUp = true;
-        Point lastMousePos = new Point(0, 0);
-
         private void pic2_MouseDown(object sender, MouseEventArgs e)
         {
-            mouseUp = false;
-            lastMousePos = e.Location;
+            meshMouseUp = false;
+            meshLastMousePos = e.Location;
         }
 
         private void pic2_MouseMove(object sender, MouseEventArgs e)
         {
-            if (!mouseUp)
+            if (!meshMouseUp)
             {
-                int dx = e.X - lastMousePos.X;
-                int dy = e.Y - lastMousePos.Y;
-                engine.CamDis *= 1 + (dy * 0.01f);
-                engine.CamRot += dx * 0.01f;
-                lastMousePos = e.Location;
+                int dx = e.X - meshLastMousePos.X;
+                int dy = e.Y - meshLastMousePos.Y;
+                engineMeshExplorer.CamDis *= 1 + (dy * 0.01f);
+                engineMeshExplorer.CamRot += dx * 0.01f;
+                meshLastMousePos = e.Location;
             }
         }
 
         private void pic2_MouseUp(object sender, MouseEventArgs e)
         {
-            mouseUp = true;
+            meshMouseUp = true;
+        }
+        
+        private void pic3_MouseDown(object sender, MouseEventArgs e)
+        {
+            levelMouseUp = false;
+        }
+
+        private void pic3_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (!levelMouseUp)
+            {
+                int dx = e.X - levelLastMousePos.X;
+                int dy = e.Y - levelLastMousePos.Y;
+                engineLevelExplorer.CamDis *= 1 + (dy * 0.01f);
+                engineLevelExplorer.CamRot += dx * 0.01f;
+                levelLastMousePos = e.Location;
+            }
+        }
+
+        private void pic3_MouseUp(object sender, MouseEventArgs e)
+        {
+            levelMouseUp = true;
+        }
+
+        private void pic3_SizeChanged(object sender, EventArgs e)
+        {
+
+            if (engineLevelExplorer != null)
+                engineLevelExplorer.Resize(pic3);
         }
     }
 }

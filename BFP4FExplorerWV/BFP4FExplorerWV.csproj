@@ -88,13 +88,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BF2BundledMesh.cs" />
-    <Compile Include="BF2CollisionMesh.cs" />
-    <Compile Include="BF2FileSystem.cs" />
-    <Compile Include="BF2SkinnedMesh.cs" />
-    <Compile Include="BF2StaticMesh.cs" />
-    <Compile Include="Engine3D.cs" />
-    <Compile Include="ExporterObj.cs" />
+    <Compile Include="BF2\BF2BundledMesh.cs" />
+    <Compile Include="BF2\BF2CollisionMesh.cs" />
+    <Compile Include="BF2\BF2FileSystem.cs" />
+    <Compile Include="BF2\BF2Level.cs" />
+    <Compile Include="BF2\BF2SkinnedMesh.cs" />
+    <Compile Include="BF2\BF2StaticMesh.cs" />
+    <Compile Include="Engine\Engine3D.cs" />
+    <Compile Include="Engine\ExporterObj.cs" />
+    <Compile Include="Engine\RenderObject.cs" />
+    <Compile Include="Engine\TextureManager.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="LevelSelect.cs">
       <SubType>Form</SubType>

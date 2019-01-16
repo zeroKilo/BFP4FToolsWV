@@ -197,16 +197,21 @@ namespace BFP4FExplorerWV
 
         public static BF2FSEntry FindEntryFromIngamePath(string path)
         {
+            return FindFirstEntry(path);
+        }
+
+        public static BF2FSEntry FindFirstEntry(string path)
+        {
             BF2FSEntry entry = null;
             foreach (BF2FSEntry e in clientFS)
-                if (e.inFSPath == path)
+                if (e.inFSPath.Contains(path))
                 {
                     entry = e;
                     break;
                 }
             if (entry == null)
                 foreach (BF2FSEntry e in serverFS)
-                    if (e.inFSPath == path)
+                    if (e.inFSPath.Contains(path))
                     {
                         entry = e;
                         break;
@@ -223,7 +228,11 @@ namespace BFP4FExplorerWV
 
         public static byte[] GetFileFromNode(TreeNode t)
         {
-            BF2FSEntry entry = FindEntryFromNode(t);
+            return GetFileFromEntry(FindEntryFromNode(t));
+        }
+
+        public static byte[] GetFileFromEntry(BF2FSEntry entry)
+        {
             if (entry != null)
                 return GetFileFromZip(entry.zipFile, entry.inZipPath);
             return null;
@@ -232,14 +241,19 @@ namespace BFP4FExplorerWV
         public static byte[] GetFileFromZip(string zipFile, string inZipName)
         {
             string tmpname = "temp.bin";
+            if (File.Exists(tmpname))
+                File.Delete(tmpname);
             ZipArchive zip = ZipFile.OpenRead(zipFile);
             byte[] result = null;
             foreach (ZipArchiveEntry entry in zip.Entries)
                 if (entry.FullName == inZipName)
                 {
                     entry.ExtractToFile(tmpname);
-                    result = File.ReadAllBytes(tmpname);
-                    File.Delete(tmpname);
+                    if (File.Exists(tmpname))
+                    {
+                        result = File.ReadAllBytes(tmpname);
+                        File.Delete(tmpname);
+                    }
                 }
             zip.Dispose();
             return result;

@@ -7,7 +7,9 @@ using System.Text;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SharpDX;
 using SharpDX.Mathematics.Interop;
+using System.Globalization;
 
 namespace BFP4FExplorerWV
 {
@@ -75,6 +77,24 @@ namespace BFP4FExplorerWV
             {
                 return new Bitmap(bm);
             }
+        }
+
+        public static string FindLineStartingWith(List<string> list, string start)
+        {
+            start = start.ToLower();
+            foreach (string s in list)
+                if (s.ToLower().StartsWith(start))
+                    return s;
+            return null;
+        }
+
+        public static Vector3 ParseVector3(string data)
+        {
+            string[] parts = data.Split('/');
+            string t = new NumberFormatInfo().NumberDecimalSeparator;
+            if (t == ".")
+                parts = data.Replace(".", ",").Split('/');
+            return new Vector3(Convert.ToSingle(parts[0]), Convert.ToSingle(parts[1]), Convert.ToSingle(parts[2]));
         }
 
         public static TreeNode FindNext(TreeNode t, string text)

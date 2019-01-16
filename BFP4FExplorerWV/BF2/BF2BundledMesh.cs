@@ -11,44 +11,44 @@ using SharpDX.Mathematics.Interop;
 
 namespace BFP4FExplorerWV
 {
-    public class BF2SkinnedMesh
+    public class BF2BundledMesh
     {
+
         public Helper.BF2MeshHeader header;
         public Helper.BF2MeshGeometry geometry;
-        public List<Helper.BF2MeshSKMLod> lods;
-        public List<Helper.BF2MeshSKMGeometryMaterial> geomat;
+        public uint u1;
+        public List<Helper.BF2MeshBMLod> lods;
+        public List<Helper.BF2MeshBMGeometryMaterial> geomat;
 
-        public BF2SkinnedMesh(byte[] data)
+        public BF2BundledMesh(byte[] data)
         {
             MemoryStream m = new MemoryStream(data);
             header = new Helper.BF2MeshHeader(m);
             geometry = new Helper.BF2MeshGeometry(m);
-            lods = new List<Helper.BF2MeshSKMLod>();
-            geomat = new List<Helper.BF2MeshSKMGeometryMaterial>();
+            u1 = Helper.ReadU32(m);
+            lods = new List<Helper.BF2MeshBMLod>();
+            geomat = new List<Helper.BF2MeshBMGeometryMaterial>();
             uint count = geometry.GetSumOfLODs();
             for (int i = 0; i < count; i++)
-                lods.Add(new Helper.BF2MeshSKMLod(m, header.version));
+                lods.Add(new Helper.BF2MeshBMLod(m, header));
             for (int i = 0; i < count; i++)
-                geomat.Add(new Helper.BF2MeshSKMGeometryMaterial(m));
+                geomat.Add(new Helper.BF2MeshBMGeometryMaterial(m));
         }
 
         public List<RenderObject> ConvertForEngine(Engine3D engine, bool loadTextures)
         {
             List<RenderObject> result = new List<RenderObject>();
-            Helper.BF2MeshSKMGeometryMaterial lod0 = geomat[0];
+            Helper.BF2MeshBMGeometryMaterial lod0 = geomat[0];
             for (int i = 0; i < lod0.numMaterials; i++)
             {
-                Helper.BF2MeshSKMMaterial mat = lod0.materials[i];
+                Helper.BF2MeshBMMaterial mat = lod0.materials[i];
                 Texture2D texture = null;
                 if (loadTextures)
                     foreach (string path in mat.textureMapFiles)
                     {
-                        texture = engine.FindTextureByPath(path);
+                        texture = engine.textureManager.FindTextureByPath(path);
                         if (texture != null)
-                        {
-                            Log.WriteLine("Loaded texture " + path);
                             break;
-                        }
                     }
                 if (texture == null)
                     texture = engine.defaultTexture;
@@ -83,7 +83,7 @@ namespace BFP4FExplorerWV
 
         public RenderObject.Vertex GetVertex(int pos)
         {
-            return new RenderObject.Vertex(new Vector4(geometry.vertices[pos], geometry.vertices[pos + 1], geometry.vertices[pos + 2], 1), Color.White, new Vector2(geometry.vertices[pos + 8], geometry.vertices[pos + 9]));
+            return new RenderObject.Vertex(new Vector4(geometry.vertices[pos], geometry.vertices[pos + 1], geometry.vertices[pos + 2], 1), Color.White, new Vector2(geometry.vertices[pos + 7], geometry.vertices[pos + 8]));
         }
     }
 }
