@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SharpDX;
 using SharpDX.Mathematics.Interop;
 
 namespace BFP4FExplorerWV
@@ -30,15 +31,15 @@ namespace BFP4FExplorerWV
                     foreach(Helper.BF2CollisionMeshColData col in subgeo.colData)
                     {
                         RenderObject o = new RenderObject(engine.device, RenderObject.RenderType.TriListWired, engine.defaultTexture, engine);
-                        List<RawVector3> list = new List<RawVector3>();
+                        List<RenderObject.VertexWired> list = new List<RenderObject.VertexWired>();
                         for(int i=0;i<col.numFaces;i++)
                         {
                             ushort[] face = col.faces[i];
-                            list.Add(col.vertices[face[0]].ToRawVec3());
-                            list.Add(col.vertices[face[1]].ToRawVec3());
-                            list.Add(col.vertices[face[2]].ToRawVec3());
+                            list.Add(new RenderObject.VertexWired(col.vertices[face[0]].ToRawVec3(), Color4.Black));
+                            list.Add(new RenderObject.VertexWired(col.vertices[face[1]].ToRawVec3(), Color4.Black));
+                            list.Add(new RenderObject.VertexWired(col.vertices[face[2]].ToRawVec3(), Color4.Black));
                         }
-                        o.vertices = list.ToArray();
+                        o.verticesWired = list.ToArray();
                         if (list.Count != 0)
                         {
                             o.InitGeometry();

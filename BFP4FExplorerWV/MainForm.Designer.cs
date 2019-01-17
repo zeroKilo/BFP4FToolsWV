@@ -58,7 +58,7 @@
             this.pic2 = new System.Windows.Forms.PictureBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
-            this.tv3 = new System.Windows.Forms.TreeView();
+            this.listBox1 = new System.Windows.Forms.ListBox();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.pic3 = new System.Windows.Forms.PictureBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -409,7 +409,7 @@
             // 
             // splitContainer4.Panel1
             // 
-            this.splitContainer4.Panel1.Controls.Add(this.tv3);
+            this.splitContainer4.Panel1.Controls.Add(this.listBox1);
             // 
             // splitContainer4.Panel2
             // 
@@ -418,16 +418,18 @@
             this.splitContainer4.SplitterDistance = 177;
             this.splitContainer4.TabIndex = 0;
             // 
-            // tv3
+            // listBox1
             // 
-            this.tv3.ContextMenuStrip = this.contextMenuMeshes;
-            this.tv3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tv3.Font = new System.Drawing.Font("Courier New", 8.25F);
-            this.tv3.HideSelection = false;
-            this.tv3.Location = new System.Drawing.Point(0, 0);
-            this.tv3.Name = "tv3";
-            this.tv3.Size = new System.Drawing.Size(177, 440);
-            this.tv3.TabIndex = 1;
+            this.listBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBox1.Font = new System.Drawing.Font("Courier New", 8.25F);
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.IntegralHeight = false;
+            this.listBox1.ItemHeight = 14;
+            this.listBox1.Location = new System.Drawing.Point(0, 0);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(177, 440);
+            this.listBox1.TabIndex = 0;
+            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // splitContainer5
             // 
@@ -451,6 +453,7 @@
             this.pic3.TabIndex = 1;
             this.pic3.TabStop = false;
             this.pic3.SizeChanged += new System.EventHandler(this.pic3_SizeChanged);
+            this.pic3.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pic3_MouseClick);
             this.pic3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pic3_MouseDown);
             this.pic3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pic3_MouseMove);
             this.pic3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pic3_MouseUp);
@@ -596,9 +599,9 @@
         private System.Windows.Forms.ToolStripButton toolStripButton3;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.SplitContainer splitContainer4;
-        private System.Windows.Forms.TreeView tv3;
         private System.Windows.Forms.SplitContainer splitContainer5;
         private System.Windows.Forms.PictureBox pic3;
         private System.Windows.Forms.Timer renderTimerLevel;
+        private System.Windows.Forms.ListBox listBox1;
     }
 }

@@ -92,6 +92,7 @@
     <Compile Include="BF2\BF2CollisionMesh.cs" />
     <Compile Include="BF2\BF2FileSystem.cs" />
     <Compile Include="BF2\BF2Level.cs" />
+    <Compile Include="BF2\BF2LevelObject.cs" />
     <Compile Include="BF2\BF2SkinnedMesh.cs" />
     <Compile Include="BF2\BF2StaticMesh.cs" />
     <Compile Include="Engine\Engine3D.cs" />

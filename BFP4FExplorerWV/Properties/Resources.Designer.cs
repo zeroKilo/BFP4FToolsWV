@@ -81,9 +81,15 @@ namespace BFP4FExplorerWV.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die float4 main(float4 position : SV_POSITION) : SV_TARGET 
+        ///   Sucht eine lokalisierte Zeichenfolge, die struct VertexShaderInput
+        ///{
+        ///    float4 Position : SV_POSITION;
+        ///    float4 Color : COLOR;
+        ///};
+        ///
+        ///float4 main(VertexShaderInput input) : SV_TARGET 
         ///{ 
-        ///    return float4(0.0, 0.0, 0.0, 1.0); 
+        ///    return input.Color; 
         ///} ähnelt.
         /// </summary>
         internal static string pixelShaderWired {
@@ -116,7 +122,7 @@ namespace BFP4FExplorerWV.Properties {
         ///{
         ///    VertexShaderOutput output = (VertexShaderOutput)0;
         ///    output.Position = mul(input.Position, WorldViewProj);
-        ///    ou [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        ///    output.TextureUV = input. [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         /// </summary>
         internal static string vertexShaderTextured {
             get {
@@ -125,11 +131,29 @@ namespace BFP4FExplorerWV.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die float4x4 world;
+        ///   Sucht eine lokalisierte Zeichenfolge, die cbuffer PerObject: register(b0)
+        ///{
+        ///    float4x4 WorldViewProj;
+        ///};
         ///
-        ///float4 main(float4 P : POSITION) : SV_POSITION 
-        ///{ 
-        ///    return mul(float4(P.xyz, 1.0), world);
+        ///struct VertexShaderInput
+        ///{
+        ///    float4 Position : SV_Position;
+        ///    float4 Color : COLOR;
+        ///};
+        ///
+        ///struct VertexShaderOutput
+        ///{
+        ///    float4 Position : SV_Position;
+        ///    float4 Color : COLOR;
+        ///};
+        ///
+        ///VertexShaderOutput main(VertexShaderInput input)
+        ///{
+        ///    VertexShaderOutput output = (VertexShaderOutput)0;
+        ///    output.Position = mul(input.Position, WorldViewProj);
+        ///    output.Color = input.Color;
+        ///    return output;
         ///} ähnelt.
         /// </summary>
         internal static string vertexShaderWired {

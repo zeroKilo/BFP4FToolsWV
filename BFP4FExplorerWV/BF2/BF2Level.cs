@@ -38,13 +38,45 @@ namespace BFP4FExplorerWV
             Log.WriteLine("[BF2 LL] Loaded level in " + sw.ElapsedMilliseconds + "ms");
         }
 
-        public static TreeNode MakeTree()
+        public static List<string> MakeList()
         {
-            TreeNode t = new TreeNode("Level");
+            List<string> result = new List<string>();
             foreach (BF2LevelObject lo in objects)
-                t.Nodes.Add(lo.MakeNode());
-            t.Expand();
-            return t;
+                result.Add(lo._template);
+            return result;
+        }
+
+        public static void SelectIndex(int idx)
+        {
+            for (int i = 0; i < objects.Count; i++)
+                objects[i].SetSelected(i == idx);
+        }
+
+        
+        public static int Process3DClick(int x, int y)
+        {
+            Ray ray = engine.UnprojectClick(x, y);
+            int idx = -1;
+            float minDist = 100000;
+            for (int i = 0; i < objects.Count; i++)
+            {
+                BF2LevelObject lo = objects[i];
+                BoundingSphere s = lo.CalcBoundingSphere();
+                s.Center = lo.position;
+                float dist = 0;
+                if (Collision.RayIntersectsSphere(ref ray, ref s, out dist))
+                {
+                    if (lo.CheckRayHit(ray, out dist))
+                    {
+                        if (dist < minDist)
+                        {
+                            minDist = dist;
+                            idx = i;
+                        }
+                    }
+                }
+            }
+            return idx;
         }
 
         private static void LoadStaticObjects(byte[] data)
@@ -142,52 +174,6 @@ namespace BFP4FExplorerWV
             lo._data = data;
             return new BF2StaticMesh(data);
         }
-    }    
+    }   
 
-    public class BF2LevelObject
-    {
-        public enum BF2LOTYPE
-        {
-            StaticMesh = 0,
-
-        }
-        public bool _valid = false;
-        public string _template;
-        public byte[] _data;
-        public Vector3 position;
-        public Vector3 rotation;
-        public Matrix transform;
-        public BF2LOTYPE type;
-        public List<RenderObject> stm = null;
-        public BF2LevelObject(Vector3 pos, Vector3 rot, BF2LOTYPE t)
-        {
-            position = pos;
-            rotation = rot;
-            type = t;
-            float f = 3.1415f / 180f;
-            transform = Matrix.RotationYawPitchRoll(rot.X * f, rot.Y * f, rot.Z * f) *
-                        Matrix.Translation(pos);
-        }
-
-        public void Render(DeviceContext context, Matrix view, Matrix proj)
-        {
-            if (stm != null)
-                foreach (RenderObject ro in stm)
-                    ro.Render(context, view, proj);
-        }
-
-        public TreeNode MakeNode()
-        {
-            TreeNode t = new TreeNode(_template);
-            t.Nodes.Add(new TreeNode("Position = " + position.ToString()));
-            t.Nodes.Add(new TreeNode("Rotation= " + position.ToString()));
-            return t;
-        }
-
-        public void Free()
-        {
-            stm.Clear();
-            stm = null;
-        }
-    }
 }

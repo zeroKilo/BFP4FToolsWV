@@ -21,6 +21,7 @@ namespace BFP4FExplorerWV
         private Point levelLastMousePos = new Point(0, 0);
         private Engine3D engineMeshExplorer;
         private Engine3D engineLevelExplorer;
+        private bool isLoading = false;
 
         public MainForm()
         {
@@ -54,8 +55,9 @@ namespace BFP4FExplorerWV
             tv1.Nodes.Add(BF2FileSystem.MakeFSTree());
             tv2.Nodes.Clear();
             tv2.Nodes.Add(BF2FileSystem.MakeFSTreeFiltered(new string[] { ".staticmesh", ".bundledmesh", ".skinnedmesh", ".collisionmesh" }));
-            tv3.Nodes.Clear();
-            tv3.Nodes.Add(BF2Level.MakeTree());
+            listBox1.Items.Clear();
+            foreach (string objname in BF2Level.MakeList())
+                listBox1.Items.Add(objname);
         }
 
         private void tv1_AfterSelect(object sender, TreeViewEventArgs e)
@@ -150,6 +152,7 @@ namespace BFP4FExplorerWV
             if (ls._exitOK)
             {
                 mountLevelToolStripMenuItem.Enabled = false;
+                isLoading = true;
                 consoleBox.Text = "";
                 BF2FileSystem.Load();
                 BF2FileSystem.LoadLevel(ls.result);
@@ -157,6 +160,7 @@ namespace BFP4FExplorerWV
                 BF2Level.Load();
                 Log.WriteLine("Done. Loaded " + (BF2FileSystem.clientFS.Count() + BF2FileSystem.serverFS.Count()) + " files");
                 RefreshTrees();
+                isLoading = false;
                 mountLevelToolStripMenuItem.Enabled = true;
             }
         }
@@ -335,12 +339,17 @@ namespace BFP4FExplorerWV
 
         private void pic2_MouseUp(object sender, MouseEventArgs e)
         {
-            meshMouseUp = true;
+            if(e.Button == System.Windows.Forms.MouseButtons.Left)
+                meshMouseUp = true;
         }
         
         private void pic3_MouseDown(object sender, MouseEventArgs e)
         {
-            levelMouseUp = false;
+            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            {
+                levelMouseUp = false;
+                levelLastMousePos = e.Location;
+            }
         }
 
         private void pic3_MouseMove(object sender, MouseEventArgs e)
@@ -365,6 +374,24 @@ namespace BFP4FExplorerWV
 
             if (engineLevelExplorer != null)
                 engineLevelExplorer.Resize(pic3);
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int n = listBox1.SelectedIndex;
+            if (n == -1)
+                return;
+            BF2Level.SelectIndex(n);
+        }
+
+        private void pic3_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (!isLoading && e.Button == System.Windows.Forms.MouseButtons.Right)
+            {
+                int idx = BF2Level.Process3DClick(e.X, e.Y);
+                if (idx != -1)
+                    listBox1.SelectedIndex = idx;
+            }
         }
     }
 }

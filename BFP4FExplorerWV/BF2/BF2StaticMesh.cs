@@ -41,8 +41,8 @@ namespace BFP4FExplorerWV
             for (int i = 0; i < lod0.numMaterials; i++)
             {
                 Helper.BF2MeshSTMMaterial mat = lod0.materials[i];                
-                List<RenderObject.Vertex> list = new List<RenderObject.Vertex>();
-                List<RawVector3> list2 = new List<RawVector3>();
+                List<RenderObject.VertexTextured> list = new List<RenderObject.VertexTextured>();
+                List<RenderObject.VertexWired> list2 = new List<RenderObject.VertexWired>();
                 Texture2D texture = null;
                 if(loadTextures)
                     foreach (string path in mat.textureMapFiles)
@@ -67,7 +67,7 @@ namespace BFP4FExplorerWV
                     o.InitGeometry();
                     result.Add(o);
                     RenderObject o2 = new RenderObject(engine.device, RenderObject.RenderType.TriListWired, texture, engine);
-                    o2.vertices = list2.ToArray();
+                    o2.verticesWired = list2.ToArray();
                     o2.InitGeometry();
                     result.Add(o2);
                 }
@@ -75,14 +75,14 @@ namespace BFP4FExplorerWV
             return result;
         }
         
-        public RawVector3 GetVector(int pos)
+        public RenderObject.VertexWired GetVector(int pos)
         {
-            return new RawVector3(geometry.vertices[pos], geometry.vertices[pos + 1], geometry.vertices[pos + 2]);
+            return new RenderObject.VertexWired(new Vector4(geometry.vertices[pos], geometry.vertices[pos + 1], geometry.vertices[pos + 2], 1f), Color4.Black);
         }
 
-        public RenderObject.Vertex GetVertex(int pos)
+        public RenderObject.VertexTextured GetVertex(int pos)
         {
-            return new RenderObject.Vertex(new Vector4(geometry.vertices[pos], geometry.vertices[pos + 1], geometry.vertices[pos + 2], 1), Color.White, new Vector2(geometry.vertices[pos + 7], geometry.vertices[pos + 8]));
+            return new RenderObject.VertexTextured(new Vector4(geometry.vertices[pos], geometry.vertices[pos + 1], geometry.vertices[pos + 2], 1), Color.White, new Vector2(geometry.vertices[pos + 7], geometry.vertices[pos + 8]));
         }
     }
 }

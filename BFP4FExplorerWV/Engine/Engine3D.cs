@@ -35,9 +35,10 @@ namespace BFP4FExplorerWV
         public Vector3 CamPos = Vector3.Zero;
         public List<RenderObject> objects;
         public PixelShader psWired, psTextured;
-        public InputElement[] inputElementsWired = new InputElement[] 
-        { 
-            new InputElement("POSITION", 0, Format.R32G32B32_Float, 0) 
+        public InputElement[] inputElementsWired = new InputElement[]
+        {
+            new InputElement("SV_Position", 0, Format.R32G32B32A32_Float, 0, 0),
+            new InputElement("COLOR", 0, Format.R32G32B32A32_Float, 16, 0)
         };
         public InputElement[] inputElementsTextured = new InputElement[]
         {
@@ -215,13 +216,14 @@ namespace BFP4FExplorerWV
             float dis = 0.001f;
             foreach (RenderObject o in objects)
             {
-                foreach (RawVector3 v in o.vertices)
+                foreach (RenderObject.VertexWired vw in o.verticesWired)
                 {
+                    Vector4 v = vw.Position;
                     float l = (float)Math.Sqrt(v.X * v.X + v.Y * v.Y + v.Z * v.Z);
                     if (l > dis)
                         dis = l;
                 }
-                foreach(RenderObject.Vertex v in o.verticesTextured)
+                foreach(RenderObject.VertexTextured v in o.verticesTextured)
                 {
                     Vector4 p = v.Position;
                     float l = (float)Math.Sqrt(p.X* p.X + p.Y * p.Y + p.Z * p.Z);
@@ -243,6 +245,12 @@ namespace BFP4FExplorerWV
                     ro.Dispose();
             inputLayoutWired.Dispose();
             inputSignatureWired.Dispose();
+        }
+
+        public Ray UnprojectClick(int x, int y)
+        {
+            Matrix temp = Matrix.Multiply(view, proj);
+            return Ray.GetPickRay(x, y, viewport, temp);
         }
     }
 }

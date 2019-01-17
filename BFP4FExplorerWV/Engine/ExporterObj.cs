@@ -19,7 +19,7 @@ namespace BFP4FExplorerWV
             for (int i = 0; i < lod0.numMaterials; i++)
             {
                 Helper.BF2MeshSTMMaterial mat = lod0.materials[i];
-                List<RenderObject.Vertex> list = new List<RenderObject.Vertex>();
+                List<RenderObject.VertexTextured> list = new List<RenderObject.VertexTextured>();
                 int m = mesh.geometry.vertices.Count / (int)mesh.geometry.numVertices;
                 for (int j = 0; j < mat.numIndicies; j++)
                 {
@@ -43,7 +43,7 @@ namespace BFP4FExplorerWV
             for (int i = 0; i < lod0.numMaterials; i++)
             {
                 Helper.BF2MeshBMMaterial mat = lod0.materials[i];
-                List<RenderObject.Vertex> list = new List<RenderObject.Vertex>();
+                List<RenderObject.VertexTextured> list = new List<RenderObject.VertexTextured>();
                 int m = mesh.geometry.vertices.Count / (int)mesh.geometry.numVertices;
                 for (int j = 0; j < mat.numIndicies; j++)
                 {
@@ -67,7 +67,7 @@ namespace BFP4FExplorerWV
             for (int i = 0; i < lod0.numMaterials; i++)
             {
                 Helper.BF2MeshSKMMaterial mat = lod0.materials[i];
-                List<RenderObject.Vertex> list = new List<RenderObject.Vertex>();
+                List<RenderObject.VertexTextured> list = new List<RenderObject.VertexTextured>();
                 int m = mesh.geometry.vertices.Count / (int)mesh.geometry.numVertices;
                 for (int j = 0; j < mat.numIndicies; j++)
                 {
@@ -106,10 +106,10 @@ namespace BFP4FExplorerWV
             File.WriteAllText(filename, sb.ToString());
         }
 
-        private static void WriteObject(StringBuilder sb, List<RenderObject.Vertex> list, string name, int vertexCounter)
+        private static void WriteObject(StringBuilder sb, List<RenderObject.VertexTextured> list, string name, int vertexCounter)
         {
             sb.AppendLine("o " + name);
-            foreach (RenderObject.Vertex v in list)
+            foreach (RenderObject.VertexTextured v in list)
             {
                 Vector4 p = v.Position;
                 Vector2 uv = v.TextureUV;
