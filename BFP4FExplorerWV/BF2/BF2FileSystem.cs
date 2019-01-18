@@ -39,9 +39,9 @@ namespace BFP4FExplorerWV
         public static void LoadLevel(string level)
         {
             Log.WriteLine("[BF2_FS] Loading level client data...");
-            clientFS.AddRange(MountZipFile(basepath + "Levels\\" + level + "\\client.zip", "level"));
+            clientFS.AddRange(MountZipFile(basepath + "Levels\\" + level + "\\client.zip", "Levels\\" + level));
             Log.WriteLine("[BF2_FS] Loading level server data...");
-            serverFS.AddRange(MountZipFile(basepath + "Levels\\" + level + "\\server.zip", "level"));
+            serverFS.AddRange(MountZipFile(basepath + "Levels\\" + level + "\\server.zip", "Levels\\" + level));
         }
 
         private static List<BF2FSEntry> MountZipFiles(string filename)

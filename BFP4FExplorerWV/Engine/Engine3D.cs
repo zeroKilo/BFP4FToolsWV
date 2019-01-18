@@ -34,6 +34,7 @@ namespace BFP4FExplorerWV
         public float CamRot = 3.1415f / 180f, CamDis = 3f, CamHeight = 0;
         public Vector3 CamPos = Vector3.Zero;
         public List<RenderObject> objects;
+        public RenderObject terrain;
         public PixelShader psWired, psTextured;
         public InputElement[] inputElementsWired = new InputElement[]
         {
@@ -198,7 +199,8 @@ namespace BFP4FExplorerWV
             if (renderLevel)
                 foreach (BF2LevelObject lo in BF2Level.objects)
                     lo.Render(context, view, proj);
-
+            if (terrain != null)
+                terrain.Render(context, view, proj);
             foreach (RenderObject ro in objects)
                     ro.Render(context, view, proj);
             swapChain.Present(0, PresentFlags.None);

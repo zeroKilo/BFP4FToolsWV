@@ -17,24 +17,21 @@ namespace BFP4FExplorerWV
     {
         public static List<BF2LevelObject> objects = new List<BF2LevelObject>();
         public static Engine3D engine;
+        public static BF2Terrain terrain;
+        public static string name = "";
         public static void Load()
         {
             Stopwatch sw = new Stopwatch();
             sw.Start();
-            objects = new List<BF2LevelObject>();
-            BF2FileSystem.BF2FSEntry e = BF2FileSystem.FindEntryFromIngamePath("level\\StaticObjects.con");
-            if (e == null)
-                return;
-            byte[] data = BF2FileSystem.GetFileFromZip(e.zipFile, e.inZipPath);
-            if (data == null)
-                return;
+            objects = new List<BF2LevelObject>();            
             engine.ClearScene();
             foreach (BF2LevelObject lo in objects)
                 lo.Free();
             objects.Clear();
             engine.textureManager.ClearCache();
             GC.Collect();
-            LoadStaticObjects(data);
+            LoadTerrain();
+            LoadStaticObjects();
             Log.WriteLine("[BF2 LL] Loaded level in " + sw.ElapsedMilliseconds + "ms");
         }
 
@@ -52,8 +49,7 @@ namespace BFP4FExplorerWV
             for (int i = 0; i < objects.Count; i++)
                 objects[i].SetSelected(i == idx);
         }
-
-        
+                
         public static int Process3DClick(int x, int y)
         {
             Ray ray = engine.UnprojectClick(x, y);
@@ -119,8 +115,28 @@ namespace BFP4FExplorerWV
             BF2FileSystem.SetFileFromEntry(e, dataNew);
         }
 
-        private static void LoadStaticObjects(byte[] data)
+        private static void LoadTerrain()
         {
+            Log.WriteLine("[BF2 LL] Loading terrain...");
+            BF2FileSystem.BF2FSEntry e = BF2FileSystem.FindEntryFromIngamePath("Levels\\" + name + "\\terraindata.raw");
+            if (e == null)
+                return;
+            byte[] data = BF2FileSystem.GetFileFromZip(e.zipFile, e.inZipPath);
+            if (data == null)
+                return;
+            terrain = new BF2Terrain(data);
+            terrain.ConvertForEngine(engine);
+            engine.terrain = terrain.ro;
+        }
+
+        private static void LoadStaticObjects()
+        {
+            BF2FileSystem.BF2FSEntry e = BF2FileSystem.FindEntryFromIngamePath("Levels\\" + name + "\\StaticObjects.con");
+            if (e == null)
+                return;
+            byte[] data = BF2FileSystem.GetFileFromZip(e.zipFile, e.inZipPath);
+            if (data == null)
+                return;
             string[] lines = Encoding.ASCII.GetString(data).Split('\n');
             int pos = 0;
             while(pos < lines.Length)

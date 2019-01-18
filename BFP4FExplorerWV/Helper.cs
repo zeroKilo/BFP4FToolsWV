@@ -49,6 +49,13 @@ namespace BFP4FExplorerWV
             return BitConverter.ToUInt32(buff, 0);
         }
 
+        public static int ReadS32(Stream s)
+        {
+            byte[] buff = new byte[4];
+            s.Read(buff, 0, 4);
+            return BitConverter.ToInt32(buff, 0);
+        }
+
         public static ulong ReadU64(Stream s)
         {
             byte[] buff = new byte[8];
@@ -63,12 +70,38 @@ namespace BFP4FExplorerWV
             return BitConverter.ToSingle(buff, 0);
         }
 
-        public static string ReadString(Stream s)
+        public static Vector2 ReadVector2(Stream s)
+        {
+            Vector2 result = new Vector2();
+            result.X = ReadFloat(s);
+            result.Y = ReadFloat(s);
+            return result;
+        }
+
+        public static Vector3 ReadVector3(Stream s)
+        {
+            Vector3 result = new Vector3();
+            result.X = ReadFloat(s);
+            result.Y = ReadFloat(s);
+            result.Z = ReadFloat(s);
+            return result;
+        }
+
+        public static string ReadCString(Stream s)
         {
             uint len = ReadU32(s);
             byte[] data = new byte[len];
             s.Read(data, 0, (int)len);
             return Encoding.ASCII.GetString(data);
+        }
+
+        public static string ReadTString(Stream s)
+        {
+            MemoryStream m = new MemoryStream();
+            byte b = 0;
+            while ((b = (byte)s.ReadByte()) != 0xA)
+                m.WriteByte(b);
+            return Encoding.ASCII.GetString(m.ToArray());
         }
 
         public static Bitmap LoadBitmapUnlocked(string file_name)
@@ -391,7 +424,7 @@ namespace BFP4FExplorerWV
                     {
                         u5 = new List<BoneEntry>();
                         for (int i = 0; i < u4; i++)
-                            u5.Add(new BoneEntry(new BF2MeshMatrix(s), Helper.ReadString(s)));
+                            u5.Add(new BoneEntry(new BF2MeshMatrix(s), Helper.ReadCString(s)));
                     }
                 }
             }
@@ -436,12 +469,12 @@ namespace BFP4FExplorerWV
             public BF2MeshSTMMaterial(Stream s, BF2MeshHeader header)
             {
                 alphaMode = Helper.ReadU32(s);
-                shaderFile = Helper.ReadString(s);
-                technique = Helper.ReadString(s);
+                shaderFile = Helper.ReadCString(s);
+                technique = Helper.ReadCString(s);
                 numTextureMaps = Helper.ReadU32(s);
                 textureMapFiles = new List<string>();
                 for (int i = 0; i < numTextureMaps; i++)
-                    textureMapFiles.Add(Helper.ReadString(s));
+                    textureMapFiles.Add(Helper.ReadCString(s));
                 vertexStartIndex = Helper.ReadU32(s);
                 indiciesStartIndex = Helper.ReadU32(s);
                 numIndicies = Helper.ReadU32(s);
@@ -474,12 +507,12 @@ namespace BFP4FExplorerWV
             public BF2MeshBMMaterial(Stream s)
             {
                 alphaMode = Helper.ReadU32(s);
-                shaderFile = Helper.ReadString(s);
-                technique = Helper.ReadString(s);
+                shaderFile = Helper.ReadCString(s);
+                technique = Helper.ReadCString(s);
                 numTextureMaps = Helper.ReadU32(s);
                 textureMapFiles = new List<string>();
                 for (int i = 0; i < numTextureMaps; i++)
-                    textureMapFiles.Add(Helper.ReadString(s));
+                    textureMapFiles.Add(Helper.ReadCString(s));
                 vertexStartIndex = Helper.ReadU32(s);
                 indiciesStartIndex = Helper.ReadU32(s);
                 numIndicies = Helper.ReadU32(s);
@@ -505,12 +538,12 @@ namespace BFP4FExplorerWV
             public ushort u3;
             public BF2MeshSKMMaterial(Stream s)
             {
-                shaderFile = Helper.ReadString(s);
-                technique = Helper.ReadString(s);
+                shaderFile = Helper.ReadCString(s);
+                technique = Helper.ReadCString(s);
                 numTextureMaps = Helper.ReadU32(s);
                 textureMapFiles = new List<string>();
                 for (int i = 0; i < numTextureMaps; i++)
-                    textureMapFiles.Add(Helper.ReadString(s));
+                    textureMapFiles.Add(Helper.ReadCString(s));
                 vertexStartIndex = Helper.ReadU32(s);
                 indiciesStartIndex = Helper.ReadU32(s);
                 numIndicies = Helper.ReadU32(s);
@@ -610,40 +643,6 @@ namespace BFP4FExplorerWV
             {
                 id = Helper.ReadU32(s);
                 mat = new BF2MeshMatrix(s);
-            }
-        }
-    }
-
-    public class SelectablePictureBox : PictureBox
-    {
-        public SelectablePictureBox()
-        {
-            this.SetStyle(ControlStyles.Selectable, true);
-            this.TabStop = true;
-        }
-        protected override void OnMouseDown(MouseEventArgs e)
-        {
-            this.Focus();
-            base.OnMouseDown(e);
-        }
-        protected override void OnEnter(EventArgs e)
-        {
-            this.Invalidate();
-            base.OnEnter(e);
-        }
-        protected override void OnLeave(EventArgs e)
-        {
-            this.Invalidate();
-            base.OnLeave(e);
-        }
-        protected override void OnPaint(PaintEventArgs pe)
-        {
-            base.OnPaint(pe);
-            if (this.Focused)
-            {
-                var rc = this.ClientRectangle;
-                rc.Inflate(-2, -2);
-                ControlPaint.DrawFocusRectangle(pe.Graphics, rc);
             }
         }
     }

@@ -95,13 +95,20 @@
     <Compile Include="BF2\BF2LevelObject.cs" />
     <Compile Include="BF2\BF2SkinnedMesh.cs" />
     <Compile Include="BF2\BF2StaticMesh.cs" />
+    <Compile Include="BF2\BF2Terrain.cs" />
+    <Compile Include="Resources\Resource1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource1.resx</DependentUpon>
+    </Compile>
+    <Compile Include="SelectablePictureBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Engine\Engine3D.cs" />
     <Compile Include="Engine\ExporterObj.cs" />
     <Compile Include="Engine\RenderObject.cs" />
     <Compile Include="Engine\TextureManager.cs" />
-    <Compile Include="Helper.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Helper.cs" />
     <Compile Include="LevelSelect.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -148,6 +155,10 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Resources\Resource1.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource1.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="TextEditor.resx">
       <DependentUpon>TextEditor.cs</DependentUpon>
     </EmbeddedResource>
@@ -170,7 +181,14 @@
       <Name>Be.Windows.Forms.HexBox</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\BuildDate.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>For /f "tokens=1-2 delims=/:" %25%25a in ("%25TIME%25") do (set mytime=%25%25a%25%25b)
+echo %25date%25_%25mytime%25 &gt; "$(ProjectDir)\Resources\BuildDate.txt"</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

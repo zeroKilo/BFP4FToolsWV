@@ -33,6 +33,7 @@ namespace BFP4FExplorerWV
         {
             Log.box = consoleBox;
             Log.pb = pb1;
+            this.Text += " - Build " + Resources.Resource1.BuildDate;
         }
 
         private void MainForm_Activated(object sender, EventArgs e)
@@ -158,7 +159,8 @@ namespace BFP4FExplorerWV
                 consoleBox.Text = "";
                 BF2FileSystem.Load();
                 BF2FileSystem.LoadLevel(ls.result);
-                BF2Level.engine = engineLevelExplorer;                
+                BF2Level.engine = engineLevelExplorer;
+                BF2Level.name = ls.result;
                 BF2Level.Load();
                 Log.WriteLine("Done. Loaded " + (BF2FileSystem.clientFS.Count() + BF2FileSystem.serverFS.Count()) + " files");
                 RefreshTrees();
