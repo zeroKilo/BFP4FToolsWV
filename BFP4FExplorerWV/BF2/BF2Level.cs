@@ -41,8 +41,9 @@ namespace BFP4FExplorerWV
         public static List<string> MakeList()
         {
             List<string> result = new List<string>();
+            int count = 0;
             foreach (BF2LevelObject lo in objects)
-                result.Add(lo._template);
+                result.Add((count++).ToString("D4") + " : " + lo._template);
             return result;
         }
 
@@ -77,6 +78,45 @@ namespace BFP4FExplorerWV
                 }
             }
             return idx;
+        }
+
+        public static void Save()
+        {
+            BF2FileSystem.BF2FSEntry e = BF2FileSystem.FindEntryFromIngamePath("level\\StaticObjects.con");
+            if (e == null)
+                return;
+            byte[] data = BF2FileSystem.GetFileFromZip(e.zipFile, e.inZipPath);
+            if (data == null)
+                return;
+            StringBuilder sb = new StringBuilder();
+            foreach (BF2LevelObject lo in objects)
+            {
+                foreach (string line in lo.properties)
+                {
+                    if (line.StartsWith("Object.absolutePosition"))
+                    {
+                        string s = "Object.absolutePosition ";
+                        s += lo.position.X.ToString().Replace(',', '.') + "/";
+                        s += lo.position.Y.ToString().Replace(',', '.') + "/";
+                        s += lo.position.Z.ToString().Replace(',', '.');
+                        sb.AppendLine(s);
+                    }
+                    else if (line.StartsWith("Object.absolutePosition"))
+                    {
+                        string s = "Object.rotation ";
+                        s += lo.rotation.X.ToString().Replace(',', '.') + "/";
+                        s += lo.rotation.Y.ToString().Replace(',', '.') + "/";
+                        s += lo.rotation.Z.ToString().Replace(',', '.');
+                        sb.AppendLine(s);
+                    }
+                    else
+                        sb.AppendLine(line);
+                }
+                sb.AppendLine();
+            }
+            sb.AppendLine();
+            byte[] dataNew = Encoding.ASCII.GetBytes(sb.ToString());
+            BF2FileSystem.SetFileFromEntry(e, dataNew);
         }
 
         private static void LoadStaticObjects(byte[] data)
@@ -119,6 +159,7 @@ namespace BFP4FExplorerWV
                     lo = new BF2LevelObject(pos, rot, obj.type);
                     lo._template = templateName;
                     lo._data = obj._data.ToArray();
+                    lo.properties = infos;
                     switch (obj.type)
                     {
                         case BF2LevelObject.BF2LOTYPE.StaticMesh:
@@ -148,6 +189,7 @@ namespace BFP4FExplorerWV
                     case "staticmesh":
                         lo = new BF2LevelObject(pos, rot, BF2LevelObject.BF2LOTYPE.StaticMesh);
                         lo._template = templateName;
+                        lo.properties = infos;
                         BF2StaticMesh stm = LoadStaticMesh(infosObject, lo);
                         if (stm == null) return;
                         lo.stm = stm.ConvertForEngine(engine, true);
@@ -175,5 +217,4 @@ namespace BFP4FExplorerWV
             return new BF2StaticMesh(data);
         }
     }   
-
 }

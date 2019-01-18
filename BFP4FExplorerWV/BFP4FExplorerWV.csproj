@@ -99,7 +99,9 @@
     <Compile Include="Engine\ExporterObj.cs" />
     <Compile Include="Engine\RenderObject.cs" />
     <Compile Include="Engine\TextureManager.cs" />
-    <Compile Include="Helper.cs" />
+    <Compile Include="Helper.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="LevelSelect.cs">
       <SubType>Form</SubType>
     </Compile>

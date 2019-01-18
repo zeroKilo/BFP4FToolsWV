@@ -22,6 +22,7 @@ namespace BFP4FExplorerWV
         private Engine3D engineMeshExplorer;
         private Engine3D engineLevelExplorer;
         private bool isLoading = false;
+        private bool allowEdit = true;
 
         public MainForm()
         {
@@ -43,6 +44,7 @@ namespace BFP4FExplorerWV
             RefreshTrees();
             engineMeshExplorer = new Engine3D(pic2);
             engineLevelExplorer = new Engine3D(pic3);
+            BF2Level.engine = engineLevelExplorer;
             engineLevelExplorer.renderLevel = true;
             renderTimerMeshes.Enabled = true;
             renderTimerLevel.Enabled = true;
@@ -161,6 +163,7 @@ namespace BFP4FExplorerWV
                 Log.WriteLine("Done. Loaded " + (BF2FileSystem.clientFS.Count() + BF2FileSystem.serverFS.Count()) + " files");
                 RefreshTrees();
                 isLoading = false;
+                saveChangesToolStripMenuItem.Enabled =
                 mountLevelToolStripMenuItem.Enabled = true;
             }
         }
@@ -342,8 +345,25 @@ namespace BFP4FExplorerWV
             if(e.Button == System.Windows.Forms.MouseButtons.Left)
                 meshMouseUp = true;
         }
-        
-        private void pic3_MouseDown(object sender, MouseEventArgs e)
+
+        private int NormRot(float r)
+        {
+            int t = (int)((r * 10) % 3600);
+            if (t < 0) t += 3600;
+            return t;
+        }
+
+        private void pic3_MouseClick_1(object sender, MouseEventArgs e)
+        {
+            if (!isLoading && e.Button == System.Windows.Forms.MouseButtons.Right)
+            {
+                int idx = BF2Level.Process3DClick(e.X, e.Y);
+                if (idx != -1)
+                    listBox1.SelectedIndex = idx;
+            }
+        }
+
+        private void pic3_MouseDown_1(object sender, MouseEventArgs e)
         {
             if (e.Button == System.Windows.Forms.MouseButtons.Left)
             {
@@ -352,46 +372,150 @@ namespace BFP4FExplorerWV
             }
         }
 
-        private void pic3_MouseMove(object sender, MouseEventArgs e)
+        private void pic3_MouseMove_1(object sender, MouseEventArgs e)
         {
             if (!levelMouseUp)
             {
                 int dx = e.X - levelLastMousePos.X;
                 int dy = e.Y - levelLastMousePos.Y;
-                engineLevelExplorer.CamDis *= 1 + (dy * 0.01f);
+                engineLevelExplorer.CamHeight = ((e.Y / (float)pic3.Height) * 2f - 1f) * 5;
                 engineLevelExplorer.CamRot += dx * 0.01f;
                 levelLastMousePos = e.Location;
             }
         }
 
-        private void pic3_MouseUp(object sender, MouseEventArgs e)
+        private void pic3_MouseUp_1(object sender, MouseEventArgs e)
         {
             levelMouseUp = true;
         }
 
-        private void pic3_SizeChanged(object sender, EventArgs e)
+        private void pic3_SizeChanged_1(object sender, EventArgs e)
         {
-
             if (engineLevelExplorer != null)
                 engineLevelExplorer.Resize(pic3);
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (tabControl1.SelectedTab == tabPage3 && pic3.Focused)
+            {
+                SharpDX.Vector3 camPosRel = new SharpDX.Vector3((float)Math.Sin(engineLevelExplorer.CamRot) * engineLevelExplorer.CamDis, engineLevelExplorer.CamHeight, (float)Math.Cos(engineLevelExplorer.CamRot) * engineLevelExplorer.CamDis);
+                SharpDX.Vector3 camPosAbs = engineLevelExplorer.CamPos + camPosRel;
+                SharpDX.Vector3 dir = -camPosRel;
+                SharpDX.Vector3 side = SharpDX.Vector3.Cross(dir, SharpDX.Vector3.UnitY);
+                dir.Normalize();
+                side.Normalize();
+                if (e.KeyCode == Keys.W)
+                    engineLevelExplorer.CamPos += dir;
+                if (e.KeyCode == Keys.S)
+                    engineLevelExplorer.CamPos -= dir;
+                if (e.KeyCode == Keys.A)
+                    engineLevelExplorer.CamPos += side;
+                if (e.KeyCode == Keys.D)
+                    engineLevelExplorer.CamPos -= side;
+            }
+        }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            int n = listBox1.SelectedIndex;
+            if (n == -1 || !allowEdit)
+                return;
+            BF2LevelObject lo = BF2Level.objects[n];
+            lo.rotation.X = trackBar1.Value / 10f;
+            lo.RefreshTransform();
+        }
+
+        private void trackBar2_Scroll(object sender, EventArgs e)
+        {
+            int n = listBox1.SelectedIndex;
+            if (n == -1 || !allowEdit)
+                return;
+            BF2LevelObject lo = BF2Level.objects[n];
+            lo.rotation.Y = trackBar2.Value / 10f;
+            lo.RefreshTransform();
+        }
+
+        private void trackBar3_Scroll(object sender, EventArgs e)
+        {
+            int n = listBox1.SelectedIndex;
+            if (n == -1 || !allowEdit)
+                return;
+            BF2LevelObject lo = BF2Level.objects[n];
+            lo.rotation.Z = trackBar3.Value / 10f;
+            lo.RefreshTransform();
+        }
+
+        private void listBox1_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             int n = listBox1.SelectedIndex;
             if (n == -1)
                 return;
             BF2Level.SelectIndex(n);
+            allowEdit = false;
+            BF2LevelObject lo = BF2Level.objects[n];
+            textBox1.Text = lo.position.X.ToString();
+            textBox2.Text = lo.position.Y.ToString();
+            textBox3.Text = lo.position.Z.ToString();
+            trackBar1.Value = NormRot(lo.rotation.X);
+            trackBar2.Value = NormRot(lo.rotation.Y);
+            trackBar3.Value = NormRot(lo.rotation.Z);
+            StringBuilder sb = new StringBuilder();
+            foreach (string s in lo.properties)
+                sb.AppendLine(s);
+            rtbProps.Text = sb.ToString();
+            allowEdit = true;
         }
 
-        private void pic3_MouseClick(object sender, MouseEventArgs e)
+        private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!isLoading && e.Button == System.Windows.Forms.MouseButtons.Right)
+            int n = listBox1.SelectedIndex;
+            if (e.KeyChar == 13 && allowEdit && n != -1)
             {
-                int idx = BF2Level.Process3DClick(e.X, e.Y);
-                if (idx != -1)
-                    listBox1.SelectedIndex = idx;
+                try
+                {
+                    BF2LevelObject lo = BF2Level.objects[n];
+                    lo.position.X = Convert.ToSingle(textBox1.Text);
+                    lo.RefreshTransform();
+                }
+                catch { };
             }
+        }
+
+        private void textBox2_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            int n = listBox1.SelectedIndex;
+            if (e.KeyChar == 13 && allowEdit && n != -1)
+            {
+                try
+                {
+                    BF2LevelObject lo = BF2Level.objects[n];
+                    lo.position.Y = Convert.ToSingle(textBox2.Text);
+                    lo.RefreshTransform();
+                }
+                catch { };
+            }
+        }
+
+        private void textBox3_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            int n = listBox1.SelectedIndex;
+            if (e.KeyChar == 13 && allowEdit && n != -1)
+            {
+                try
+                {
+                    BF2LevelObject lo = BF2Level.objects[n];
+                    lo.position.Z = Convert.ToSingle(textBox3.Text);
+                    lo.RefreshTransform();
+                }
+                catch { };
+            }
+        }
+
+        private void saveChangesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            BF2Level.Save();
+            MessageBox.Show("Done.");
         }
     }
 }

@@ -221,7 +221,11 @@ namespace BFP4FExplorerWV
 
         public static void SetFileFromNode(TreeNode t, byte[] datanew)
         {
-            BF2FSEntry entry = FindEntryFromNode(t);
+            SetFileFromEntry(FindEntryFromNode(t), datanew);
+        }
+
+        public static void SetFileFromEntry(BF2FSEntry entry, byte[] datanew)
+        {
             if (entry != null)
                 SetFileFromZip(entry.zipFile, entry.inZipPath, datanew);
         }

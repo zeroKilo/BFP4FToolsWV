@@ -29,13 +29,22 @@ namespace BFP4FExplorerWV
         public Matrix transform;
         public BF2LOTYPE type;
         public List<RenderObject> stm = null;
+        public List<string> properties;
         public BF2LevelObject(Vector3 pos, Vector3 rot, BF2LOTYPE t)
         {
             position = pos;
             rotation = rot;
             type = t;
+            RefreshTransform();
+        }
+
+        public void RefreshTransform()
+        {
             float f = 3.1415f / 180f;
-            transform = Matrix.RotationYawPitchRoll(rot.X * f, rot.Y * f, rot.Z * f) * Matrix.Translation(pos);
+            transform = Matrix.RotationYawPitchRoll(rotation.X * f, rotation.Y * f, rotation.Z * f) * Matrix.Translation(position);
+            if (stm != null)
+                foreach (RenderObject ro in stm)
+                    ro.transform = transform;
         }
 
         public void Render(DeviceContext context, Matrix view, Matrix proj)

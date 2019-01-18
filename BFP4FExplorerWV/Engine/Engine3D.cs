@@ -31,7 +31,7 @@ namespace BFP4FExplorerWV
         public RenderTargetView renderTargetView;
         public DepthStencilView depthStencilView;
         public DepthStencilState depthStencilState;
-        public float CamRot = 3.1415f / 180f, CamDis = 3f;
+        public float CamRot = 3.1415f / 180f, CamDis = 3f, CamHeight = 0;
         public Vector3 CamPos = Vector3.Zero;
         public List<RenderObject> objects;
         public PixelShader psWired, psTextured;
@@ -192,7 +192,7 @@ namespace BFP4FExplorerWV
         {
             context.ClearRenderTargetView(renderTargetView, new RawColor4(0, 128, 255, 255));
             context.ClearDepthStencilView(depthStencilView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
-            camPosRel = new RawVector3((float)Math.Sin(CamRot) * CamDis, 0, (float)Math.Cos(CamRot) * CamDis);
+            camPosRel = new RawVector3((float)Math.Sin(CamRot) * CamDis, CamHeight, (float)Math.Cos(CamRot) * CamDis);
             camPosRel += CamPos;
             view = Matrix.LookAtLH(camPosRel, CamPos, Vector3.UnitY);            
             if (renderLevel)
