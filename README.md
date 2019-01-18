@@ -52,3 +52,7 @@ for more research chat: https://discordapp.com/invite/Wr2faSS
 # BFP4F Explorer WV
 
 [![Alt text](https://img.youtube.com/vi/QyG3_AOVW5Q/0.jpg)](https://www.youtube.com/watch?v=QyG3_AOVW5Q)
+
+# BFP4F Explorer WV - Level Explorer Demo
+
+[![Alt text](https://img.youtube.com/vi/ChimAELNzuw/0.jpg)](https://www.youtube.com/watch?v=ChimAELNzuw)
