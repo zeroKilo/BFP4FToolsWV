@@ -94,37 +94,45 @@ namespace BFP4FExplorerWV
 
         public void ConvertForEngine(Engine3D engine)
         {
-            ro = new RenderObject(engine.device, RenderObject.RenderType.TriListWired, null, engine);
-            List<RenderObject.VertexWired> result = new List<RenderObject.VertexWired>();
+            ro = new RenderObject(engine.device, RenderObject.RenderType.TriListTextured, engine.defaultTexture, engine);
+            List<RenderObject.VertexTextured> result = new List<RenderObject.VertexTextured>();
+            uint size = patchSize;
             foreach (BF2TerrainQuadPatch quad in quads)
             {
-                List<RenderObject.VertexWired> list = new List<RenderObject.VertexWired>();
+                List<RenderObject.VertexTextured> list = new List<RenderObject.VertexTextured>();
                 Vector3 p = quad.position - new Vector3(patchSize, 0, patchSize);
                 p.Y = 0;
+                uint tdx = 0;// (uint)(quad.y + numPatches / 2) * patchSize;
+                uint tdy = 0;// (uint)(quad.x + numPatches / 2) * patchSize;
                 float tx, tz, dx = primaryWorldScale.X, dz = primaryWorldScale.Z;
                 for (uint j = 0; j < patchSize; j++)
                     for (uint i = 0; i < patchSize; i++)
                     {
                         tx = i * dx;
                         tz = j * dz;
-                        list.Add(new RenderObject.VertexWired(p + new Vector3(tx, quad.GetHeight(i, j), tz), Color4.Black));
-                        list.Add(new RenderObject.VertexWired(p + new Vector3(tx + dx, quad.GetHeight(i + 1, j), tz), Color4.Black));
-                        list.Add(new RenderObject.VertexWired(p + new Vector3(tx, quad.GetHeight(i, j + 1), tz + dz), Color4.Black));
-                        list.Add(new RenderObject.VertexWired(p + new Vector3(tx, quad.GetHeight(i, j + 1), tz + dz), Color4.Black));
-                        list.Add(new RenderObject.VertexWired(p + new Vector3(tx + dx, quad.GetHeight(i + 1, j), tz), Color4.Black));
-                        list.Add(new RenderObject.VertexWired(p + new Vector3(tx + dx, quad.GetHeight(i + 1, j + 1), tz + dz), Color4.Black));
+                        list.Add(new RenderObject.VertexTextured(ToV4(p + new Vector3(tx, quad.GetHeight(i, j), tz)), Color4.Black, new Vector2((tdx + j) / (float)size, (tdy + i) / (float)size)));
+                        list.Add(new RenderObject.VertexTextured(ToV4(p + new Vector3(tx + dx, quad.GetHeight(i + 1, j), tz)), Color4.Black, new Vector2((tdx + j) / (float)size, (tdy + i + 1) / (float)size)));
+                        list.Add(new RenderObject.VertexTextured(ToV4(p + new Vector3(tx, quad.GetHeight(i, j + 1), tz + dz)), Color4.Black, new Vector2((tdx + j + 1) / (float)size, (tdy + i) / (float)size)));
+                        list.Add(new RenderObject.VertexTextured(ToV4(p + new Vector3(tx, quad.GetHeight(i, j + 1), tz + dz)), Color4.Black, new Vector2((tdx + j + 1) / (float)size, (tdy + i) / (float)size)));
+                        list.Add(new RenderObject.VertexTextured(ToV4(p + new Vector3(tx + dx, quad.GetHeight(i + 1, j), tz)), Color4.Black, new Vector2((tdx + j) / (float)size, (tdy + i + 1) / (float)size)));
+                        list.Add(new RenderObject.VertexTextured(ToV4(p + new Vector3(tx + dx, quad.GetHeight(i + 1, j + 1), tz + dz)), Color4.Black, new Vector2((tdx + j + 1) / (float)size, (tdy + i + 1) / (float)size)));
                     }
                 for (int i = 0; i < list.Count; i++)
                 {
-                    RenderObject.VertexWired v = list[i];
+                    RenderObject.VertexTextured v = list[i];
                     v.Position.Y *= primaryWorldScale.Y;
                     list[i] = v;
                 }
                 result.AddRange(list);               
             }
-            ro.verticesWired = result.ToArray();
+            ro.verticesTextured = result.ToArray();
             GC.Collect();
             ro.InitGeometry();
+        }
+
+        private static Vector4 ToV4(Vector3 v)
+        {
+            return new Vector4(v.X, v.Y, v.Z, 1);
         }
 
         public class BF2TerrainLayer

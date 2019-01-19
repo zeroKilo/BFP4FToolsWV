@@ -62,6 +62,7 @@
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.rtbProps = new System.Windows.Forms.RichTextBox();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
+            this.pic3 = new BFP4FExplorerWV.SelectablePictureBox();
             this.PanelBasicTransform = new System.Windows.Forms.Panel();
             this.trackBar3 = new System.Windows.Forms.TrackBar();
             this.label6 = new System.Windows.Forms.Label();
@@ -78,12 +79,11 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileSystemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mountLevelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.levelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveChangesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.consoleBox = new System.Windows.Forms.RichTextBox();
             this.renderTimerMeshes = new System.Windows.Forms.Timer(this.components);
             this.renderTimerLevel = new System.Windows.Forms.Timer(this.components);
-            this.levelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveChangesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pic3 = new BFP4FExplorerWV.SelectablePictureBox();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -119,12 +119,12 @@
             this.splitContainer5.Panel1.SuspendLayout();
             this.splitContainer5.Panel2.SuspendLayout();
             this.splitContainer5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pic3)).BeginInit();
             this.PanelBasicTransform.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pic3)).BeginInit();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -488,6 +488,7 @@
             this.rtbProps.TabIndex = 1;
             this.rtbProps.Text = "";
             this.rtbProps.WordWrap = false;
+            this.rtbProps.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.rtbProps_MouseDoubleClick);
             // 
             // splitContainer5
             // 
@@ -505,6 +506,19 @@
             this.splitContainer5.Size = new System.Drawing.Size(552, 440);
             this.splitContainer5.SplitterDistance = 403;
             this.splitContainer5.TabIndex = 0;
+            // 
+            // pic3
+            // 
+            this.pic3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pic3.Location = new System.Drawing.Point(0, 0);
+            this.pic3.Name = "pic3";
+            this.pic3.Size = new System.Drawing.Size(403, 440);
+            this.pic3.TabIndex = 0;
+            this.pic3.SizeChanged += new System.EventHandler(this.pic3_SizeChanged_1);
+            this.pic3.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pic3_MouseClick_1);
+            this.pic3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pic3_MouseDown_1);
+            this.pic3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pic3_MouseMove_1);
+            this.pic3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pic3_MouseUp_1);
             // 
             // PanelBasicTransform
             // 
@@ -668,9 +682,25 @@
             // mountLevelToolStripMenuItem
             // 
             this.mountLevelToolStripMenuItem.Name = "mountLevelToolStripMenuItem";
-            this.mountLevelToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.mountLevelToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.mountLevelToolStripMenuItem.Text = "Mount Level...";
             this.mountLevelToolStripMenuItem.Click += new System.EventHandler(this.mountLevelToolStripMenuItem_Click);
+            // 
+            // levelToolStripMenuItem
+            // 
+            this.levelToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveChangesToolStripMenuItem});
+            this.levelToolStripMenuItem.Name = "levelToolStripMenuItem";
+            this.levelToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.levelToolStripMenuItem.Text = "Level";
+            // 
+            // saveChangesToolStripMenuItem
+            // 
+            this.saveChangesToolStripMenuItem.Enabled = false;
+            this.saveChangesToolStripMenuItem.Name = "saveChangesToolStripMenuItem";
+            this.saveChangesToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.saveChangesToolStripMenuItem.Text = "Save Changes";
+            this.saveChangesToolStripMenuItem.Click += new System.EventHandler(this.saveChangesToolStripMenuItem_Click);
             // 
             // consoleBox
             // 
@@ -694,35 +724,6 @@
             // 
             this.renderTimerLevel.Interval = 50;
             this.renderTimerLevel.Tick += new System.EventHandler(this.renderTimerLevel_Tick);
-            // 
-            // levelToolStripMenuItem
-            // 
-            this.levelToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.saveChangesToolStripMenuItem});
-            this.levelToolStripMenuItem.Name = "levelToolStripMenuItem";
-            this.levelToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-            this.levelToolStripMenuItem.Text = "Level";
-            // 
-            // saveChangesToolStripMenuItem
-            // 
-            this.saveChangesToolStripMenuItem.Enabled = false;
-            this.saveChangesToolStripMenuItem.Name = "saveChangesToolStripMenuItem";
-            this.saveChangesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.saveChangesToolStripMenuItem.Text = "Save Changes";
-            this.saveChangesToolStripMenuItem.Click += new System.EventHandler(this.saveChangesToolStripMenuItem_Click);
-            // 
-            // pic3
-            // 
-            this.pic3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pic3.Location = new System.Drawing.Point(0, 0);
-            this.pic3.Name = "pic3";
-            this.pic3.Size = new System.Drawing.Size(403, 440);
-            this.pic3.TabIndex = 0;
-            this.pic3.SizeChanged += new System.EventHandler(this.pic3_SizeChanged_1);
-            this.pic3.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pic3_MouseClick_1);
-            this.pic3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pic3_MouseDown_1);
-            this.pic3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pic3_MouseMove_1);
-            this.pic3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pic3_MouseUp_1);
             // 
             // MainForm
             // 
@@ -780,6 +781,7 @@
             this.splitContainer5.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).EndInit();
             this.splitContainer5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pic3)).EndInit();
             this.PanelBasicTransform.ResumeLayout(false);
             this.PanelBasicTransform.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).EndInit();
@@ -787,7 +789,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pic3)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

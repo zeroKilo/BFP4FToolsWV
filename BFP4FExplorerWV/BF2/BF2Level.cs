@@ -87,6 +87,8 @@ namespace BFP4FExplorerWV
             StringBuilder sb = new StringBuilder();
             foreach (BF2LevelObject lo in objects)
             {
+                bool foundPosition = false;
+                bool foundRotation = false;
                 foreach (string line in lo.properties)
                 {
                     if (line.StartsWith("Object.absolutePosition"))
@@ -96,6 +98,7 @@ namespace BFP4FExplorerWV
                         s += lo.position.Y.ToString().Replace(',', '.') + "/";
                         s += lo.position.Z.ToString().Replace(',', '.');
                         sb.AppendLine(s);
+                        foundPosition = true;
                     }
                     else if (line.StartsWith("Object.absolutePosition"))
                     {
@@ -104,9 +107,26 @@ namespace BFP4FExplorerWV
                         s += lo.rotation.Y.ToString().Replace(',', '.') + "/";
                         s += lo.rotation.Z.ToString().Replace(',', '.');
                         sb.AppendLine(s);
+                        foundRotation = true;
                     }
                     else
                         sb.AppendLine(line);
+                }
+                if (!foundPosition)
+                {
+                    string s = "Object.absolutePosition ";
+                    s += lo.position.X.ToString().Replace(',', '.') + "/";
+                    s += lo.position.Y.ToString().Replace(',', '.') + "/";
+                    s += lo.position.Z.ToString().Replace(',', '.');
+                    sb.AppendLine(s);
+                }
+                if (!foundRotation)
+                {
+                    string s = "Object.rotation ";
+                    s += lo.rotation.X.ToString().Replace(',', '.') + "/";
+                    s += lo.rotation.Y.ToString().Replace(',', '.') + "/";
+                    s += lo.rotation.Z.ToString().Replace(',', '.');
+                    sb.AppendLine(s);
                 }
                 sb.AppendLine();
             }
@@ -139,6 +159,7 @@ namespace BFP4FExplorerWV
                 return;
             string[] lines = Encoding.ASCII.GetString(data).Split('\n');
             int pos = 0;
+            int count = 0;
             while(pos < lines.Length)
             {
                 Log.SetProgress(0, lines.Length, pos);
@@ -147,6 +168,11 @@ namespace BFP4FExplorerWV
                     objectInfos.Add(lines[pos++].Trim());
                 LoadObject(objectInfos);
                 pos++;
+                if (count++ > 10)
+                {
+                    count = 0;
+                    GC.Collect();
+                }
             }
             Vector3 center = Vector3.Zero;
             foreach (BF2LevelObject lo in objects)

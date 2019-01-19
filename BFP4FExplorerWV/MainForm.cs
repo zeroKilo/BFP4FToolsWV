@@ -519,5 +519,30 @@ namespace BFP4FExplorerWV
             BF2Level.Save();
             MessageBox.Show("Done.");
         }
+
+        private void rtbProps_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            int n = listBox1.SelectedIndex;
+            if (n == -1)
+                return;
+            StringBuilder sb = new StringBuilder();
+            BF2LevelObject lo = BF2Level.objects[n];
+            foreach (string s in lo.properties)
+                sb.AppendLine(s);
+            TextEditor te = new TextEditor();
+            te.rtb1.Text = sb.ToString();
+            te.ShowDialog();
+            if (te._exitOk)
+            {
+                StringReader sr = new StringReader(te.rtb1.Text);
+                List<string> props = new List<string>();
+                string line;
+                while ((line = sr.ReadLine()) != null)
+                    if (line.Trim() != "")
+                        props.Add(line);
+                lo.properties = props;
+                rtbProps.Text = te.rtb1.Text;
+            }
+        }
     }
 }
