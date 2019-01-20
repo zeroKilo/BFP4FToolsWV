@@ -554,5 +554,24 @@ namespace BFP4FExplorerWV
                 rtbProps.Text = te.rtb1.Text;
             }
         }
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int n = listBox1.SelectedIndex;
+            if (n == -1)
+                return;
+            BF2Level.objects.RemoveAt(n);
+            RefreshTrees();
+        }
+
+        private void cloneToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int n = listBox1.SelectedIndex;
+            if (n == -1)
+                return;
+            BF2Level.CloneEntry(n);
+            listBox1.Items.Clear();
+            RefreshTrees();
+        }
     }
 }

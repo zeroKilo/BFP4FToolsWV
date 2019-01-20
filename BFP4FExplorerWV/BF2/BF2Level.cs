@@ -53,6 +53,44 @@ namespace BFP4FExplorerWV
             for (int i = 0; i < objects.Count; i++)
                 objects[i].SetSelected(i == idx);
         }
+
+        public static void CloneEntry(int n)
+        {
+            BF2LevelObject lo = objects[n];
+            BF2LevelObject nlo;
+            switch (lo.type)
+            {
+                case BF2LevelObject.BF2LOTYPE.StaticObject:
+                    nlo = new BF2LevelObject(lo.position, lo.rotation, BF2LevelObject.BF2LOTYPE.StaticObject);
+                    nlo._data = lo._data.ToArray();
+                    nlo._template = lo._template;
+                    nlo._name = lo._name;
+                    nlo.properties = new List<string>(lo.properties.ToArray());
+                    BF2StaticMesh stm = new BF2StaticMesh(nlo._data);
+                    if (stm == null) return;
+                    nlo.staticMeshes = stm.ConvertForEngine(engine, true);
+                    foreach (RenderObject ro in nlo.staticMeshes)
+                        nlo.transform = lo.transform;
+                    nlo._valid = true;
+                    objects.Add(nlo);
+                    break;
+                case BF2LevelObject.BF2LOTYPE.Road:
+                    nlo = new BF2LevelObject(lo.position, lo.rotation, BF2LevelObject.BF2LOTYPE.Road);
+                    nlo._data = lo._data.ToArray();
+                    nlo._template = lo._template;
+                    nlo._name = lo._name;
+                    nlo.properties = new List<string>(lo.properties.ToArray());
+                    BF2Mesh mesh = new BF2Mesh(nlo._data);
+                    if (mesh == null) return;
+                    Texture2D tex = FindRoadTexture(nlo._name);
+                    nlo.meshes = mesh.ConvertForEngine(engine, tex);
+                    foreach (RenderObject ro in nlo.meshes)
+                        ro.transform = nlo.transform;
+                    nlo._valid = true;
+                    objects.Add(nlo);
+                    break;
+            }
+        }
                 
         public static int Process3DClick(int x, int y)
         {
