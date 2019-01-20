@@ -101,7 +101,7 @@ namespace BFP4FExplorerWV
             {
                 List<RenderObject.VertexTextured> list = new List<RenderObject.VertexTextured>();
                 Vector3 p = quad.position - new Vector3(patchSize, 0, patchSize);
-                p.Y = 0;
+                p.Y = -1f;
                 uint tdx = 0;// (uint)(quad.y + numPatches / 2) * patchSize;
                 uint tdy = 0;// (uint)(quad.x + numPatches / 2) * patchSize;
                 float tx, tz, dx = primaryWorldScale.X, dz = primaryWorldScale.Z;
@@ -110,12 +110,12 @@ namespace BFP4FExplorerWV
                     {
                         tx = i * dx;
                         tz = j * dz;
-                        list.Add(new RenderObject.VertexTextured(ToV4(p + new Vector3(tx, quad.GetHeight(i, j), tz)), Color4.Black, new Vector2((tdx + j) / (float)size, (tdy + i) / (float)size)));
-                        list.Add(new RenderObject.VertexTextured(ToV4(p + new Vector3(tx + dx, quad.GetHeight(i + 1, j), tz)), Color4.Black, new Vector2((tdx + j) / (float)size, (tdy + i + 1) / (float)size)));
-                        list.Add(new RenderObject.VertexTextured(ToV4(p + new Vector3(tx, quad.GetHeight(i, j + 1), tz + dz)), Color4.Black, new Vector2((tdx + j + 1) / (float)size, (tdy + i) / (float)size)));
-                        list.Add(new RenderObject.VertexTextured(ToV4(p + new Vector3(tx, quad.GetHeight(i, j + 1), tz + dz)), Color4.Black, new Vector2((tdx + j + 1) / (float)size, (tdy + i) / (float)size)));
-                        list.Add(new RenderObject.VertexTextured(ToV4(p + new Vector3(tx + dx, quad.GetHeight(i + 1, j), tz)), Color4.Black, new Vector2((tdx + j) / (float)size, (tdy + i + 1) / (float)size)));
-                        list.Add(new RenderObject.VertexTextured(ToV4(p + new Vector3(tx + dx, quad.GetHeight(i + 1, j + 1), tz + dz)), Color4.Black, new Vector2((tdx + j + 1) / (float)size, (tdy + i + 1) / (float)size)));
+                        list.Add(new RenderObject.VertexTextured(Helper.ToV4(p + new Vector3(tx, quad.GetHeight(i, j), tz)), Color4.Black, new Vector2((tdx + j) / (float)size, (tdy + i) / (float)size)));
+                        list.Add(new RenderObject.VertexTextured(Helper.ToV4(p + new Vector3(tx + dx, quad.GetHeight(i + 1, j), tz)), Color4.Black, new Vector2((tdx + j) / (float)size, (tdy + i + 1) / (float)size)));
+                        list.Add(new RenderObject.VertexTextured(Helper.ToV4(p + new Vector3(tx, quad.GetHeight(i, j + 1), tz + dz)), Color4.Black, new Vector2((tdx + j + 1) / (float)size, (tdy + i) / (float)size)));
+                        list.Add(new RenderObject.VertexTextured(Helper.ToV4(p + new Vector3(tx, quad.GetHeight(i, j + 1), tz + dz)), Color4.Black, new Vector2((tdx + j + 1) / (float)size, (tdy + i) / (float)size)));
+                        list.Add(new RenderObject.VertexTextured(Helper.ToV4(p + new Vector3(tx + dx, quad.GetHeight(i + 1, j), tz)), Color4.Black, new Vector2((tdx + j) / (float)size, (tdy + i + 1) / (float)size)));
+                        list.Add(new RenderObject.VertexTextured(Helper.ToV4(p + new Vector3(tx + dx, quad.GetHeight(i + 1, j + 1), tz + dz)), Color4.Black, new Vector2((tdx + j + 1) / (float)size, (tdy + i + 1) / (float)size)));
                     }
                 for (int i = 0; i < list.Count; i++)
                 {
@@ -128,11 +128,6 @@ namespace BFP4FExplorerWV
             ro.verticesTextured = result.ToArray();
             GC.Collect();
             ro.InitGeometry();
-        }
-
-        private static Vector4 ToV4(Vector3 v)
-        {
-            return new Vector4(v.X, v.Y, v.Z, 1);
         }
 
         public class BF2TerrainLayer

@@ -19,6 +19,7 @@ namespace BFP4FExplorerWV
         public static Engine3D engine;
         public static BF2Terrain terrain;
         public static string name = "";
+
         public static void Load()
         {
             Stopwatch sw = new Stopwatch();
@@ -26,11 +27,14 @@ namespace BFP4FExplorerWV
             objects = new List<BF2LevelObject>();            
             engine.ClearScene();
             foreach (BF2LevelObject lo in objects)
+            {
                 lo.Free();
+                GC.Collect();
+            }
             objects.Clear();
             engine.textureManager.ClearCache();
-            GC.Collect();
             LoadTerrain();
+            LoadRoadObjects();
             LoadStaticObjects();
             Log.WriteLine("[BF2 LL] Loaded level in " + sw.ElapsedMilliseconds + "ms");
         }
@@ -40,7 +44,7 @@ namespace BFP4FExplorerWV
             List<string> result = new List<string>();
             int count = 0;
             foreach (BF2LevelObject lo in objects)
-                result.Add((count++).ToString("D4") + " : " + lo._template);
+                result.Add((count++).ToString("D4") + " : " + lo._name);
             return result;
         }
 
@@ -78,7 +82,13 @@ namespace BFP4FExplorerWV
 
         public static void Save()
         {
-            BF2FileSystem.BF2FSEntry e = BF2FileSystem.FindEntryFromIngamePath("level\\StaticObjects.con");
+            SaveStaticObjects();
+            SaveRoadObjects();
+        }
+
+        public static void SaveStaticObjects()
+        {
+            BF2FileSystem.BF2FSEntry e = BF2FileSystem.FindEntryFromIngamePath("Levels\\" + name + "\\StaticObjects.con");
             if (e == null)
                 return;
             byte[] data = BF2FileSystem.GetFileFromZip(e.zipFile, e.inZipPath);
@@ -86,50 +96,93 @@ namespace BFP4FExplorerWV
                 return;
             StringBuilder sb = new StringBuilder();
             foreach (BF2LevelObject lo in objects)
-            {
-                bool foundPosition = false;
-                bool foundRotation = false;
-                foreach (string line in lo.properties)
+                if (lo.type == BF2LevelObject.BF2LOTYPE.StaticObject)
                 {
-                    if (line.StartsWith("Object.absolutePosition"))
+                    bool foundPosition = false;
+                    bool foundRotation = false;
+                    foreach (string line in lo.properties)
+                    {
+                        if (line.StartsWith("Object.absolutePosition"))
+                        {
+                            string s = "Object.absolutePosition ";
+                            s += lo.position.X.ToString().Replace(',', '.') + "/";
+                            s += lo.position.Y.ToString().Replace(',', '.') + "/";
+                            s += lo.position.Z.ToString().Replace(',', '.');
+                            sb.AppendLine(s);
+                            foundPosition = true;
+                        }
+                        else if (line.StartsWith("Object.absolutePosition"))
+                        {
+                            string s = "Object.rotation ";
+                            s += lo.rotation.X.ToString().Replace(',', '.') + "/";
+                            s += lo.rotation.Y.ToString().Replace(',', '.') + "/";
+                            s += lo.rotation.Z.ToString().Replace(',', '.');
+                            sb.AppendLine(s);
+                            foundRotation = true;
+                        }
+                        else
+                            sb.AppendLine(line);
+                    }
+                    if (!foundPosition)
                     {
                         string s = "Object.absolutePosition ";
                         s += lo.position.X.ToString().Replace(',', '.') + "/";
                         s += lo.position.Y.ToString().Replace(',', '.') + "/";
                         s += lo.position.Z.ToString().Replace(',', '.');
                         sb.AppendLine(s);
-                        foundPosition = true;
                     }
-                    else if (line.StartsWith("Object.absolutePosition"))
+                    if (!foundRotation)
                     {
                         string s = "Object.rotation ";
                         s += lo.rotation.X.ToString().Replace(',', '.') + "/";
                         s += lo.rotation.Y.ToString().Replace(',', '.') + "/";
                         s += lo.rotation.Z.ToString().Replace(',', '.');
                         sb.AppendLine(s);
-                        foundRotation = true;
                     }
-                    else
-                        sb.AppendLine(line);
+                    sb.AppendLine();
                 }
-                if (!foundPosition)
+            sb.AppendLine();
+            byte[] dataNew = Encoding.ASCII.GetBytes(sb.ToString());
+            BF2FileSystem.SetFileFromEntry(e, dataNew);
+        }
+
+        public static void SaveRoadObjects()
+        {
+            BF2FileSystem.BF2FSEntry e = BF2FileSystem.FindEntryFromIngamePath("Levels\\" + name + "\\CompiledRoads.con");
+            if (e == null)
+                return;
+            byte[] data = BF2FileSystem.GetFileFromZip(e.zipFile, e.inZipPath);
+            if (data == null)
+                return;
+            StringBuilder sb = new StringBuilder();
+            foreach (BF2LevelObject lo in objects)
+                if (lo.type == BF2LevelObject.BF2LOTYPE.Road)
                 {
-                    string s = "Object.absolutePosition ";
-                    s += lo.position.X.ToString().Replace(',', '.') + "/";
-                    s += lo.position.Y.ToString().Replace(',', '.') + "/";
-                    s += lo.position.Z.ToString().Replace(',', '.');
-                    sb.AppendLine(s);
+                    bool foundPosition = false;
+                    foreach (string line in lo.properties)
+                    {
+                        if (line.StartsWith("object.absoluteposition"))
+                        {
+                            string s = "object.absoluteposition ";
+                            s += lo.position.X.ToString().Replace(',', '.') + "/";
+                            s += lo.position.Y.ToString().Replace(',', '.') + "/";
+                            s += lo.position.Z.ToString().Replace(',', '.');
+                            sb.AppendLine(s);
+                            foundPosition = true;
+                        }
+                        else
+                            sb.AppendLine(line);
+                    }
+                    if (!foundPosition)
+                    {
+                        string s = "object.absoluteposition ";
+                        s += lo.position.X.ToString().Replace(',', '.') + "/";
+                        s += lo.position.Y.ToString().Replace(',', '.') + "/";
+                        s += lo.position.Z.ToString().Replace(',', '.');
+                        sb.AppendLine(s);
+                    }
+                    sb.AppendLine();
                 }
-                if (!foundRotation)
-                {
-                    string s = "Object.rotation ";
-                    s += lo.rotation.X.ToString().Replace(',', '.') + "/";
-                    s += lo.rotation.Y.ToString().Replace(',', '.') + "/";
-                    s += lo.rotation.Z.ToString().Replace(',', '.');
-                    sb.AppendLine(s);
-                }
-                sb.AppendLine();
-            }
             sb.AppendLine();
             byte[] dataNew = Encoding.ASCII.GetBytes(sb.ToString());
             BF2FileSystem.SetFileFromEntry(e, dataNew);
@@ -151,6 +204,7 @@ namespace BFP4FExplorerWV
 
         private static void LoadStaticObjects()
         {
+            Log.WriteLine("[BF2 LL] Loading static objects...");
             BF2FileSystem.BF2FSEntry e = BF2FileSystem.FindEntryFromIngamePath("Levels\\" + name + "\\StaticObjects.con");
             if (e == null)
                 return;
@@ -166,7 +220,7 @@ namespace BFP4FExplorerWV
                 List<string> objectInfos = new List<string>();
                 while (lines[pos].Trim() != "")
                     objectInfos.Add(lines[pos++].Trim());
-                LoadObject(objectInfos);
+                LoadStaticObject(objectInfos);
                 pos++;
                 if (count++ > 10)
                 {
@@ -182,7 +236,41 @@ namespace BFP4FExplorerWV
             Log.SetProgress(0, lines.Length, 0);
         }
 
-        private static void LoadObject(List<string> infos)
+        private static void LoadRoadObjects()
+        {
+            Log.WriteLine("[BF2 LL] Loading roads...");
+            BF2FileSystem.BF2FSEntry e = BF2FileSystem.FindEntryFromIngamePath("Levels\\" + name + "\\CompiledRoads.con");
+            if (e == null)
+                return;
+            byte[] data = BF2FileSystem.GetFileFromZip(e.zipFile, e.inZipPath);
+            if (data == null)
+                return;
+            string[] lines = Encoding.ASCII.GetString(data).Split('\n');
+            int pos = 0;
+            int count = 0;
+            while (pos < lines.Length)
+            {
+                Log.SetProgress(0, lines.Length, pos);
+                List<string> objectInfos = new List<string>();
+                while (lines[pos].Trim() != "")
+                    objectInfos.Add(lines[pos++].Trim());
+                LoadRoadObject(objectInfos);
+                pos++;
+                if (count++ > 10)
+                {
+                    count = 0;
+                    GC.Collect();
+                }
+            }
+            Vector3 center = Vector3.Zero;
+            foreach (BF2LevelObject lo in objects)
+                center += lo.position;
+            center /= objects.Count();
+            engine.CamPos = center;
+            Log.SetProgress(0, lines.Length, 0);
+        }
+
+        private static void LoadStaticObject(List<string> infos)
         {
             string templateName = Helper.FindLineStartingWith(infos, "Object.create");
             if (templateName == null) return;
@@ -196,19 +284,20 @@ namespace BFP4FExplorerWV
             BF2LevelObject lo = null;
             bool foundCached = false;
             foreach(BF2LevelObject obj in objects)
-                if (obj._template == templateName)
+                if (obj._template == templateName && obj.type == BF2LevelObject.BF2LOTYPE.StaticObject)
                 {
                     lo = new BF2LevelObject(pos, rot, obj.type);
                     lo._template = templateName;
+                    lo._name = templateName;
                     lo._data = obj._data.ToArray();
                     lo.properties = infos;
                     switch (obj.type)
                     {
-                        case BF2LevelObject.BF2LOTYPE.StaticMesh:
+                        case BF2LevelObject.BF2LOTYPE.StaticObject:
                             BF2StaticMesh stm = new BF2StaticMesh(lo._data);
                             if (stm == null) return;
-                            lo.stm = stm.ConvertForEngine(engine, true);
-                            foreach (RenderObject ro in lo.stm)
+                            lo.staticMeshes = stm.ConvertForEngine(engine, true);
+                            foreach (RenderObject ro in lo.staticMeshes)
                                 ro.transform = lo.transform;
                             lo._valid = true;
                             foundCached = true;
@@ -229,13 +318,14 @@ namespace BFP4FExplorerWV
                 switch (parts[1].ToLower())
                 {
                     case "staticmesh":
-                        lo = new BF2LevelObject(pos, rot, BF2LevelObject.BF2LOTYPE.StaticMesh);
+                        lo = new BF2LevelObject(pos, rot, BF2LevelObject.BF2LOTYPE.StaticObject);
                         lo._template = templateName;
+                        lo._name = templateName;
                         lo.properties = infos;
                         BF2StaticMesh stm = LoadStaticMesh(infosObject, lo);
                         if (stm == null) return;
-                        lo.stm = stm.ConvertForEngine(engine, true);
-                        foreach (RenderObject ro in lo.stm)
+                        lo.staticMeshes = stm.ConvertForEngine(engine, true);
+                        foreach (RenderObject ro in lo.staticMeshes)
                             ro.transform = lo.transform;
                         lo._valid = true;
                         break;
@@ -243,6 +333,84 @@ namespace BFP4FExplorerWV
             }
             if (lo != null && lo._valid)
                 objects.Add(lo);
+        }
+
+        private static void LoadRoadObject(List<string> infos)
+        {
+            string objectName = Helper.FindLineStartingWith(infos, "object.create");
+            if(objectName == null) return;
+            string meshName = Helper.FindLineStartingWith(infos, "object.geometry.loadMesh");
+            if (meshName == null) return;
+            string position = Helper.FindLineStartingWith(infos, "object.absolutePosition");
+            Vector3 pos = Vector3.Zero;
+            Vector3 rot = Vector3.Zero;
+            if (position != null) pos = Helper.ParseVector3(position.Split(' ')[1]);
+            objectName = objectName.Split(' ')[1];
+            meshName = meshName.Split(' ')[1];
+            BF2LevelObject lo = null;
+            bool foundCached = false;
+            foreach (BF2LevelObject obj in objects)
+                if (obj._template == meshName && obj.type == BF2LevelObject.BF2LOTYPE.Road)
+                {
+                    lo = new BF2LevelObject(pos, rot, obj.type);
+                    lo._template = meshName;
+                    lo._name = objectName;
+                    lo._data = obj._data.ToArray();
+                    lo.properties = infos;
+                    switch (obj.type)
+                    {
+                        case BF2LevelObject.BF2LOTYPE.Road:
+                            BF2Mesh mesh = new BF2Mesh(lo._data);
+                            if (mesh == null) return;
+                            Texture2D tex = FindRoadTexture(lo._name);
+                            lo.meshes = mesh.ConvertForEngine(engine, tex);
+                            foreach (RenderObject ro in lo.meshes)
+                                ro.transform = lo.transform;
+                            lo._valid = true;
+                            foundCached = true;
+                            break;
+                    }
+                    break;
+                }
+            if (!foundCached)
+            {
+                lo = new BF2LevelObject(pos, rot, BF2LevelObject.BF2LOTYPE.Road);
+                BF2FileSystem.BF2FSEntry entry = BF2FileSystem.FindFirstEntry(meshName);
+                lo._data = BF2FileSystem.GetFileFromEntry(entry);
+                if (lo._data == null)
+                    return;
+                lo._template = meshName;
+                lo._name = objectName;
+                lo.properties = infos;
+                BF2Mesh mesh = new BF2Mesh(lo._data);
+                if (mesh == null) return;
+                Texture2D tex = FindRoadTexture(lo._name);
+                lo.meshes = mesh.ConvertForEngine(engine, tex);
+                foreach (RenderObject ro in lo.meshes)
+                    ro.transform = lo.transform;
+                lo._valid = true;
+            }
+            if (lo != null && lo._valid)
+                objects.Add(lo);
+        }
+
+        private static Texture2D FindRoadTexture(string templateName)
+        {
+            Texture2D result = null;
+            BF2FileSystem.BF2FSEntry e = BF2FileSystem.FindEntryFromIngamePath("objects\\roads\\Splines\\" + templateName + ".con");
+            if (e == null)
+                return result;
+            byte[] data = BF2FileSystem.GetFileFromZip(e.zipFile, e.inZipPath);
+            if (data == null)
+                return result;
+            List<string> lines = new List<string>(Encoding.ASCII.GetString(data).Split('\n'));
+            string texName = Helper.FindLineStartingWith(lines, "RoadTemplateTexture.SetTextureFile");
+            if (texName == null) return result;
+            texName = texName.Split(' ')[1].Replace("\"", "").Trim() + ".dds";
+            result = engine.textureManager.FindTextureByPath(texName);
+            if(result == null)
+                result = engine.defaultTexture;
+            return result;
         }
 
         private static BF2StaticMesh LoadStaticMesh(List<string> infos, BF2LevelObject lo)

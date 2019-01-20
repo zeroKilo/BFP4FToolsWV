@@ -104,6 +104,11 @@ namespace BFP4FExplorerWV
             return Encoding.ASCII.GetString(m.ToArray());
         }
 
+        public static Vector4 ToV4(Vector3 v)
+        {
+            return new Vector4(v.X, v.Y, v.Z, 1);
+        }
+
         public static Bitmap LoadBitmapUnlocked(string file_name)
         {
             using (Bitmap bm = new Bitmap(file_name))

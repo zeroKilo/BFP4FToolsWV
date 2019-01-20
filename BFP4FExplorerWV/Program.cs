@@ -19,11 +19,11 @@ namespace BFP4FExplorerWV
             Application.SetCompatibleTextRenderingDefault(false);
 
             //OpenFileDialog d = new OpenFileDialog();
-            //d.Filter = "*.collisionmesh|*.collisionmesh";
+            //d.Filter = "*.mesh|*.mesh";
             //if (d.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             //{
             //    byte[] data = File.ReadAllBytes(d.FileName);
-            //    BF2CollisionMesh skm = new BF2CollisionMesh(data);
+            //    BF2Mesh skm = new BF2Mesh(data);
             //}
 
             //return;

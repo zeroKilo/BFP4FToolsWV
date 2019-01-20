@@ -424,6 +424,8 @@ namespace BFP4FExplorerWV
             if (n == -1 || !allowEdit)
                 return;
             BF2LevelObject lo = BF2Level.objects[n];
+            if (lo.type != BF2LevelObject.BF2LOTYPE.StaticObject)
+                return;
             lo.rotation.X = trackBar1.Value / 10f;
             lo.RefreshTransform();
         }
@@ -434,6 +436,8 @@ namespace BFP4FExplorerWV
             if (n == -1 || !allowEdit)
                 return;
             BF2LevelObject lo = BF2Level.objects[n];
+            if (lo.type != BF2LevelObject.BF2LOTYPE.StaticObject)
+                return;
             lo.rotation.Y = trackBar2.Value / 10f;
             lo.RefreshTransform();
         }
@@ -444,6 +448,8 @@ namespace BFP4FExplorerWV
             if (n == -1 || !allowEdit)
                 return;
             BF2LevelObject lo = BF2Level.objects[n];
+            if (lo.type != BF2LevelObject.BF2LOTYPE.StaticObject)
+                return;
             lo.rotation.Z = trackBar3.Value / 10f;
             lo.RefreshTransform();
         }
@@ -462,6 +468,10 @@ namespace BFP4FExplorerWV
             trackBar1.Value = NormRot(lo.rotation.X);
             trackBar2.Value = NormRot(lo.rotation.Y);
             trackBar3.Value = NormRot(lo.rotation.Z);
+            bool enabled = true;
+            if (lo.type == BF2LevelObject.BF2LOTYPE.Road)
+                enabled = false;
+            trackBar1.Enabled = trackBar2.Enabled = trackBar3.Enabled = enabled;
             StringBuilder sb = new StringBuilder();
             foreach (string s in lo.properties)
                 sb.AppendLine(s);

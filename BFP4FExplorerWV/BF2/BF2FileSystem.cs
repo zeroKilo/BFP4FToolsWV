@@ -202,16 +202,17 @@ namespace BFP4FExplorerWV
 
         public static BF2FSEntry FindFirstEntry(string path)
         {
+            path = path.ToLower();
             BF2FSEntry entry = null;
             foreach (BF2FSEntry e in clientFS)
-                if (e.inFSPath.Contains(path))
+                if (e.inFSPath.ToLower().Contains(path))
                 {
                     entry = e;
                     break;
                 }
             if (entry == null)
                 foreach (BF2FSEntry e in serverFS)
-                    if (e.inFSPath.Contains(path))
+                    if (e.inFSPath.ToLower().Contains(path))
                     {
                         entry = e;
                         break;
