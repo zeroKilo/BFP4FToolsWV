@@ -18,8 +18,14 @@ namespace BFP4FLauncherWV
                 case 0x28:
                     Login(p, pi, ns);
                     break;
+                case 0x64:
+                    ListPersonas(p, pi, ns);
+                    break;
                 case 0x6E:
                     LoginPersona(p, pi, ns);
+                    break;
+                case 0x78:
+                    LogoutPersona(p, pi, ns);
                     break;
             }
         }
@@ -82,6 +88,7 @@ namespace BFP4FLauncherWV
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
         }
+
         public static void LoginPersona(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
         {
             uint t = Blaze.GetUnixTimeStamp();
@@ -108,5 +115,33 @@ namespace BFP4FLauncherWV
             AsyncUserSessions.NotifyUserStatus(pi, p, pi, ns);
         }
 
+        public static void LogoutPersona(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
+        {
+            List<Blaze.Tdf> result = new List<Blaze.Tdf>();
+            byte[] buff = Blaze.CreatePacket(p.Component, p.Command, 0, 0x1000, p.ID, result);
+            ns.Write(buff, 0, buff.Length);
+            ns.Flush(); 
+
+            AsyncUserSessions.NotifyUserRemoved(pi, p, pi.userId, ns);
+            AsyncUserSessions.NotifyUserStatus(pi, p, pi, ns);
+        }
+
+        public static void ListPersonas(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
+        {
+            List<Blaze.Tdf> result = new List<Blaze.Tdf>();
+            List<Blaze.TdfStruct> entries = new List<Blaze.TdfStruct>();
+                List<Blaze.Tdf> e = new List<Blaze.Tdf>();
+                    e.Add(Blaze.TdfString.Create("DSNM", pi.profile.name));
+                    e.Add(Blaze.TdfInteger.Create("LAST", Blaze.GetUnixTimeStamp()));
+                    e.Add(Blaze.TdfInteger.Create("PID\0", pi.profile.id));
+                    e.Add(Blaze.TdfInteger.Create("STAS", 2));
+                    e.Add(Blaze.TdfInteger.Create("XREF", 0));
+                    e.Add(Blaze.TdfInteger.Create("XTYP", 0));
+                entries.Add(Blaze.TdfStruct.Create("0", e));
+            result.Add(Blaze.TdfList.Create("PINF", 3, 1, entries));
+            byte[] buff = Blaze.CreatePacket(p.Component, p.Command, 0, 0x1000, p.ID, result);
+            ns.Write(buff, 0, buff.Length);
+            ns.Flush();
+        }
     }
 }
