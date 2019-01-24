@@ -15,6 +15,19 @@ namespace BFP4FExplorerWV
 {
     public static class Helper
     {
+        public static void ConvertDFMSWF(string filename)
+        {
+            byte[] key = { 0x0B, 0xAD, 0xF0, 0x0D };
+            byte[] data = File.ReadAllBytes(filename);
+            for (int i = 0; i < data.Length; i++)
+                data[i] ^= key[i % 4];
+            if (filename.ToLower().EndsWith(".dfm"))
+                filename = filename.Substring(0, filename.Length - 4) + ".swf";
+            else
+                filename = filename.Substring(0, filename.Length - 4) + ".dfm";
+            File.WriteAllBytes(filename, data);
+        }
+
         public static void RunShell(string file, string command)
         {
             Process process = new System.Diagnostics.Process();

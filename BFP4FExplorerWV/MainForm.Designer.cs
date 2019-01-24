@@ -60,6 +60,9 @@
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
             this.listBox1 = new System.Windows.Forms.ListBox();
+            this.contextMenuLevel = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cloneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rtbProps = new System.Windows.Forms.RichTextBox();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.pic3 = new BFP4FExplorerWV.SelectablePictureBox();
@@ -84,9 +87,8 @@
             this.consoleBox = new System.Windows.Forms.RichTextBox();
             this.renderTimerMeshes = new System.Windows.Forms.Timer(this.components);
             this.renderTimerLevel = new System.Windows.Forms.Timer(this.components);
-            this.contextMenuLevel = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cloneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.convertDFMSWFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -118,6 +120,7 @@
             this.splitContainer6.Panel1.SuspendLayout();
             this.splitContainer6.Panel2.SuspendLayout();
             this.splitContainer6.SuspendLayout();
+            this.contextMenuLevel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).BeginInit();
             this.splitContainer5.Panel1.SuspendLayout();
             this.splitContainer5.Panel2.SuspendLayout();
@@ -128,7 +131,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.menuStrip1.SuspendLayout();
-            this.contextMenuLevel.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -481,6 +483,28 @@
             this.listBox1.TabStop = false;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged_1);
             // 
+            // contextMenuLevel
+            // 
+            this.contextMenuLevel.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.deleteToolStripMenuItem,
+            this.cloneToolStripMenuItem});
+            this.contextMenuLevel.Name = "contextMenuLevel";
+            this.contextMenuLevel.Size = new System.Drawing.Size(106, 48);
+            // 
+            // deleteToolStripMenuItem
+            // 
+            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
+            this.deleteToolStripMenuItem.Text = "Delete";
+            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
+            // 
+            // cloneToolStripMenuItem
+            // 
+            this.cloneToolStripMenuItem.Name = "cloneToolStripMenuItem";
+            this.cloneToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
+            this.cloneToolStripMenuItem.Text = "Clone";
+            this.cloneToolStripMenuItem.Click += new System.EventHandler(this.cloneToolStripMenuItem_Click);
+            // 
             // rtbProps
             // 
             this.rtbProps.DetectUrls = false;
@@ -669,7 +693,8 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileSystemToolStripMenuItem,
-            this.levelToolStripMenuItem});
+            this.levelToolStripMenuItem,
+            this.toolsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(747, 24);
@@ -703,7 +728,7 @@
             // 
             this.saveChangesToolStripMenuItem.Enabled = false;
             this.saveChangesToolStripMenuItem.Name = "saveChangesToolStripMenuItem";
-            this.saveChangesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveChangesToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.saveChangesToolStripMenuItem.Text = "Save Changes";
             this.saveChangesToolStripMenuItem.Click += new System.EventHandler(this.saveChangesToolStripMenuItem_Click);
             // 
@@ -730,27 +755,20 @@
             this.renderTimerLevel.Interval = 50;
             this.renderTimerLevel.Tick += new System.EventHandler(this.renderTimerLevel_Tick);
             // 
-            // contextMenuLevel
+            // toolsToolStripMenuItem
             // 
-            this.contextMenuLevel.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.deleteToolStripMenuItem,
-            this.cloneToolStripMenuItem});
-            this.contextMenuLevel.Name = "contextMenuLevel";
-            this.contextMenuLevel.Size = new System.Drawing.Size(106, 48);
+            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.convertDFMSWFToolStripMenuItem});
+            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.toolsToolStripMenuItem.Text = "Tools";
             // 
-            // deleteToolStripMenuItem
+            // convertDFMSWFToolStripMenuItem
             // 
-            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.deleteToolStripMenuItem.Text = "Delete";
-            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
-            // 
-            // cloneToolStripMenuItem
-            // 
-            this.cloneToolStripMenuItem.Name = "cloneToolStripMenuItem";
-            this.cloneToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.cloneToolStripMenuItem.Text = "Clone";
-            this.cloneToolStripMenuItem.Click += new System.EventHandler(this.cloneToolStripMenuItem_Click);
+            this.convertDFMSWFToolStripMenuItem.Name = "convertDFMSWFToolStripMenuItem";
+            this.convertDFMSWFToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.convertDFMSWFToolStripMenuItem.Text = "Convert DFM<->SWF";
+            this.convertDFMSWFToolStripMenuItem.Click += new System.EventHandler(this.convertDFMSWFToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -804,6 +822,7 @@
             this.splitContainer6.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).EndInit();
             this.splitContainer6.ResumeLayout(false);
+            this.contextMenuLevel.ResumeLayout(false);
             this.splitContainer5.Panel1.ResumeLayout(false);
             this.splitContainer5.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).EndInit();
@@ -816,7 +835,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.contextMenuLevel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -881,5 +899,7 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuLevel;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cloneToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem convertDFMSWFToolStripMenuItem;
     }
 }

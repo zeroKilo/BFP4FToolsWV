@@ -573,5 +573,16 @@ namespace BFP4FExplorerWV
             listBox1.Items.Clear();
             RefreshTrees();
         }
+
+        private void convertDFMSWFToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog d = new OpenFileDialog();
+            d.Filter = "*.dfm;*swf|*.dfm;*.swf";
+            if (d.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                Helper.ConvertDFMSWF(d.FileName);
+                MessageBox.Show("Done.");
+            }
+        }
     }
 }
