@@ -32,10 +32,12 @@ namespace BFP4FExplorerWV
                 geomat.Add(new Helper.BF2MeshSKMGeometryMaterial(m));
         }
 
-        public List<RenderObject> ConvertForEngine(Engine3D engine, bool loadTextures)
+        public List<RenderObject> ConvertForEngine(Engine3D engine, bool loadTextures, int geoMatIdx)
         {
             List<RenderObject> result = new List<RenderObject>();
-            Helper.BF2MeshSKMGeometryMaterial lod0 = geomat[0];
+            if (geoMatIdx >= geomat.Count)
+                geoMatIdx = geomat.Count() - 1;
+            Helper.BF2MeshSKMGeometryMaterial lod0 = geomat[geoMatIdx];
             for (int i = 0; i < lod0.numMaterials; i++)
             {
                 Helper.BF2MeshSKMMaterial mat = lod0.materials[i];

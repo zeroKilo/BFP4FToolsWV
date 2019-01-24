@@ -49,6 +49,7 @@ namespace BFP4FExplorerWV
             engineLevelExplorer.renderLevel = true;
             renderTimerMeshes.Enabled = true;
             renderTimerLevel.Enabled = true;
+            toolStripComboBox1.SelectedIndex = 0;
             init = true;
         }
 
@@ -172,6 +173,13 @@ namespace BFP4FExplorerWV
 
         private void tv2_AfterSelect(object sender, TreeViewEventArgs e)
         {
+            PickMesh();
+        }
+
+        private void PickMesh()
+        {
+            if (tv2.SelectedNode == null)
+                return;
             engineMeshExplorer.ClearScene();
             byte[] data = BF2FileSystem.GetFileFromNode(tv2.SelectedNode);
             if (data == null)
@@ -181,15 +189,15 @@ namespace BFP4FExplorerWV
             {
                 case ".staticmesh":
                     BF2StaticMesh stm = new BF2StaticMesh(data);
-                    engineMeshExplorer.objects.AddRange(stm.ConvertForEngine(engineMeshExplorer, toolStripButton3.Checked));
+                    engineMeshExplorer.objects.AddRange(stm.ConvertForEngine(engineMeshExplorer, toolStripButton3.Checked, toolStripComboBox1.SelectedIndex));
                     break;
                 case ".bundledmesh":
                     BF2BundledMesh bm = new BF2BundledMesh(data);
-                    engineMeshExplorer.objects.AddRange(bm.ConvertForEngine(engineMeshExplorer, toolStripButton3.Checked));
+                    engineMeshExplorer.objects.AddRange(bm.ConvertForEngine(engineMeshExplorer, toolStripButton3.Checked, toolStripComboBox1.SelectedIndex));
                     break;
                 case ".skinnedmesh":
                     BF2SkinnedMesh skm = new BF2SkinnedMesh(data);
-                    engineMeshExplorer.objects.AddRange(skm.ConvertForEngine(engineMeshExplorer, toolStripButton3.Checked));
+                    engineMeshExplorer.objects.AddRange(skm.ConvertForEngine(engineMeshExplorer, toolStripButton3.Checked, toolStripComboBox1.SelectedIndex));
                     break;
                 case ".collisionmesh":
                     BF2CollisionMesh cm = new BF2CollisionMesh(data);
@@ -269,15 +277,16 @@ namespace BFP4FExplorerWV
 
         private void contextMenuMeshes_Opening(object sender, CancelEventArgs e)
         {
+            exportAsObjToolStripMenuItem.Enabled = true;
             if (tv2.SelectedNode == null)
             {
-                e.Cancel = true;
+                exportAsObjToolStripMenuItem.Enabled = false;
                 return;
             }
             byte[] data = BF2FileSystem.GetFileFromNode(tv2.SelectedNode);
             if (data == null)
             {
-                e.Cancel = true;
+                exportAsObjToolStripMenuItem.Enabled = false;
                 return;
             }
             string ending = Path.GetExtension(BF2FileSystem.GetPathFromNode(tv2.SelectedNode)).ToLower();
@@ -289,7 +298,7 @@ namespace BFP4FExplorerWV
                 case ".collisionmesh":
                     break;
                 default:
-                    e.Cancel = true;
+                    exportAsObjToolStripMenuItem.Enabled = false;
                     return;
             }
         }
@@ -308,13 +317,13 @@ namespace BFP4FExplorerWV
                 switch (ext)
                 {
                     case ".staticmesh":
-                        ExporterObj.Export(new BF2StaticMesh(data), dlg.FileName);
+                        ExporterObj.Export(new BF2StaticMesh(data), dlg.FileName, toolStripComboBox1.SelectedIndex);
                         break;
                     case ".bundledmesh":
-                        ExporterObj.Export(new BF2BundledMesh(data), dlg.FileName);
+                        ExporterObj.Export(new BF2BundledMesh(data), dlg.FileName, toolStripComboBox1.SelectedIndex);
                         break;
                     case ".skinnedmesh":
-                        ExporterObj.Export(new BF2SkinnedMesh(data), dlg.FileName);
+                        ExporterObj.Export(new BF2SkinnedMesh(data), dlg.FileName, toolStripComboBox1.SelectedIndex);
                         break;
                     case ".collisionmesh":
                         ExporterObj.Export(new BF2CollisionMesh(data), dlg.FileName);
@@ -582,6 +591,93 @@ namespace BFP4FExplorerWV
             {
                 Helper.ConvertDFMSWF(d.FileName);
                 MessageBox.Show("Done.");
+            }
+        }
+
+        private void toolStripComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            toolStripComboBox1.Enabled = false;
+            PickMesh();
+            toolStripComboBox1.Enabled = true;
+        }
+
+        private void CheckAndMakeDir(string dir)
+        {
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+        }
+
+        private void exportALLAsObjToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            exportALLAsObjToolStripMenuItem.Enabled = false;
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                string basePath = fbd.SelectedPath + "\\";
+                pb1.Maximum = BF2FileSystem.clientFS.Count;
+                int count = 0;
+                foreach (BF2FileSystem.BF2FSEntry entry in BF2FileSystem.clientFS)
+                {
+                    pb1.Value = count++;
+                    try
+                    {
+                        string ending = Path.GetExtension(entry.inFSPath).ToLower();
+                        switch (ending)
+                        {
+                            case ".staticmesh":
+                            case ".bundledmesh":
+                            case ".skinnedmesh":
+                            case ".collisionmesh":
+                                break;
+                            default:
+                                continue;
+                        }
+                        string path = basePath + Path.GetDirectoryName(entry.inFSPath);
+                        byte[] data = BF2FileSystem.GetFileFromEntry(entry);
+                        if (data == null)
+                            continue;
+                        switch (ending)
+                        {
+                            case ".staticmesh":
+                                CheckAndMakeDir(path);
+                                path += "\\" + Path.GetFileNameWithoutExtension(entry.inFSPath);
+                                Log.WriteLine("Exporting \"" + path + ".staticmesh\"...");
+                                BF2StaticMesh stm = new BF2StaticMesh(data);
+                                for (int i = 0; i < stm.geomat.Count; i++)
+                                    ExporterObj.Export(stm, path + ".lod" + i + ".obj", i);
+                                break;
+                            case ".bundledmesh":
+                                CheckAndMakeDir(path);
+                                path += "\\" + Path.GetFileNameWithoutExtension(entry.inFSPath);
+                                Log.WriteLine("Exporting \"" + path + ".bundledmesh\"...");
+                                BF2BundledMesh bm = new BF2BundledMesh(data);
+                                for (int i = 0; i < bm.geomat.Count; i++)
+                                    ExporterObj.Export(bm, path + ".lod" + i + ".obj", i);
+                                break;
+                            case ".skinnedmesh":
+                                CheckAndMakeDir(path);
+                                path += "\\" + Path.GetFileNameWithoutExtension(entry.inFSPath);
+                                Log.WriteLine("Exporting \"" + path + ".skinnedmesh\"...");
+                                BF2SkinnedMesh skm = new BF2SkinnedMesh(data);
+                                for (int i = 0; i < skm.geomat.Count; i++)
+                                    ExporterObj.Export(skm, path + ".lod" + i + ".obj", i);
+                                break;
+                            case ".collisionmesh":
+                                CheckAndMakeDir(path);
+                                path += "\\" + Path.GetFileNameWithoutExtension(entry.inFSPath);
+                                Log.WriteLine("Exporting \"" + path + ".bundledmesh\"...");
+                                ExporterObj.Export(new BF2CollisionMesh(data), path + ".obj");
+                                break;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.WriteLine("ERROR: " + ex.Message);
+                    }
+                    Application.DoEvents();
+                }
+                pb1.Value = 0;
+                exportALLAsObjToolStripMenuItem.Enabled = true;
             }
         }
     }

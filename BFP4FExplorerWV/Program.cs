@@ -19,11 +19,11 @@ namespace BFP4FExplorerWV
             Application.SetCompatibleTextRenderingDefault(false);
 
             //OpenFileDialog d = new OpenFileDialog();
-            //d.Filter = "*.mesh|*.mesh";
+            //d.Filter = "*.bundledmesh|*.bundledmesh";
             //if (d.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             //{
             //    byte[] data = File.ReadAllBytes(d.FileName);
-            //    BF2Mesh skm = new BF2Mesh(data);
+            //    BF2BundledMesh skm = new BF2BundledMesh(data);
             //}
 
             //return;

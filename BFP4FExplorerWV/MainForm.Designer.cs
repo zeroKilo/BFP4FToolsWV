@@ -52,6 +52,9 @@
             this.contextMenuMeshes = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.exportAsObjToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripTextBox2 = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
@@ -84,11 +87,12 @@
             this.mountLevelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.levelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveChangesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.convertDFMSWFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.consoleBox = new System.Windows.Forms.RichTextBox();
             this.renderTimerMeshes = new System.Windows.Forms.Timer(this.components);
             this.renderTimerLevel = new System.Windows.Forms.Timer(this.components);
-            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.convertDFMSWFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportALLAsObjToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -340,7 +344,7 @@
             this.splitContainer3.Panel2.AutoScroll = true;
             this.splitContainer3.Panel2.Controls.Add(this.pic2);
             this.splitContainer3.Size = new System.Drawing.Size(733, 440);
-            this.splitContainer3.SplitterDistance = 351;
+            this.splitContainer3.SplitterDistance = 415;
             this.splitContainer3.TabIndex = 1;
             // 
             // tv2
@@ -351,36 +355,69 @@
             this.tv2.HideSelection = false;
             this.tv2.Location = new System.Drawing.Point(0, 25);
             this.tv2.Name = "tv2";
-            this.tv2.Size = new System.Drawing.Size(351, 415);
+            this.tv2.Size = new System.Drawing.Size(415, 415);
             this.tv2.TabIndex = 0;
             this.tv2.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tv2_AfterSelect);
             // 
             // contextMenuMeshes
             // 
             this.contextMenuMeshes.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.exportAsObjToolStripMenuItem});
+            this.exportAsObjToolStripMenuItem,
+            this.exportALLAsObjToolStripMenuItem});
             this.contextMenuMeshes.Name = "contextMenuMeshes";
-            this.contextMenuMeshes.Size = new System.Drawing.Size(151, 26);
+            this.contextMenuMeshes.Size = new System.Drawing.Size(171, 70);
             this.contextMenuMeshes.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuMeshes_Opening);
             // 
             // exportAsObjToolStripMenuItem
             // 
             this.exportAsObjToolStripMenuItem.Name = "exportAsObjToolStripMenuItem";
-            this.exportAsObjToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.exportAsObjToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
             this.exportAsObjToolStripMenuItem.Text = "Export as obj...";
             this.exportAsObjToolStripMenuItem.Click += new System.EventHandler(this.exportAsObjToolStripMenuItem_Click);
             // 
             // toolStrip2
             // 
             this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripLabel1,
+            this.toolStripComboBox1,
+            this.toolStripSeparator1,
             this.toolStripTextBox2,
             this.toolStripButton2,
             this.toolStripButton3});
             this.toolStrip2.Location = new System.Drawing.Point(0, 0);
             this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(351, 25);
+            this.toolStrip2.Size = new System.Drawing.Size(415, 25);
             this.toolStrip2.TabIndex = 2;
             this.toolStrip2.Text = "toolStrip2";
+            // 
+            // toolStripLabel1
+            // 
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(31, 22);
+            this.toolStripLabel1.Text = "LOD:";
+            // 
+            // toolStripComboBox1
+            // 
+            this.toolStripComboBox1.AutoSize = false;
+            this.toolStripComboBox1.Items.AddRange(new object[] {
+            "LOD 0",
+            "LOD 1",
+            "LOD 2",
+            "LOD 3",
+            "LOD 4",
+            "LOD 5",
+            "LOD 6",
+            "LOD 7",
+            "LOD 8",
+            "LOD 9"});
+            this.toolStripComboBox1.Name = "toolStripComboBox1";
+            this.toolStripComboBox1.Size = new System.Drawing.Size(50, 21);
+            this.toolStripComboBox1.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBox1_SelectedIndexChanged);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
             // toolStripTextBox2
             // 
@@ -414,7 +451,7 @@
             this.pic2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pic2.Location = new System.Drawing.Point(0, 0);
             this.pic2.Name = "pic2";
-            this.pic2.Size = new System.Drawing.Size(378, 440);
+            this.pic2.Size = new System.Drawing.Size(314, 440);
             this.pic2.TabIndex = 0;
             this.pic2.TabStop = false;
             this.pic2.SizeChanged += new System.EventHandler(this.pic2_SizeChanged);
@@ -732,6 +769,21 @@
             this.saveChangesToolStripMenuItem.Text = "Save Changes";
             this.saveChangesToolStripMenuItem.Click += new System.EventHandler(this.saveChangesToolStripMenuItem_Click);
             // 
+            // toolsToolStripMenuItem
+            // 
+            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.convertDFMSWFToolStripMenuItem});
+            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.toolsToolStripMenuItem.Text = "Tools";
+            // 
+            // convertDFMSWFToolStripMenuItem
+            // 
+            this.convertDFMSWFToolStripMenuItem.Name = "convertDFMSWFToolStripMenuItem";
+            this.convertDFMSWFToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.convertDFMSWFToolStripMenuItem.Text = "Convert DFM<->SWF";
+            this.convertDFMSWFToolStripMenuItem.Click += new System.EventHandler(this.convertDFMSWFToolStripMenuItem_Click);
+            // 
             // consoleBox
             // 
             this.consoleBox.DetectUrls = false;
@@ -755,20 +807,12 @@
             this.renderTimerLevel.Interval = 50;
             this.renderTimerLevel.Tick += new System.EventHandler(this.renderTimerLevel_Tick);
             // 
-            // toolsToolStripMenuItem
+            // exportALLAsObjToolStripMenuItem
             // 
-            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.convertDFMSWFToolStripMenuItem});
-            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-            this.toolsToolStripMenuItem.Text = "Tools";
-            // 
-            // convertDFMSWFToolStripMenuItem
-            // 
-            this.convertDFMSWFToolStripMenuItem.Name = "convertDFMSWFToolStripMenuItem";
-            this.convertDFMSWFToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
-            this.convertDFMSWFToolStripMenuItem.Text = "Convert DFM<->SWF";
-            this.convertDFMSWFToolStripMenuItem.Click += new System.EventHandler(this.convertDFMSWFToolStripMenuItem_Click);
+            this.exportALLAsObjToolStripMenuItem.Name = "exportALLAsObjToolStripMenuItem";
+            this.exportALLAsObjToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.exportALLAsObjToolStripMenuItem.Text = "Export ALL as obj...";
+            this.exportALLAsObjToolStripMenuItem.Click += new System.EventHandler(this.exportALLAsObjToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -901,5 +945,9 @@
         private System.Windows.Forms.ToolStripMenuItem cloneToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem convertDFMSWFToolStripMenuItem;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
+        private System.Windows.Forms.ToolStripComboBox toolStripComboBox1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem exportALLAsObjToolStripMenuItem;
     }
 }

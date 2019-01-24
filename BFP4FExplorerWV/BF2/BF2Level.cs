@@ -68,7 +68,7 @@ namespace BFP4FExplorerWV
                     nlo.properties = new List<string>(lo.properties.ToArray());
                     BF2StaticMesh stm = new BF2StaticMesh(nlo._data);
                     if (stm == null) return;
-                    nlo.staticMeshes = stm.ConvertForEngine(engine, true);
+                    nlo.staticMeshes = stm.ConvertForEngine(engine, true, 0);
                     foreach (RenderObject ro in nlo.staticMeshes)
                         nlo.transform = lo.transform;
                     nlo._valid = true;
@@ -334,7 +334,7 @@ namespace BFP4FExplorerWV
                         case BF2LevelObject.BF2LOTYPE.StaticObject:
                             BF2StaticMesh stm = new BF2StaticMesh(lo._data);
                             if (stm == null) return;
-                            lo.staticMeshes = stm.ConvertForEngine(engine, true);
+                            lo.staticMeshes = stm.ConvertForEngine(engine, true, 0);
                             foreach (RenderObject ro in lo.staticMeshes)
                                 ro.transform = lo.transform;
                             lo._valid = true;
@@ -362,7 +362,7 @@ namespace BFP4FExplorerWV
                         lo.properties = infos;
                         BF2StaticMesh stm = LoadStaticMesh(infosObject, lo);
                         if (stm == null) return;
-                        lo.staticMeshes = stm.ConvertForEngine(engine, true);
+                        lo.staticMeshes = stm.ConvertForEngine(engine, true, 0);
                         foreach (RenderObject ro in lo.staticMeshes)
                             ro.transform = lo.transform;
                         lo._valid = true;

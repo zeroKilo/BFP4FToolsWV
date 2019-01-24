@@ -11,10 +11,10 @@ namespace BFP4FExplorerWV
 {
     public static class ExporterObj
     {
-        public static void Export(BF2StaticMesh mesh, string filename)
+        public static void Export(BF2StaticMesh mesh, string filename, int geoMatIdx)
         {
             StringBuilder sb = new StringBuilder();
-            Helper.BF2MeshSTMGeometryMaterial lod0 = mesh.geomat[0];
+            Helper.BF2MeshSTMGeometryMaterial lod0 = mesh.geomat[geoMatIdx];
             int vertexcounter = 1;
             for (int i = 0; i < lod0.numMaterials; i++)
             {
@@ -35,10 +35,10 @@ namespace BFP4FExplorerWV
             File.WriteAllText(filename, sb.ToString());
         }
 
-        public static void Export(BF2BundledMesh mesh, string filename)
+        public static void Export(BF2BundledMesh mesh, string filename, int geoMatIdx)
         {
             StringBuilder sb = new StringBuilder();
-            Helper.BF2MeshBMGeometryMaterial lod0 = mesh.geomat[0];
+            Helper.BF2MeshBMGeometryMaterial lod0 = mesh.geomat[geoMatIdx];
             int vertexcounter = 1;
             for (int i = 0; i < lod0.numMaterials; i++)
             {
@@ -59,10 +59,10 @@ namespace BFP4FExplorerWV
             File.WriteAllText(filename, sb.ToString());
         }
 
-        public static void Export(BF2SkinnedMesh mesh, string filename)
+        public static void Export(BF2SkinnedMesh mesh, string filename, int geoMatIdx)
         {
             StringBuilder sb = new StringBuilder();
-            Helper.BF2MeshSKMGeometryMaterial lod0 = mesh.geomat[0];
+            Helper.BF2MeshSKMGeometryMaterial lod0 = mesh.geomat[geoMatIdx];
             int vertexcounter = 1;
             for (int i = 0; i < lod0.numMaterials; i++)
             {
