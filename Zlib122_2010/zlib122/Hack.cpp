@@ -197,6 +197,14 @@ void ReplaceURLs()
 	WriteDWord(0x405246, (DWORD)&"It appears the game client was not started properly...For more information visit the wiki at https://github.com/zeroKilo/BFP4FToolsWV");
 }
 
+void UnlockConsoleCommands()
+{
+	WriteByte(0x9D6C97,0xEB);
+	WriteByte(0x9D6CA0,0xEB);
+	WriteByte(0x9D6CAA,0xEB);
+	WriteByte(0x9D6CEF,0xEB);
+}
+
 void LoadPlugins()
 {
 	WIN32_FIND_DATA ffd;
@@ -224,6 +232,7 @@ void Hack_Init()
 		DisableSSL(0xB09E86);
 		PatchQOSTimeout();
 		PatchServerSetup();
+		UnlockConsoleCommands();
 		if(InitUDPMon())
 		{
 			DetourFunction((PBYTE)0x9FC280, (PBYTE)BitStreamRead);
