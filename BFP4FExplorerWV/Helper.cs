@@ -43,7 +43,7 @@ namespace BFP4FExplorerWV
             process.WaitForExit();
         }
 
-        public static void DDS2PNG(string filedds)
+        public static void ConvertToPNG(string filedds)
         {
             RunShell(Path.GetDirectoryName(Application.ExecutablePath) + "\\texconv.exe", "-ft png " + filedds);
         }

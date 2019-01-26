@@ -32,7 +32,7 @@ namespace BFP4FExplorerWV
             switch (ext)
             {
                 case ".dds":
-                    Helper.DDS2PNG("tmp.dds");
+                    Helper.ConvertToPNG("tmp.dds");
                     if (File.Exists(tmpfile2))
                     {
                         System.Drawing.Bitmap bmp = Helper.LoadBitmapUnlocked(tmpfile2);

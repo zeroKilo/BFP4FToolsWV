@@ -44,13 +44,14 @@
             this.toolStripTextBox1 = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.pic1 = new System.Windows.Forms.PictureBox();
-            this.hb1 = new Be.Windows.Forms.HexBox();
             this.rtb1 = new System.Windows.Forms.RichTextBox();
+            this.hb1 = new Be.Windows.Forms.HexBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.tv2 = new System.Windows.Forms.TreeView();
             this.contextMenuMeshes = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.exportAsObjToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportALLAsObjToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
@@ -82,6 +83,11 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.splitContainer7 = new System.Windows.Forms.SplitContainer();
+            this.tv3 = new System.Windows.Forms.TreeView();
+            this.rtb2 = new System.Windows.Forms.RichTextBox();
+            this.toolStrip3 = new System.Windows.Forms.ToolStrip();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileSystemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mountLevelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -92,7 +98,7 @@
             this.consoleBox = new System.Windows.Forms.RichTextBox();
             this.renderTimerMeshes = new System.Windows.Forms.Timer(this.components);
             this.renderTimerLevel = new System.Windows.Forms.Timer(this.components);
-            this.exportALLAsObjToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -134,6 +140,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
+            this.tabPage4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer7)).BeginInit();
+            this.splitContainer7.Panel1.SuspendLayout();
+            this.splitContainer7.Panel2.SuspendLayout();
+            this.splitContainer7.SuspendLayout();
+            this.toolStrip3.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -176,6 +188,7 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 24);
             this.tabControl1.Name = "tabControl1";
@@ -209,8 +222,8 @@
             // 
             this.splitContainer2.Panel2.AutoScroll = true;
             this.splitContainer2.Panel2.Controls.Add(this.pic1);
-            this.splitContainer2.Panel2.Controls.Add(this.hb1);
             this.splitContainer2.Panel2.Controls.Add(this.rtb1);
+            this.splitContainer2.Panel2.Controls.Add(this.hb1);
             this.splitContainer2.Size = new System.Drawing.Size(733, 440);
             this.splitContainer2.SplitterDistance = 351;
             this.splitContainer2.TabIndex = 0;
@@ -287,6 +300,19 @@
             this.pic1.TabStop = false;
             this.pic1.Visible = false;
             // 
+            // rtb1
+            // 
+            this.rtb1.DetectUrls = false;
+            this.rtb1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtb1.Font = new System.Drawing.Font("Courier New", 8.25F);
+            this.rtb1.Location = new System.Drawing.Point(0, 0);
+            this.rtb1.Name = "rtb1";
+            this.rtb1.ReadOnly = true;
+            this.rtb1.Size = new System.Drawing.Size(378, 440);
+            this.rtb1.TabIndex = 1;
+            this.rtb1.Text = "";
+            this.rtb1.WordWrap = false;
+            // 
             // hb1
             // 
             this.hb1.BoldFont = null;
@@ -303,19 +329,6 @@
             this.hb1.UseFixedBytesPerLine = true;
             this.hb1.Visible = false;
             this.hb1.VScrollBarVisible = true;
-            // 
-            // rtb1
-            // 
-            this.rtb1.DetectUrls = false;
-            this.rtb1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtb1.Font = new System.Drawing.Font("Courier New", 8.25F);
-            this.rtb1.Location = new System.Drawing.Point(0, 0);
-            this.rtb1.Name = "rtb1";
-            this.rtb1.ReadOnly = true;
-            this.rtb1.Size = new System.Drawing.Size(378, 440);
-            this.rtb1.TabIndex = 1;
-            this.rtb1.Text = "";
-            this.rtb1.WordWrap = false;
             // 
             // tabPage2
             // 
@@ -365,7 +378,7 @@
             this.exportAsObjToolStripMenuItem,
             this.exportALLAsObjToolStripMenuItem});
             this.contextMenuMeshes.Name = "contextMenuMeshes";
-            this.contextMenuMeshes.Size = new System.Drawing.Size(171, 70);
+            this.contextMenuMeshes.Size = new System.Drawing.Size(171, 48);
             this.contextMenuMeshes.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuMeshes_Opening);
             // 
             // exportAsObjToolStripMenuItem
@@ -374,6 +387,13 @@
             this.exportAsObjToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
             this.exportAsObjToolStripMenuItem.Text = "Export as obj...";
             this.exportAsObjToolStripMenuItem.Click += new System.EventHandler(this.exportAsObjToolStripMenuItem_Click);
+            // 
+            // exportALLAsObjToolStripMenuItem
+            // 
+            this.exportALLAsObjToolStripMenuItem.Name = "exportALLAsObjToolStripMenuItem";
+            this.exportALLAsObjToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.exportALLAsObjToolStripMenuItem.Text = "Export ALL as obj...";
+            this.exportALLAsObjToolStripMenuItem.Click += new System.EventHandler(this.exportALLAsObjToolStripMenuItem_Click);
             // 
             // toolStrip2
             // 
@@ -726,6 +746,70 @@
             this.label1.Text = "Position X";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.splitContainer7);
+            this.tabPage4.Controls.Add(this.toolStrip3);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(739, 446);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "HUD Explorer";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // splitContainer7
+            // 
+            this.splitContainer7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer7.Location = new System.Drawing.Point(3, 28);
+            this.splitContainer7.Name = "splitContainer7";
+            // 
+            // splitContainer7.Panel1
+            // 
+            this.splitContainer7.Panel1.Controls.Add(this.tv3);
+            // 
+            // splitContainer7.Panel2
+            // 
+            this.splitContainer7.Panel2.Controls.Add(this.rtb2);
+            this.splitContainer7.Size = new System.Drawing.Size(733, 415);
+            this.splitContainer7.SplitterDistance = 403;
+            this.splitContainer7.TabIndex = 1;
+            // 
+            // tv3
+            // 
+            this.tv3.ContextMenuStrip = this.contextMenuMeshes;
+            this.tv3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tv3.Font = new System.Drawing.Font("Courier New", 8.25F);
+            this.tv3.HideSelection = false;
+            this.tv3.Location = new System.Drawing.Point(0, 0);
+            this.tv3.Name = "tv3";
+            this.tv3.Size = new System.Drawing.Size(403, 415);
+            this.tv3.TabIndex = 1;
+            this.tv3.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tv3_AfterSelect);
+            // 
+            // rtb2
+            // 
+            this.rtb2.DetectUrls = false;
+            this.rtb2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtb2.Font = new System.Drawing.Font("Courier New", 8.25F);
+            this.rtb2.Location = new System.Drawing.Point(0, 0);
+            this.rtb2.Name = "rtb2";
+            this.rtb2.ReadOnly = true;
+            this.rtb2.Size = new System.Drawing.Size(326, 415);
+            this.rtb2.TabIndex = 2;
+            this.rtb2.Text = "";
+            this.rtb2.WordWrap = false;
+            // 
+            // toolStrip3
+            // 
+            this.toolStrip3.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButton4});
+            this.toolStrip3.Location = new System.Drawing.Point(3, 3);
+            this.toolStrip3.Name = "toolStrip3";
+            this.toolStrip3.Size = new System.Drawing.Size(733, 25);
+            this.toolStrip3.TabIndex = 0;
+            this.toolStrip3.Text = "toolStrip3";
+            // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -807,12 +891,15 @@
             this.renderTimerLevel.Interval = 50;
             this.renderTimerLevel.Tick += new System.EventHandler(this.renderTimerLevel_Tick);
             // 
-            // exportALLAsObjToolStripMenuItem
+            // toolStripButton4
             // 
-            this.exportALLAsObjToolStripMenuItem.Name = "exportALLAsObjToolStripMenuItem";
-            this.exportALLAsObjToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
-            this.exportALLAsObjToolStripMenuItem.Text = "Export ALL as obj...";
-            this.exportALLAsObjToolStripMenuItem.Click += new System.EventHandler(this.exportALLAsObjToolStripMenuItem_Click);
+            this.toolStripButton4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripButton4.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton4.Image")));
+            this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton4.Name = "toolStripButton4";
+            this.toolStripButton4.Size = new System.Drawing.Size(144, 22);
+            this.toolStripButton4.Text = "View HUD Manager Settings";
+            this.toolStripButton4.Click += new System.EventHandler(this.toolStripButton4_Click);
             // 
             // MainForm
             // 
@@ -877,6 +964,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+            this.tabPage4.ResumeLayout(false);
+            this.tabPage4.PerformLayout();
+            this.splitContainer7.Panel1.ResumeLayout(false);
+            this.splitContainer7.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer7)).EndInit();
+            this.splitContainer7.ResumeLayout(false);
+            this.toolStrip3.ResumeLayout(false);
+            this.toolStrip3.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -949,5 +1044,11 @@
         private System.Windows.Forms.ToolStripComboBox toolStripComboBox1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem exportALLAsObjToolStripMenuItem;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.SplitContainer splitContainer7;
+        private System.Windows.Forms.TreeView tv3;
+        private System.Windows.Forms.RichTextBox rtb2;
+        private System.Windows.Forms.ToolStrip toolStrip3;
+        private System.Windows.Forms.ToolStripButton toolStripButton4;
     }
 }

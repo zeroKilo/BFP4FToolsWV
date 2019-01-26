@@ -41,6 +41,7 @@ namespace BFP4FExplorerWV
             if (init)
                 return;
             BF2FileSystem.Load();
+            BF2HUDLoader.Init();
             Log.WriteLine("Done. Loaded " + (BF2FileSystem.clientFS.Count() + BF2FileSystem.serverFS.Count()) + " files");
             RefreshTrees();
             engineMeshExplorer = new Engine3D(pic2);
@@ -59,6 +60,8 @@ namespace BFP4FExplorerWV
             tv1.Nodes.Add(BF2FileSystem.MakeFSTree());
             tv2.Nodes.Clear();
             tv2.Nodes.Add(BF2FileSystem.MakeFSTreeFiltered(new string[] { ".staticmesh", ".bundledmesh", ".skinnedmesh", ".collisionmesh" }));
+            tv3.Nodes.Clear();
+            tv3.Nodes.Add(BF2HUDLoader.MakeTree());
             listBox1.Items.Clear();
             foreach (string objname in BF2Level.MakeList())
                 listBox1.Items.Add(objname);
@@ -87,9 +90,25 @@ namespace BFP4FExplorerWV
                     pic1.Visible = true;
                     pic1.Image = new Bitmap(new MemoryStream(data));
                     break;
+                case ".tga":
+                    File.WriteAllBytes("temp.tga", data);
+                    Helper.ConvertToPNG("temp.tga");
+                    pic1.Visible = true;
+                    if (File.Exists("temp.png"))
+                    {
+                        pic1.Image = new Bitmap(new MemoryStream(File.ReadAllBytes("temp.png")));
+                        File.Delete("temp.png");
+                    }
+                    else
+                    {
+                        pic1.Image = null;
+                        pic1.Height = pic1.Width = 1;
+                    }
+                    File.Delete("temp.tga");
+                    break;
                 case ".dds":
                     File.WriteAllBytes("temp.dds", data);
-                    Helper.DDS2PNG("temp.dds");
+                    Helper.ConvertToPNG("temp.dds");
                     pic1.Visible = true;
                     if (File.Exists("temp.png"))
                     {
@@ -679,6 +698,34 @@ namespace BFP4FExplorerWV
                 pb1.Value = 0;
                 exportALLAsObjToolStripMenuItem.Enabled = true;
             }
+        }
+
+        private void toolStripButton4_Click(object sender, EventArgs e)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (string line in BF2HUDManager.parameter)
+                sb.AppendLine(line);
+            rtb2.Text = sb.ToString();
+        }
+
+        private void tv3_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            TreeNode t = tv3.SelectedNode;
+            if (t == null)
+                return;
+            BF2HUDElement result = null;
+            foreach (BF2HUDElement el in BF2HUDLoader.elements)
+                if (el.name == t.Name)
+                {
+                    result = el;
+                    break;
+                }
+            if (result == null)
+                return;
+            StringBuilder sb = new StringBuilder();
+            foreach (string p in result.parameter)
+                sb.AppendLine(p);
+            rtb2.Text = sb.ToString();
         }
     }
 }
