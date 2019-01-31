@@ -727,5 +727,116 @@ namespace BFP4FExplorerWV
                 sb.AppendLine(p);
             rtb2.Text = sb.ToString();
         }
+
+        private void exportLevelIntoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LevelSelect ls = new LevelSelect();
+            ls.basepath = BF2FileSystem.basepath + "Levels\\";
+            ls.ShowDialog();
+            if (ls._exitOK)
+            {
+                string source = BF2FileSystem.basepath + "Levels\\" + ls.result + "\\";
+                OpenFileDialog d = new OpenFileDialog();
+                d.Filter = "bf2editor.exe|bf2editor.exe";
+                if (d.ShowDialog() == DialogResult.OK)
+                {
+                    string target = Path.GetDirectoryName(d.FileName) + "\\mods\\bfp4f\\Levels\\" + ls.result + "\\";
+                    Log.WriteLine("Exporting Level from \"" + source + "\" to \"" + target + "\"...");
+                    Helper.ClearFolder(new DirectoryInfo(target));
+                    Directory.CreateDirectory(target + "Editor");
+                    Directory.CreateDirectory(target + "Info");
+                    if (Directory.Exists(source + "Info"))
+                        Helper.CopyFolder(new DirectoryInfo(source + "Info"), new DirectoryInfo(target + "Info"));
+                    if (File.Exists(source + "client.zip"))
+                    {
+                        Log.WriteLine("Unpacking client.zip...");
+                        Helper.UnpackZip(source + "client.zip", target);
+                    }
+                    if (File.Exists(source + "server.zip"))
+                    {
+                        Log.WriteLine("Unpacking server.zip...");
+                        Helper.UnpackZip(source + "server.zip", target);
+                    }
+                    if (File.Exists(target + "StaticObjects.con"))
+                        File.Copy(target + "StaticObjects.con", target + "Editor\\StaticObjects.con");
+                    MessageBox.Show("Done.");
+                }
+            }
+        }
+
+        private void importLevelFromToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (BF2Level.name == "")
+            {
+                MessageBox.Show("Please mount a level first");
+                return;
+            }
+            string target = BF2FileSystem.basepath + "Levels\\" + BF2Level.name + "\\";
+            OpenFileDialog d = new OpenFileDialog();
+            d.Filter = "bf2editor.exe|bf2editor.exe";
+            if (d.ShowDialog() == DialogResult.OK)
+            {
+                string source = Path.GetDirectoryName(d.FileName) + "\\mods\\bfp4f\\Levels\\" + BF2Level.name + "\\";
+                if (!Directory.Exists(source))
+                {
+                    Log.WriteLine("Cant find source folder \"" + source + "\"");
+                    return;
+                }
+                Log.WriteLine("Importing Level from \"" + source + "\" to \"" + target + "\"...");
+                string[] files = Directory.GetFiles(source, "*.*", SearchOption.AllDirectories);
+                pb1.Maximum = files.Length;
+                int count = 0;
+                foreach (string file in files)
+                {
+                    pb1.Value = count++;
+                    string shortname = file.Substring(source.Length);
+                    BF2FileSystem.BF2FSEntry entry = BF2FileSystem.FindEntryFromIngamePath(shortname);
+                    if (entry == null)
+                    {
+                        Log.WriteLine("Cant find \"" + shortname + "\"");
+                        continue;
+                    }
+                    if (!entry.zipFile.ToLower().Contains("\\levels\\") || file.ToLower().EndsWith("ambientobjects.con"))
+                    {
+                        Log.WriteLine("Skipping \"" + file + "\"");
+                        continue;
+                    }
+                    byte[] data = File.ReadAllBytes(file);
+                    if (file.ToLower().EndsWith("staticobjects.con"))
+                    {
+                        Log.WriteLine("Processing \"" + shortname + "\"...");
+                        data = ProcessStaticObjects(File.ReadAllLines(file));
+                    }
+                    BF2FileSystem.SetFileFromEntry(entry, data);
+                    Log.WriteLine("Importing \"" + shortname + "\" into \"" + Path.GetFileName(entry.zipFile) + "\"");
+                }
+                Log.WriteLine("Done.");
+                pb1.Value = 0;
+            }
+        }
+
+        private byte[] ProcessStaticObjects(string[] data)
+        {
+            StringBuilder sb = new StringBuilder();
+            bool skipIntro = false;
+            for (int i = 0; i < data.Length; i++)
+            {
+                if (data[i].StartsWith("if v_arg1 == BF2Editor"))
+                {
+                    skipIntro = true;
+                    continue;
+                }
+                if (skipIntro && data[i].StartsWith("endIf"))
+                {
+                    i++;
+                    skipIntro = false;
+                    continue;
+                }
+                if (skipIntro || data[i].StartsWith("Object.layer"))
+                    continue;
+                sb.AppendLine(data[i]);
+            }
+            return Encoding.ASCII.GetBytes(sb.ToString());
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.IO.Compression;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -200,6 +201,28 @@ namespace BFP4FExplorerWV
                     return;
                 }
             }
+        }
+
+        public static void ClearFolder(DirectoryInfo baseDir)
+        {
+            if (!baseDir.Exists)
+                return;
+            foreach (var dir in baseDir.EnumerateDirectories())
+                ClearFolder(dir);
+            baseDir.Delete(true);
+        }
+
+        public static void CopyFolder(DirectoryInfo source, DirectoryInfo target)
+        {
+            foreach (DirectoryInfo dir in source.GetDirectories())
+                CopyFolder(dir, target.CreateSubdirectory(dir.Name));
+            foreach (FileInfo file in source.GetFiles())
+                file.CopyTo(Path.Combine(target.FullName, file.Name));
+        }
+
+        public static void UnpackZip(string zip, string dir)
+        {
+            ZipFile.ExtractToDirectory(zip, dir);
         }
 
 

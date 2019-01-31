@@ -88,6 +88,7 @@
             this.tv3 = new System.Windows.Forms.TreeView();
             this.rtb2 = new System.Windows.Forms.RichTextBox();
             this.toolStrip3 = new System.Windows.Forms.ToolStrip();
+            this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileSystemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mountLevelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -98,7 +99,9 @@
             this.consoleBox = new System.Windows.Forms.RichTextBox();
             this.renderTimerMeshes = new System.Windows.Forms.Timer(this.components);
             this.renderTimerLevel = new System.Windows.Forms.Timer(this.components);
-            this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
+            this.bFP4FEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportLevelIntoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importLevelFromToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -810,6 +813,16 @@
             this.toolStrip3.TabIndex = 0;
             this.toolStrip3.Text = "toolStrip3";
             // 
+            // toolStripButton4
+            // 
+            this.toolStripButton4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripButton4.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton4.Image")));
+            this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton4.Name = "toolStripButton4";
+            this.toolStripButton4.Size = new System.Drawing.Size(144, 22);
+            this.toolStripButton4.Text = "View HUD Manager Settings";
+            this.toolStripButton4.Click += new System.EventHandler(this.toolStripButton4_Click);
+            // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -856,7 +869,8 @@
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.convertDFMSWFToolStripMenuItem});
+            this.convertDFMSWFToolStripMenuItem,
+            this.bFP4FEditorToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -891,15 +905,28 @@
             this.renderTimerLevel.Interval = 50;
             this.renderTimerLevel.Tick += new System.EventHandler(this.renderTimerLevel_Tick);
             // 
-            // toolStripButton4
+            // bFP4FEditorToolStripMenuItem
             // 
-            this.toolStripButton4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripButton4.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton4.Image")));
-            this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton4.Name = "toolStripButton4";
-            this.toolStripButton4.Size = new System.Drawing.Size(144, 22);
-            this.toolStripButton4.Text = "View HUD Manager Settings";
-            this.toolStripButton4.Click += new System.EventHandler(this.toolStripButton4_Click);
+            this.bFP4FEditorToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exportLevelIntoToolStripMenuItem,
+            this.importLevelFromToolStripMenuItem});
+            this.bFP4FEditorToolStripMenuItem.Name = "bFP4FEditorToolStripMenuItem";
+            this.bFP4FEditorToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.bFP4FEditorToolStripMenuItem.Text = "BFP4F Editor";
+            // 
+            // exportLevelIntoToolStripMenuItem
+            // 
+            this.exportLevelIntoToolStripMenuItem.Name = "exportLevelIntoToolStripMenuItem";
+            this.exportLevelIntoToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.exportLevelIntoToolStripMenuItem.Text = "Export level into...";
+            this.exportLevelIntoToolStripMenuItem.Click += new System.EventHandler(this.exportLevelIntoToolStripMenuItem_Click);
+            // 
+            // importLevelFromToolStripMenuItem
+            // 
+            this.importLevelFromToolStripMenuItem.Name = "importLevelFromToolStripMenuItem";
+            this.importLevelFromToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.importLevelFromToolStripMenuItem.Text = "Import level from...";
+            this.importLevelFromToolStripMenuItem.Click += new System.EventHandler(this.importLevelFromToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -1050,5 +1077,8 @@
         private System.Windows.Forms.RichTextBox rtb2;
         private System.Windows.Forms.ToolStrip toolStrip3;
         private System.Windows.Forms.ToolStripButton toolStripButton4;
+        private System.Windows.Forms.ToolStripMenuItem bFP4FEditorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportLevelIntoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem importLevelFromToolStripMenuItem;
     }
 }
