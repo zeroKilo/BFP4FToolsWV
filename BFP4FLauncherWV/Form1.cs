@@ -54,6 +54,7 @@ namespace BFP4FLauncherWV
             BlazeServer.Stop();
             MagmaServer.Stop();
             Webserver.Stop();
+            QOSServer.Stop();
         }
 
         private void launchStandaloneToolStripMenuItem_Click(object sender, EventArgs e)
@@ -68,6 +69,7 @@ namespace BFP4FLauncherWV
         {
             BackendLog.Clear();
             ProviderInfo.backendIP = toolStripTextBox3.Text;
+            QOSServer.box =
             RedirectorServer.box =
             BlazeServer.box = rtb2;
             Webserver.box = rtb5;
@@ -77,6 +79,7 @@ namespace BFP4FLauncherWV
             BlazeServer.Start();
             MagmaServer.Start();
             Webserver.Start();
+            QOSServer.Start();
         }
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)

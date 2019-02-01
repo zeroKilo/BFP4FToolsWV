@@ -41,6 +41,12 @@ namespace BFP4FLauncherWV
 
         private void button1_Click(object sender, EventArgs e)
         {
+            bool useQOS = emulateQOSServerToolStripMenuItem.Checked;
+            emulateQOSServerToolStripMenuItem.Enabled = false;
+            if (useQOS)
+                ProviderInfo.QOS_IP = "127.0.0.1";
+            else
+                ProviderInfo.QOS_IP = "gossjcprod-qos01.ea.com";
             checkBox1.Enabled =
             checkBox2.Enabled = 
             checkBox3.Enabled = 
@@ -52,6 +58,7 @@ namespace BFP4FLauncherWV
             if (!checkBox2.Checked)
                 RedirectorServer.targetPort = 30001;
             MagmaServer.basicMode = true;
+            QOSServer.box =
             RedirectorServer.box =
             BlazeServer.box =
             Webserver.box =
@@ -61,6 +68,8 @@ namespace BFP4FLauncherWV
             MagmaServer.Start();
             if(checkBox3.Checked)
                 Webserver.Start();
+            if(useQOS)
+                QOSServer.Start();
         }
 
         private void Form2_FormClosing(object sender, FormClosingEventArgs e)
@@ -70,6 +79,8 @@ namespace BFP4FLauncherWV
             MagmaServer.Stop();
             if (checkBox3.Checked)
                 Webserver.Stop();
+            if (emulateQOSServerToolStripMenuItem.Checked)
+                QOSServer.Stop();
         }
 
         private void button2_Click(object sender, EventArgs e)

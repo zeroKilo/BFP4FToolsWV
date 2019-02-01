@@ -101,6 +101,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Info\ProviderInfo.cs" />
+    <Compile Include="Server\QOSServer.cs" />
     <Compile Include="Server\RedirectorServer.cs" />
     <Compile Include="Server\Webserver.cs" />
     <EmbeddedResource Include="Form1.resx">

@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.button7 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
@@ -47,7 +48,7 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.sethostsFileToIPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.syncPlayerProfilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.emulateQOSServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -90,6 +91,20 @@
             this.splitContainer1.SplitterDistance = 200;
             this.splitContainer1.SplitterWidth = 1;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // checkBox3
+            // 
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Checked = true;
+            this.checkBox3.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkBox3.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBox3.Location = new System.Drawing.Point(14, 59);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(133, 20);
+            this.checkBox3.TabIndex = 13;
+            this.checkBox3.Text = "use internal Webserver";
+            this.checkBox3.UseVisualStyleBackColor = true;
             // 
             // button7
             // 
@@ -265,9 +280,10 @@
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.sethostsFileToIPToolStripMenuItem,
-            this.syncPlayerProfilesToolStripMenuItem});
+            this.syncPlayerProfilesToolStripMenuItem,
+            this.emulateQOSServerToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 92);
             // 
             // sethostsFileToIPToolStripMenuItem
             // 
@@ -283,19 +299,12 @@
             this.syncPlayerProfilesToolStripMenuItem.Text = "Sync player profiles...";
             this.syncPlayerProfilesToolStripMenuItem.Click += new System.EventHandler(this.syncPlayerProfilesToolStripMenuItem_Click_1);
             // 
-            // checkBox3
+            // emulateQOSServerToolStripMenuItem
             // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Checked = true;
-            this.checkBox3.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.checkBox3.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox3.Location = new System.Drawing.Point(14, 59);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(133, 20);
-            this.checkBox3.TabIndex = 13;
-            this.checkBox3.Text = "use internal Webserver";
-            this.checkBox3.UseVisualStyleBackColor = true;
+            this.emulateQOSServerToolStripMenuItem.CheckOnClick = true;
+            this.emulateQOSServerToolStripMenuItem.Name = "emulateQOSServerToolStripMenuItem";
+            this.emulateQOSServerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.emulateQOSServerToolStripMenuItem.Text = "Emulate QOS Server";
             // 
             // Form2
             // 
@@ -339,5 +348,6 @@
         private System.Windows.Forms.ToolStripMenuItem sethostsFileToIPToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem syncPlayerProfilesToolStripMenuItem;
         private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.ToolStripMenuItem emulateQOSServerToolStripMenuItem;
     }
 }

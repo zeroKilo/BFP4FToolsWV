@@ -61,7 +61,7 @@ namespace BFP4FLauncherWV.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die 01.07.2018_1227 
+        ///   Sucht eine lokalisierte Zeichenfolge, die 01.02.2019_2242 
         /// ähnelt.
         /// </summary>
         internal static string BuildDate {
@@ -90,6 +90,15 @@ namespace BFP4FLauncherWV.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
+        /// </summary>
+        internal static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die #IP#    jeff.easylocaldev.com
         ///#IP#    battlefield.play4free.com
         ///#IP#    dev.easy.ea.com
@@ -108,6 +117,133 @@ namespace BFP4FLauncherWV.Resources {
         internal static string template_hosts_file {
             get {
                 return ResourceManager.GetString("template_hosts_file", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die HTTP/1.1 200 OK
+        ///Content-Type: application/xml
+        ///X-BLAZE-COMPONENT: qos
+        ///X-BLAZE-COMMAND: qos
+        ///Content-Length: #SIZE#
+        ///X-BLAZE-SEQNO: 0
+        ///
+        /// ähnelt.
+        /// </summary>
+        internal static string template1 {
+            get {
+                return ResourceManager.GetString("template1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+        ///&lt;qos&gt;
+        ///    &lt;numprobes&gt;0&lt;/numprobes&gt;
+        ///    &lt;qosport&gt;17499&lt;/qosport&gt;
+        ///    &lt;probesize&gt;0&lt;/probesize&gt;
+        ///    &lt;qosip&gt;#QOSIP#&lt;/qosip&gt;
+        ///    &lt;requestid&gt;1&lt;/requestid&gt;
+        ///    &lt;reqsecret&gt;0&lt;/reqsecret&gt;
+        ///&lt;/qos&gt;
+        /// ähnelt.
+        /// </summary>
+        internal static string template2 {
+            get {
+                return ResourceManager.GetString("template2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die HTTP/1.1 200 OK
+        ///Content-Type: application/xml
+        ///X-BLAZE-COMPONENT: qos
+        ///X-BLAZE-COMMAND: qos
+        ///Content-Length: #SIZE#
+        ///X-BLAZE-SEQNO: 1
+        ///
+        /// ähnelt.
+        /// </summary>
+        internal static string template3 {
+            get {
+                return ResourceManager.GetString("template3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+        ///&lt;qos&gt;
+        ///    &lt;numprobes&gt;10&lt;/numprobes&gt;
+        ///    &lt;qosport&gt;17499&lt;/qosport&gt;
+        ///    &lt;probesize&gt;1200&lt;/probesize&gt;
+        ///    &lt;qosip&gt;#QOSIP#&lt;/qosip&gt;
+        ///    &lt;requestid&gt;514&lt;/requestid&gt;
+        ///    &lt;reqsecret&gt;1125&lt;/reqsecret&gt;
+        ///&lt;/qos&gt;
+        /// ähnelt.
+        /// </summary>
+        internal static string template4 {
+            get {
+                return ResourceManager.GetString("template4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die HTTP/1.1 200 OK
+        ///Content-Type: application/xml
+        ///X-BLAZE-COMPONENT: qos
+        ///X-BLAZE-COMMAND: firewall
+        ///Content-Length: #SIZE#
+        ///X-BLAZE-SEQNO: 2
+        ///
+        /// ähnelt.
+        /// </summary>
+        internal static string template5 {
+            get {
+                return ResourceManager.GetString("template5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+        ///&lt;firewall&gt;
+        ///    &lt;ips&gt;
+        ///        &lt;ips&gt;#QOSIP#&lt;/ips&gt;
+        ///        &lt;ips&gt;#QOSIP#&lt;/ips&gt;
+        ///    &lt;/ips&gt;
+        ///    &lt;numinterfaces&gt;2&lt;/numinterfaces&gt;
+        ///    &lt;ports&gt;
+        ///        &lt;ports&gt;17499&lt;/ports&gt;
+        ///        &lt;ports&gt;17499&lt;/ports&gt;
+        ///    &lt;/ports&gt;
+        ///    &lt;requestid&gt;136&lt;/requestid&gt;
+        ///    &lt;reqsecret&gt;467&lt;/reqsecret&gt;
+        ///&lt;/firewall&gt;
+        /// ähnelt.
+        /// </summary>
+        internal static string template6 {
+            get {
+                return ResourceManager.GetString("template6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die HTTP/1.1 200 OK
+        ///Content-Type: application/xml
+        ///X-BLAZE-COMPONENT: qos
+        ///X-BLAZE-COMMAND: firetype
+        ///Content-Length: 89
+        ///X-BLAZE-SEQNO: 3
+        ///
+        ///&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+        ///&lt;firetype&gt;
+        ///    &lt;firetype&gt;2&lt;/firetype&gt;
+        ///&lt;/firetype&gt;
+        /// ähnelt.
+        /// </summary>
+        internal static string template7 {
+            get {
+                return ResourceManager.GetString("template7", resourceCulture);
             }
         }
     }

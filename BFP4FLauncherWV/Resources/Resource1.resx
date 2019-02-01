@@ -127,6 +127,94 @@
   <data name="redi" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>redi.pfx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="template1" xml:space="preserve">
+    <value>HTTP/1.1 200 OK
+Content-Type: application/xml
+X-BLAZE-COMPONENT: qos
+X-BLAZE-COMMAND: qos
+Content-Length: #SIZE#
+X-BLAZE-SEQNO: 0
+
+</value>
+  </data>
+  <data name="template2" xml:space="preserve">
+    <value>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;qos&gt;
+    &lt;numprobes&gt;0&lt;/numprobes&gt;
+    &lt;qosport&gt;17499&lt;/qosport&gt;
+    &lt;probesize&gt;0&lt;/probesize&gt;
+    &lt;qosip&gt;#QOSIP#&lt;/qosip&gt;
+    &lt;requestid&gt;1&lt;/requestid&gt;
+    &lt;reqsecret&gt;0&lt;/reqsecret&gt;
+&lt;/qos&gt;
+</value>
+  </data>
+  <data name="template3" xml:space="preserve">
+    <value>HTTP/1.1 200 OK
+Content-Type: application/xml
+X-BLAZE-COMPONENT: qos
+X-BLAZE-COMMAND: qos
+Content-Length: #SIZE#
+X-BLAZE-SEQNO: 1
+
+</value>
+  </data>
+  <data name="template4" xml:space="preserve">
+    <value>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;qos&gt;
+    &lt;numprobes&gt;10&lt;/numprobes&gt;
+    &lt;qosport&gt;17499&lt;/qosport&gt;
+    &lt;probesize&gt;1200&lt;/probesize&gt;
+    &lt;qosip&gt;#QOSIP#&lt;/qosip&gt;
+    &lt;requestid&gt;514&lt;/requestid&gt;
+    &lt;reqsecret&gt;1125&lt;/reqsecret&gt;
+&lt;/qos&gt;
+</value>
+  </data>
+  <data name="template5" xml:space="preserve">
+    <value>HTTP/1.1 200 OK
+Content-Type: application/xml
+X-BLAZE-COMPONENT: qos
+X-BLAZE-COMMAND: firewall
+Content-Length: #SIZE#
+X-BLAZE-SEQNO: 2
+
+</value>
+  </data>
+  <data name="template6" xml:space="preserve">
+    <value>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;firewall&gt;
+    &lt;ips&gt;
+        &lt;ips&gt;#QOSIP#&lt;/ips&gt;
+        &lt;ips&gt;#QOSIP#&lt;/ips&gt;
+    &lt;/ips&gt;
+    &lt;numinterfaces&gt;2&lt;/numinterfaces&gt;
+    &lt;ports&gt;
+        &lt;ports&gt;17499&lt;/ports&gt;
+        &lt;ports&gt;17499&lt;/ports&gt;
+    &lt;/ports&gt;
+    &lt;requestid&gt;136&lt;/requestid&gt;
+    &lt;reqsecret&gt;467&lt;/reqsecret&gt;
+&lt;/firewall&gt;
+</value>
+  </data>
+  <data name="template7" xml:space="preserve">
+    <value>HTTP/1.1 200 OK
+Content-Type: application/xml
+X-BLAZE-COMPONENT: qos
+X-BLAZE-COMMAND: firetype
+Content-Length: 89
+X-BLAZE-SEQNO: 3
+
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;firetype&gt;
+    &lt;firetype&gt;2&lt;/firetype&gt;
+&lt;/firetype&gt;
+</value>
+  </data>
   <data name="template_hosts_file" xml:space="preserve">
     <value>#IP#    jeff.easylocaldev.com
 #IP#    battlefield.play4free.com
