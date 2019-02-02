@@ -18,6 +18,7 @@ namespace BFP4FLauncherWV
         public static UdpClient udpQOS = null;
         public static RichTextBox box = null;
         public static bool _exit;
+        private static uint _qosip = 0x7F000001;
 
         public static void Start()
         {
@@ -44,12 +45,14 @@ namespace BFP4FLauncherWV
         {
             try
             {
+                IPAddress addr = IPAddress.Parse(ProviderInfo.QOS_IP);
+                _qosip = BitConverter.ToUInt32(addr.GetAddressBytes().Reverse().ToArray(), 0);
                 Log("[QOS ] QOS Server starting...");
-                tcpQOS = new TcpListener(IPAddress.Parse("127.0.0.1"), 17502);
-                Log("[QOS ] QOS Server TCP bound to  127.0.0.1:17502");
+                tcpQOS = new TcpListener(addr, 17502);
+                Log("[QOS ] QOS Server TCP bound to  " + ProviderInfo.QOS_IP + ":17502");
                 tcpQOS.Start();
-                udpQOS = new UdpClient(17499);
-                Log("[QOS ] QOS Server UDP bound to  127.0.0.1:17499");
+                udpQOS = new UdpClient(new IPEndPoint(addr, 17499));
+                Log("[QOS ] QOS Server UDP bound to  " + ProviderInfo.QOS_IP + ":17499");
                 Log("[QOS ] QOS Server listening...");
                 while (!GetExit())
                 {
@@ -87,7 +90,7 @@ namespace BFP4FLauncherWV
         {
             Log("[QOS ] Client requested test 1...");
             IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
-            string s = Resources.Resource1.template2.Replace("#QOSIP#", (0x7F000001).ToString());
+            string s = Resources.Resource1.template2.Replace("#QOSIP#", _qosip.ToString());
             s = Resources.Resource1.template1.Replace("#SIZE#", s.Length.ToString()) + s;
             WriteString(ns, s);
             client.Close();
@@ -116,7 +119,7 @@ namespace BFP4FLauncherWV
         {
             Log("[QOS ] Client requested test 2...");
             IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
-            string s = Resources.Resource1.template4.Replace("#QOSIP#", (0x7F000001).ToString());
+            string s = Resources.Resource1.template4.Replace("#QOSIP#", _qosip.ToString());
             s = Resources.Resource1.template3.Replace("#SIZE#", s.Length.ToString()) + s;
             WriteString(ns, s);
             client.Close();
@@ -147,7 +150,7 @@ namespace BFP4FLauncherWV
         {
             Log("[QOS ] Client requested test 3...");
             IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
-            string s = Resources.Resource1.template6.Replace("#QOSIP#", (0x7F000001).ToString());
+            string s = Resources.Resource1.template6.Replace("#QOSIP#", _qosip.ToString());
             s = Resources.Resource1.template5.Replace("#SIZE#", s.Length.ToString()) + s;
             WriteString(ns, s);
             client.Close();

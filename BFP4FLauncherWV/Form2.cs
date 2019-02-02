@@ -43,10 +43,6 @@ namespace BFP4FLauncherWV
         {
             bool useQOS = emulateQOSServerToolStripMenuItem.Checked;
             emulateQOSServerToolStripMenuItem.Enabled = false;
-            if (useQOS)
-                ProviderInfo.QOS_IP = "127.0.0.1";
-            else
-                ProviderInfo.QOS_IP = "gossjcprod-qos01.ea.com";
             checkBox1.Enabled =
             checkBox2.Enabled = 
             checkBox3.Enabled = 
@@ -54,6 +50,10 @@ namespace BFP4FLauncherWV
             button6.Enabled = false;
             BackendLog.Clear();
             ProviderInfo.backendIP = textBox1.Text;
+            if (useQOS)
+                ProviderInfo.QOS_IP = ProviderInfo.backendIP;
+            else
+                ProviderInfo.QOS_IP = "gossjcprod-qos01.ea.com";
             RedirectorServer.useSSL = checkBox1.Checked;
             if (!checkBox2.Checked)
                 RedirectorServer.targetPort = 30001;
