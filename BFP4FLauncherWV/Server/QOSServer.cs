@@ -100,6 +100,7 @@ namespace BFP4FLauncherWV
                 if (data != null)
                     msgs.Add(data);
             }
+            server.Close();
             Log("[QOS ] Request " + qPort + " : UDP Messages received");
             UdpClient udpclient = new UdpClient();
             if (msgs.Count != 0)
@@ -135,6 +136,7 @@ namespace BFP4FLauncherWV
                 if (data != null)
                     msgs.Add(data);
             }
+            server.Close();
             Log("[QOS ] Request " + qPort + " : UDP Messages received");
             UdpClient udpclient = new UdpClient();
             if (msgs.Count != 0)
@@ -174,6 +176,7 @@ namespace BFP4FLauncherWV
             UdpClient server = new UdpClient(new IPEndPoint(IPAddress.Parse(ProviderInfo.QOS_IP), qPort));
             for (int i = 0; i < 10; i++)
                 WaitForUdp(server, ref remote);
+            server.Close();
             Log("[QOS ] Request " + qPort + " : UDP Messages received");
             WriteString(ns, Resources.Resource1.template7);
             client.Close();
