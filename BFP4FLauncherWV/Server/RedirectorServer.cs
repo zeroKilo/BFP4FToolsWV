@@ -31,7 +31,7 @@ namespace BFP4FLauncherWV
             Log("");
             Log("Starting Redirector...");
             new Thread(tRedirectorMain).Start();
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 10; i++)
             {
                 Thread.Sleep(10);
                 Application.DoEvents();

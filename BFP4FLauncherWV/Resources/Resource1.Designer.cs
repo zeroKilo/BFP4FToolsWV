@@ -61,7 +61,7 @@ namespace BFP4FLauncherWV.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die 01.02.2019_2242 
+        ///   Sucht eine lokalisierte Zeichenfolge, die 03.02.2019_1323 
         /// ähnelt.
         /// </summary>
         internal static string BuildDate {
@@ -140,7 +140,7 @@ namespace BFP4FLauncherWV.Resources {
         ///   Sucht eine lokalisierte Zeichenfolge, die &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
         ///&lt;qos&gt;
         ///    &lt;numprobes&gt;0&lt;/numprobes&gt;
-        ///    &lt;qosport&gt;17499&lt;/qosport&gt;
+        ///    &lt;qosport&gt;#QOSPORT#&lt;/qosport&gt;
         ///    &lt;probesize&gt;0&lt;/probesize&gt;
         ///    &lt;qosip&gt;#QOSIP#&lt;/qosip&gt;
         ///    &lt;requestid&gt;1&lt;/requestid&gt;
@@ -174,7 +174,7 @@ namespace BFP4FLauncherWV.Resources {
         ///   Sucht eine lokalisierte Zeichenfolge, die &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
         ///&lt;qos&gt;
         ///    &lt;numprobes&gt;10&lt;/numprobes&gt;
-        ///    &lt;qosport&gt;17499&lt;/qosport&gt;
+        ///    &lt;qosport&gt;#QOSPORT#&lt;/qosport&gt;
         ///    &lt;probesize&gt;1200&lt;/probesize&gt;
         ///    &lt;qosip&gt;#QOSIP#&lt;/qosip&gt;
         ///    &lt;requestid&gt;514&lt;/requestid&gt;
@@ -213,8 +213,8 @@ namespace BFP4FLauncherWV.Resources {
         ///    &lt;/ips&gt;
         ///    &lt;numinterfaces&gt;2&lt;/numinterfaces&gt;
         ///    &lt;ports&gt;
-        ///        &lt;ports&gt;17499&lt;/ports&gt;
-        ///        &lt;ports&gt;17499&lt;/ports&gt;
+        ///        &lt;ports&gt;#QOSPORT#&lt;/ports&gt;
+        ///        &lt;ports&gt;#QOSPORT#&lt;/ports&gt;
         ///    &lt;/ports&gt;
         ///    &lt;requestid&gt;136&lt;/requestid&gt;
         ///    &lt;reqsecret&gt;467&lt;/reqsecret&gt;

@@ -24,7 +24,7 @@ namespace BFP4FLauncherWV
             SetExit(false);
             Log("Starting Webserver...");
             new Thread(tHTTPMain).Start();
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 10; i++)
             {
                 Thread.Sleep(10);
                 Application.DoEvents();

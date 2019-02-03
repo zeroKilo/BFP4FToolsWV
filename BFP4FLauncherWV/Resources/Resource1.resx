@@ -144,7 +144,7 @@ X-BLAZE-SEQNO: 0
     <value>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;qos&gt;
     &lt;numprobes&gt;0&lt;/numprobes&gt;
-    &lt;qosport&gt;17499&lt;/qosport&gt;
+    &lt;qosport&gt;#QOSPORT#&lt;/qosport&gt;
     &lt;probesize&gt;0&lt;/probesize&gt;
     &lt;qosip&gt;#QOSIP#&lt;/qosip&gt;
     &lt;requestid&gt;1&lt;/requestid&gt;
@@ -166,7 +166,7 @@ X-BLAZE-SEQNO: 1
     <value>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;qos&gt;
     &lt;numprobes&gt;10&lt;/numprobes&gt;
-    &lt;qosport&gt;17499&lt;/qosport&gt;
+    &lt;qosport&gt;#QOSPORT#&lt;/qosport&gt;
     &lt;probesize&gt;1200&lt;/probesize&gt;
     &lt;qosip&gt;#QOSIP#&lt;/qosip&gt;
     &lt;requestid&gt;514&lt;/requestid&gt;
@@ -193,8 +193,8 @@ X-BLAZE-SEQNO: 2
     &lt;/ips&gt;
     &lt;numinterfaces&gt;2&lt;/numinterfaces&gt;
     &lt;ports&gt;
-        &lt;ports&gt;17499&lt;/ports&gt;
-        &lt;ports&gt;17499&lt;/ports&gt;
+        &lt;ports&gt;#QOSPORT#&lt;/ports&gt;
+        &lt;ports&gt;#QOSPORT#&lt;/ports&gt;
     &lt;/ports&gt;
     &lt;requestid&gt;136&lt;/requestid&gt;
     &lt;reqsecret&gt;467&lt;/reqsecret&gt;

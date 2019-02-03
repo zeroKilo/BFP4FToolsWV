@@ -29,7 +29,7 @@ namespace BFP4FLauncherWV
             Log("Starting Blaze...");
             new Thread(tBlazeMain).Start();
             idCounter = 1;
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 10; i++)
             {
                 Thread.Sleep(10);
                 Application.DoEvents();

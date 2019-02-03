@@ -15,17 +15,18 @@ namespace BFP4FLauncherWV
     {
         public static readonly object _sync = new object();
         public static TcpListener tcpQOS = null;
-        public static UdpClient udpQOS = null;
         public static RichTextBox box = null;
         public static bool _exit;
         private static uint _qosip = 0x7F000001;
+        private static int _qosport = 17400;
+        private static readonly object _sync2 = new object();
 
         public static void Start()
         {
             SetExit(false);
             Log("Starting QOS Server...");
             new Thread(tQOSMain).Start();
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 10; i++)
             {
                 Thread.Sleep(10);
                 Application.DoEvents();
@@ -51,8 +52,6 @@ namespace BFP4FLauncherWV
                 tcpQOS = new TcpListener(addr, 17502);
                 Log("[QOS ] QOS Server TCP bound to  " + ProviderInfo.QOS_IP + ":17502");
                 tcpQOS.Start();
-                udpQOS = new UdpClient(new IPEndPoint(addr, 17499));
-                Log("[QOS ] QOS Server UDP bound to  " + ProviderInfo.QOS_IP + ":17499");
                 Log("[QOS ] QOS Server listening...");
                 while (!GetExit())
                 {
@@ -74,99 +73,137 @@ namespace BFP4FLauncherWV
             ns.ReadTimeout = 10;
             string request = ReadToEnd(ns);
             if (request.StartsWith("GET /qos/qos?vers=1&qtyp=1"))
-                QOSTest1(client, ns, udpQOS);
+                QOSTest1(client, ns);
             else if (request.StartsWith("GET /qos/qos?vers=1&qtyp=2"))
-                QOSTest2(client, ns, udpQOS);
-            else if (request.StartsWith("GET /qos/firewall?vers=1&nint=2 HTTP/1.1"))
-                QOSTest3(client, ns, udpQOS);
-            else if (request.StartsWith("GET /qos/firetype?vers=1&rqid=136&rqsc=467"))
-                QOSTest4(client, ns, udpQOS);
+                QOSTest2(client, ns);
+            else if (request.StartsWith("GET /qos/firewall?vers=1"))
+                QOSTest3(client, ns);
             else
-                Log("Received unknown:\n" + request);
+                Log("[QOS ] Received unknown:\n" + request);
             GC.Collect();
         }
 
-        private static void QOSTest1(TcpClient client, Stream ns, UdpClient server)
+        private static void QOSTest1(TcpClient client, Stream ns)
         {
-            Log("[QOS ] Client requested test 1...");
-            IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
-            string s = Resources.Resource1.template2.Replace("#QOSIP#", _qosip.ToString());
+            int qPort = GetNextQOSPort();
+            Log("[QOS ] Client requested test 1 got port " + qPort + "...");
+            IPEndPoint remote = new IPEndPoint(IPAddress.Any, 0);
+            string s = Resources.Resource1.template2.Replace("#QOSIP#", _qosip.ToString()).Replace("#QOSPORT#", qPort.ToString());
             s = Resources.Resource1.template1.Replace("#SIZE#", s.Length.ToString()) + s;
             WriteString(ns, s);
             client.Close();
+            UdpClient server = new UdpClient(new IPEndPoint(IPAddress.Parse(ProviderInfo.QOS_IP), qPort));
             List<byte[]> msgs = new List<byte[]>();
             for (int i = 0; i < 10; i++)
             {
-                byte[] receiveBytes = server.Receive(ref RemoteIpEndPoint);
-                msgs.Add(receiveBytes);
+                byte[] data = WaitForUdp(server, ref remote);
+                if (data != null)
+                    msgs.Add(data);
             }
-            Log("[QOS ] UDP Messages received");
+            Log("[QOS ] Request " + qPort + " : UDP Messages received");
             UdpClient udpclient = new UdpClient();
-            udpclient.Connect(RemoteIpEndPoint);
-            for (int i = 0; i < 10; i++)
+            if (msgs.Count != 0)
             {
-                MemoryStream m = new MemoryStream();
-                m.Write(msgs[i], 0, msgs[i].Length);
-                m.Write(new byte[] { 0x4f, 0xf9, 0x68, 0x55, 0x48, 0x87, 0x00, 0x00, 0x00, 0x00 }, 0, 10);
-                byte[] data = m.ToArray();
-                udpclient.Send(data, data.Length);
+                udpclient.Connect(remote);
+                for (int i = 0; i < msgs.Count; i++)
+                {
+                    MemoryStream m = new MemoryStream();
+                    m.Write(msgs[i], 0, msgs[i].Length);
+                    m.Write(new byte[] { 0x4f, 0xf9, 0x68, 0x55, 0x48, 0x87, 0x00, 0x00, 0x00, 0x00 }, 0, 10);
+                    byte[] data = m.ToArray();
+                    udpclient.Send(data, data.Length);
+                }
             }
-            Log("[QOS ] UDP Messages send");
+            Log("[QOS ] Request " + qPort + " : UDP Messages send");
             udpclient.Close();
         }
 
-        private static void QOSTest2(TcpClient client, Stream ns, UdpClient server)
+        private static void QOSTest2(TcpClient client, Stream ns)
         {
-            Log("[QOS ] Client requested test 2...");
-            IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
-            string s = Resources.Resource1.template4.Replace("#QOSIP#", _qosip.ToString());
+            int qPort = GetNextQOSPort();
+            Log("[QOS ] Client requested test 2 got port " + qPort + "...");
+            IPEndPoint remote = new IPEndPoint(IPAddress.Any, 0);
+            string s = Resources.Resource1.template4.Replace("#QOSIP#", _qosip.ToString()).Replace("#QOSPORT#", qPort.ToString());
             s = Resources.Resource1.template3.Replace("#SIZE#", s.Length.ToString()) + s;
             WriteString(ns, s);
             client.Close();
+            UdpClient server = new UdpClient(new IPEndPoint(IPAddress.Parse(ProviderInfo.QOS_IP), qPort));
             List<byte[]> msgs = new List<byte[]>();
             for (int i = 0; i < 10; i++)
             {
-                byte[] receiveBytes = server.Receive(ref RemoteIpEndPoint);
-                msgs.Add(receiveBytes);
+                byte[] data = WaitForUdp(server, ref remote);
+                if (data != null)
+                    msgs.Add(data);
             }
-            Log("[QOS ] UDP Messages received");
+            Log("[QOS ] Request " + qPort + " : UDP Messages received");
             UdpClient udpclient = new UdpClient();
-            udpclient.Connect(RemoteIpEndPoint);
-            for (int i = 0; i < 10; i++)
+            if (msgs.Count != 0)
             {
-                MemoryStream m = new MemoryStream();
-                m.Write(msgs[0], 0, 15);
-                m.WriteByte((byte)(i + 1));
-                m.Write(new byte[] { 0x0A, 0x00, 0x00, 0x00, 0x04, 0x93, 0xE0, 0x00, 0x0E, 0x4B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, 0, 16);
-                m.Write(new byte[1168], 0, 1168);
-                byte[] data = m.ToArray();
-                udpclient.Send(data, data.Length);
+                udpclient.Connect(remote);
+                for (int i = 0; i < msgs.Count; i++)
+                {
+                    MemoryStream m = new MemoryStream();
+                    m.Write(msgs[0], 0, 15);
+                    m.WriteByte((byte)(i + 1));
+                    m.Write(new byte[] { 0x0A, 0x00, 0x00, 0x00, 0x04, 0x93, 0xE0, 0x00, 0x0E, 0x4B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, 0, 16);
+                    m.Write(new byte[1168], 0, 1168);
+                    byte[] data = m.ToArray();
+                    udpclient.Send(data, data.Length);
+                }
             }
-            Log("[QOS ] UDP Messages send");
+            Log("[QOS ] Request " + qPort + " : UDP Messages send");
             udpclient.Close();
         }
 
-        private static void QOSTest3(TcpClient client, Stream ns, UdpClient server)
+        private static void QOSTest3(TcpClient client, Stream ns)
         {
-            Log("[QOS ] Client requested test 3...");
-            IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
-            string s = Resources.Resource1.template6.Replace("#QOSIP#", _qosip.ToString());
+            int qPort = GetNextQOSPort();
+            Log("[QOS ] Client requested test 3 got port " + qPort + "...");
+            string s = Resources.Resource1.template6.Replace("#QOSIP#", _qosip.ToString()).Replace("#QOSPORT#", qPort.ToString());
             s = Resources.Resource1.template5.Replace("#SIZE#", s.Length.ToString()) + s;
             WriteString(ns, s);
+            ns.ReadTimeout = 100;
+            string request = ReadToEnd(ns);
+            if (!request.StartsWith("GET /qos/firetype?vers=1"))
+            {
+                Log("[QOS ] Received unknown:\n" + request);
+                return;
+            }
+            Log("[QOS ] Client requested test 4 got port " + qPort + "...");
+            IPEndPoint remote = new IPEndPoint(IPAddress.Any, 0);
+            UdpClient server = new UdpClient(new IPEndPoint(IPAddress.Parse(ProviderInfo.QOS_IP), qPort));
+            for (int i = 0; i < 10; i++)
+                WaitForUdp(server, ref remote);
+            Log("[QOS ] Request " + qPort + " : UDP Messages received");
+            WriteString(ns, Resources.Resource1.template7);
             client.Close();
         }
 
-        private static void QOSTest4(TcpClient client, Stream ns, UdpClient server)
+        private static int GetNextQOSPort()
         {
-            Log("[QOS ] Client requested test 4...");
-            IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
-            for (int i = 0; i < 10; i++)
+            int result = 0;
+            lock (_sync2)
             {
-                byte[] receiveBytes = server.Receive(ref RemoteIpEndPoint);
+                result = _qosport++;
+                if (_qosport >= 17500)
+                    _qosport = 17400;
             }
-            Log("[QOS ] UDP Messages received");
-            WriteString(ns, Resources.Resource1.template7);
-            client.Close();
+            return result;
+        }
+
+        private static byte[] WaitForUdp(UdpClient server, ref IPEndPoint remote)
+        {
+            var asyncResult = server.BeginReceive(null, null);
+            asyncResult.AsyncWaitHandle.WaitOne(100);
+            if (asyncResult.IsCompleted)
+            {
+                try
+                {
+                    return server.EndReceive(asyncResult, ref remote);
+                }
+                catch { }
+            } 
+            return null;
         }
 
         private static string ReadToEnd(Stream s)
