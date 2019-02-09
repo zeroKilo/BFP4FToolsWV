@@ -30,7 +30,7 @@ namespace BFP4FLauncherWV
                     if (statSpace == "crit")
                         values.AddRange(new string[] { pi.profile.level.ToString(), 
                                                        pi.profile.xp.ToString(), 
-                                                       "0" });
+                                                       "10000" });
                     else
                         values.AddRange(new string[] { pi.profile.kit.ToString(), 
                                                        pi.profile.head.ToString(), 

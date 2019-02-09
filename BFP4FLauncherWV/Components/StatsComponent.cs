@@ -71,9 +71,9 @@ namespace BFP4FLauncherWV
                 Result.Add(Blaze.TdfString.Create("META", ""));
                 Result.Add(Blaze.TdfString.Create("NAME", "crit"));
                 List<Blaze.TdfStruct> STAT = new List<Blaze.TdfStruct>();
-                    STAT.Add(BlazeHelper.MakeStatGroupEntry(0, "crit", "1", "CRIT_LEVEL_LONG", "level", "CRIT_LEVEL"));
-                    STAT.Add(BlazeHelper.MakeStatGroupEntry(1, "crit", "0", "CRIT_XP_LONG", "xp", "CRIT_XP"));
-                    STAT.Add(BlazeHelper.MakeStatGroupEntry(2, "crit", "0", "CRIT_ELO_LONG", "elo", "CRIT_ELO"));
+                    STAT.Add(BlazeHelper.MakeStatGroupEntry(0, "crit", pi.profile.level.ToString(), "CRIT_LEVEL_LONG", "level", "CRIT_LEVEL"));
+                    STAT.Add(BlazeHelper.MakeStatGroupEntry(1, "crit", pi.profile.xp.ToString(), "CRIT_XP_LONG", "xp", "CRIT_XP"));
+                    STAT.Add(BlazeHelper.MakeStatGroupEntry(2, "crit", "10000", "CRIT_ELO_LONG", "elo", "CRIT_ELO"));
                 Result.Add(Blaze.TdfList.Create("STAT", 3, 3, STAT));
             }
             byte[] buff = Blaze.CreatePacket(p.Component, p.Command, 0, 0x1000, p.ID, Result);
