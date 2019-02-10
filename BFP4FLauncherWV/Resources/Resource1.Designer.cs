@@ -61,7 +61,7 @@ namespace BFP4FLauncherWV.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die 03.02.2019_1323 
+        ///   Sucht eine lokalisierte Zeichenfolge, die 09.02.2019_2010 
         /// ähnelt.
         /// </summary>
         internal static string BuildDate {
@@ -80,21 +80,35 @@ namespace BFP4FLauncherWV.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die #itemid, count, description
+        ///2000;1;Physical Training: Safe Fall
+        ///2001;1;Combat Resilience Training
+        ///2002;1;Increase Anti-Vehicle RPG Ammo
+        ///2003;1;Avoid Trip Wire Training: Basic
+        ///2004;1;Medic Bag 
+        ///2005;1;Frag Grenade Training
+        ///2006;1;APC TOW missile system Training
+        ///2007;1;Helicopter Pilot Training
+        ///2008;1;Jet Pilot Training
+        ///2009;1;Front Line Medic 
+        ///2010;1;Improved Threat Awareness Training
+        ///2011;1;Mortar Strike Combat Awareness Training
+        ///2012;1;Tactical Reflexes Training
+        ///2013;1;Sniper Combat Awareness Tra [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        /// </summary>
+        internal static string default_entitlement_map {
+            get {
+                return ResourceManager.GetString("default_entitlement_map", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Byte[].
         /// </summary>
         internal static byte[] redi {
             get {
                 object obj = ResourceManager.GetObject("redi", resourceCulture);
                 return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
-        /// </summary>
-        internal static string String1 {
-            get {
-                return ResourceManager.GetString("String1", resourceCulture);
             }
         }
         

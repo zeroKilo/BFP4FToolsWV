@@ -19,16 +19,36 @@ namespace BFP4FLauncherWV
         public static bool _exit;
         public static RichTextBox box = null;
         public static TcpListener lMagma = null;
+        public static Dictionary<int, int> entitlements;
 
         public static void Start()
         {
             SetExit(false);
             Log("Starting Magma...");
+            LoadEntitlements();
             new Thread(tHTTPMain).Start();
             for (int i = 0; i < 10; i++)
             {
                 Thread.Sleep(10);
                 Application.DoEvents();
+            }
+        }
+
+        private static void LoadEntitlements()
+        {
+            if (!Directory.Exists("backend"))
+                Directory.CreateDirectory("backend");
+            string name = "backend\\entitlements.txt";
+            if (!File.Exists(name))
+                File.WriteAllText(name, Resources.Resource1.default_entitlement_map);
+            string[] lines = File.ReadAllLines(name);
+            entitlements = new Dictionary<int, int>();
+            foreach (string line in lines)
+            {
+                if (line.Trim() == "" || line.Trim().StartsWith("#"))
+                    continue;
+                string[] parts = line.Split(';');
+                entitlements.Add(Convert.ToInt32(parts[0]), Convert.ToInt32(parts[1]));
             }
         }
 
@@ -137,17 +157,16 @@ namespace BFP4FLauncherWV
                         Log("[MGMA] Cant find player id!");
                         return;
                     }
-                    string response = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><entitlements count=\"123\">";
-                    string[] ids = "2004 2005 2006 2007 2008 2017 2018 2021 2023 2054 2168 3000 3001 3002 3003 3004 3005 3006 3007 3008 3009 3011 3012 3013 3014 3015 3016 3017 3018 3019 3020 3021 3022 3023 3024 3025 3026 3027 3029 3038 3041 3043 3044 3045 3047 3048 3050 3051 3052 3061 3062 3063 3064 3065 3066 3067 3068 3069 3070 3071 3072 3073 3074 3075 3076 3077 3078 3079 3080 3081 3082 3084 3085 3086 3087 3088 3089 3090 3091 3092 3094 3095 3096 3097 3099 3100 3101 3102 3103 3104 3105 3106 3107 3108 3109 3110 3111 3112 3113 3114 3115 3116 3117 3118 3119 3120 3121 3122 3124 3126 3127 3128 3129 3130 3131 3132 3133 3134 3135 3136 3137 3138 3139".Split(' ');
+                    string response = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><entitlements count=\"" + entitlements.Count + "\">";
                     int i = 1;
-                    foreach (var entitlement in ids)
+                    foreach (KeyValuePair<int, int> pair in entitlements)
                     {
-                        response += "<entitlement><entitlementId>" 
-                                 + Convert.ToString(i) 
-                                 + "</entitlementId><entitlementTag>" 
-                                 + entitlement 
-                                 + "-UNLM-</entitlementTag><useCount>1</useCount><grantDate>" 
-                                 + DateTime.UtcNow.ToString("MMM-dd-yyyy HH:mm:ss UTC") 
+                        response += "<entitlement><entitlementId>"
+                                 + Convert.ToString(i)
+                                 + "</entitlementId><entitlementTag>"
+                                 + pair.Key
+                                 + "-UNLM-</entitlementTag><useCount>" + pair.Value + "</useCount><grantDate>"
+                                 + DateTime.UtcNow.ToString("MMM-dd-yyyy HH:mm:ss UTC")
                                  + "</grantDate><terminationDate></terminationDate><status>ACTIVE</status></entitlement>";
                         i++;
                     }

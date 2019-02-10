@@ -127,8 +127,209 @@
   <data name="redi" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>redi.pfx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value />
+  <data name="default_entitlement_map" xml:space="preserve">
+    <value>#itemid, count, description
+2000;1;Physical Training: Safe Fall
+2001;1;Combat Resilience Training
+2002;1;Increase Anti-Vehicle RPG Ammo
+2003;1;Avoid Trip Wire Training: Basic
+2004;1;Medic Bag 
+2005;1;Frag Grenade Training
+2006;1;APC TOW missile system Training
+2007;1;Helicopter Pilot Training
+2008;1;Jet Pilot Training
+2009;1;Front Line Medic 
+2010;1;Improved Threat Awareness Training
+2011;1;Mortar Strike Combat Awareness Training
+2012;1;Tactical Reflexes Training
+2013;1;Sniper Combat Awareness Training
+2014;1;Hear_Footsteps_1
+2015;1;Physical Training: Power Climb
+2016;1;Increased_Sniper_Ammo_1 
+2017;1;Motion_Sensor_1
+2018;1;Tank Coaxial Machinegun Training
+2019;1;Improved_Spotting
+2020;1;Grenade Combat Awareness Training
+2021;1;Improved Vehicle Repair Tool
+2022;1;Engineering Damage Assessment Training
+2023;1;Ammo Bag 
+2024;1;Request Reinforcements
+2025;1;Mortar_Strike_1
+2026;1;Increased_AR_Ammo 
+2027;1;Enhanced Missile Countermeasure Deployment for Jets
+2028;1;Upgrade_APC_Armor_1
+2029;1;Upgrade_Tank_Armor 
+2030;1;Defibrilator
+2031;1;Medic_Vehicle_1 
+2032;1;JDAM Weapon System Training
+2033;1;Ground Crew Support and Liaison
+2034;1;C4 Explosive
+2035;1;Air_Vehicle_Air_Radar_1 
+2036;1;Jet Ground Target IFF Radar System
+2037;1;See_Enemy_Friendly_HP_1 
+2038;1;Dead Man's Trigger
+2039;1;Physical Training: Increase Sprint Speed
+2040;1;Physical Training: Increase Jog Speed
+2041;1;Avoid Trip Wire Training: Advanced
+2042;1;Silent_Steps
+2043;1;Satellite Surveillance Training
+2044;1;Physical Training: Toughness
+2045;1;Grenade Toss-Back Combat Skill Training
+2046;1;Anti-Vehicle Mine Training
+2047;1;Anti_Material_MG_Emplacement_1 
+2048;1;Claymore
+2049;1;Field Repair Vehicle Training
+2050;1;Smoke_Grenade_1
+2051;1;XM-25 Airburst Grenade Launcher Training
+2052;1;Pilot_Repair_1
+2053;1;Undetectable_1
+2054;1;RPG-7
+2055;1;Quick Reflexes 
+2056;1;See_Enemy_Class_1
+2057;1;See_Enemy_HP_1
+2058;1;Ammo Bag Advanced
+2059;1;Medic bag advanced 
+2060;1;Attack Helicopter Anti-Armor Missile System Training
+2061;1;Enhanced Missile Countermeasure Deployment for Helicopters
+2062;1;Enhanced APC and Tank Smoke Deployment
+2063;1;Attack Helicopter IFF Radar System
+2168;1;Tracer Dart
+2171;1;Reinforcement
+3000;1;Weapon_SG_870Combat_Default
+3001;1;Weapon_AR_M16A2_Default
+3002;1;Weapon_UBGL_M203_Default 
+3003;1;Weapon_LMG_M249SAW_default
+3004;1;Weapon_Srifle_SV98_Default
+3005;1;Weapon_AR_G3A4_Default 
+3006;1;Weapon_PISTOL_M9_Default
+3007;1;Weapon_AR_AEK971_Default
+3008;1;Weapon_SG_SPAS_12_Default
+3009;1;Weapon_PISTOL_OnlyTheFew_Default
+3010;1;Weapon_LMG_M60_Used
+3011;1;Weapon_AR_SCARL_Default
+3012;1;Weapon_SMG_UMP_Default
+3013;1;Weapon_LMG_MG3_Default
+3014;1;Weapon_LMG_PKM_Default
+3015;1;Weapon_LMG_M60_Default
+3016;1;Weapon_SMG_MP7_Default
+3017;1;Weapon_SMG_FNP90_Default
+3018;1;Weapon_SMG_PP2000_Default
+3019;1;Weapon_PISTOL_M1911_Default
+3020;1;Weapon_PISTOL_Mp412_Default
+3021;1;Weapon_PISTOL_MP443_Default
+3022;1;Weapon_Srifle_M95_Default
+3023;1;Weapon_Srifle_SVD_Default
+3024;1;Weapon_Srifle_M24_Default
+3025;1;Weapon_SG_SAIGA_Default
+3026;1;Weapon_SG_USAS12_Default
+3027;1;Weapon_Melee_Knife_Default
+3029;1;Weapon_SG_USAS12_Used
+3030;1;Weapon_AR_M16A2_Used
+3033;1;Weapon_AR_AEK971_Used
+3034;1;Weapon_SMG_FNP90_Used
+3035;1;Weapon_Srifle_M24_Used
+3036;1;Weapon_LMG_PKM_Used
+3037;1;Weapon_PISTOL_M1911_Used
+3038;1;Weapon_SG_SPAS12_Used
+3039;1;Weapon_Srifle_SVD_Used
+3040;1;Weapon_SMG_MP7_Used
+3041;1;Weapon_PISTOL_MP443_Used
+3043;1;Weapon_PISTOL_P266_Default
+3044;1;Weapon_SG_SPAS15_Deafult
+3045;1;Weapon_Srifle_SVU_Default
+3046;1;Weapon_AR_STG77AUG_Default
+3047;1;Weapon_SMG_SpectreM4_Default
+3048;1;Weapon_LMG_MG36_Default
+3050;1;
+3051;1;
+3052;1;
+3061;1;
+3062;1;M4A1
+3063;1;
+3064;1;UZI
+3065;1;M14 EBR
+3066;1;M110
+3067;1;AN-94 Abakan
+3068;1;QJY-88
+3069;1;AKS-74U
+3070;1;VSS Vintorez
+3071;1;416-Carbine
+3072;1;FN Minimi Para
+3073;1;9A-91
+3074;1;
+3075;1;XM8
+3076;1;XM8AR
+3077;1;GOL
+3078;1;XM8C
+3079;1;
+3080;1;
+3081;1;M240B
+3082;1;
+3084;1;
+3085;1;
+3086;1;
+3087;1;
+3088;1;
+3089;1;
+3090;1;
+3091;1;
+3092;1;
+3094;1;
+3095;1;
+3096;1;
+3097;1;
+3099;1;
+3100;1;
+3101;1;
+3102;1;
+3103;1;
+3104;1;
+3105;1;
+3106;1;
+3107;1;
+3108;1;
+3109;1;
+3110;1;AK-47
+3111;1;L96A1
+3112;1;PP-19
+3113;1;RPK-74M
+3114;1;F2000
+3115;1;
+3116;1;M27 IAR
+3117;1;PDW-R
+3118;1;
+3119;1;SKS
+3120;1;FAMAS
+3121;1;QBB-95
+3122;1;AS Val
+3124;1;
+3126;1;M82A3
+3127;1;L85A2
+3128;1;Pecheneg
+3129;1;G53
+3130;1;
+3131;1;
+3132;1;ACW-R
+3133;1;A-91
+3134;1;LSAT
+3135;1;L86A2
+3136;1;MTAR-21
+3137;1;M5K
+3138;1;M98B
+3139;1;JNG-90
+3990;1;Weapon_DevelopmentWeapon1
+3991;1;Weapon_DevelopmentWeapon2
+3992;1;Weapon_DevelopmentWeapon3
+3993;1;Weapon_DevelopmentWeapon4
+3994;1;Weapon_DevelopmentWeapon5
+3995;1;Weapon_DevelopmentWeapon6
+3996;1;Weapon_DevelopmentWeapon7
+3997;1;Weapon_DevelopmentWeapon8
+3998;1;Weapon_DevelopmentWeapon9
+3999;1;Weapon_DevelopmentWeapon10
+8000;1;InstantHeal 
+8001;1;Wrench
+8002;1;Bandage_1</value>
   </data>
   <data name="template1" xml:space="preserve">
     <value>HTTP/1.1 200 OK
