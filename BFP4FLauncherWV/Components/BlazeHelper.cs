@@ -108,12 +108,12 @@ namespace BFP4FLauncherWV
             return Blaze.TdfStruct.Create("USER", USER);
         }
 
-        public static Blaze.Tdf CreateUserDataStruct(PlayerInfo pi)
+        public static Blaze.Tdf CreateUserDataStruct(PlayerInfo pi, string name = "DATA")
         {
             List<Blaze.Tdf> DATA = new List<Blaze.Tdf>();
                 DATA.Add(BlazeHelper.CreateNETFieldUnion(pi, "ADDR"));
                 DATA.Add(BlazeHelper.CreateNQOSField(pi, "QDAT"));
-            return Blaze.TdfStruct.Create("DATA", DATA);
+            return Blaze.TdfStruct.Create(name, DATA);
         }
     }
 }

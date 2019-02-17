@@ -172,7 +172,7 @@ namespace BFP4FLauncherWV
                     }
                     response += "</entitlements>";
                     ReplyWithXML(s, response);
-                }
+                }                
             }
             if (cmd == "POST" && !basicMode)
             {

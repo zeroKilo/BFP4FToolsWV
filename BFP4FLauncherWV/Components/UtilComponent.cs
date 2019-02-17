@@ -23,11 +23,11 @@ namespace BFP4FLauncherWV
                 case 8:
                     PostAuth(p, pi, ns);
                     break;
-                case 0x16:
-                    SetClientMetrics(p, pi, ns);
-                    break;
                 case 0xC:
                     UserSettingsLoadAll(p, pi, ns);
+                    break;
+                case 0x16:
+                    SetClientMetrics(p, pi, ns);
                     break;
             }
         }

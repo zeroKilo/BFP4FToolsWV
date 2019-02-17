@@ -15,6 +15,9 @@ namespace BFP4FLauncherWV
         {
             switch (p.Command)
             {
+                case 0xC:
+                    LookUpUser(p, pi, ns);
+                    break;
                 case 0x14:
                     UpdateNetworkInfo(p, pi, ns);
                     break;
@@ -37,6 +40,17 @@ namespace BFP4FLauncherWV
             ns.Write(buff, 0, buff.Length);
             ns.Flush();
             AsyncUserSessions.UserSessionExtendedDataUpdateNotification(pi, p, pi, ns);
+        }
+
+        public static void LookUpUser(Blaze.Packet p, PlayerInfo pi, NetworkStream ns)
+        {
+            List<Blaze.Tdf> result = new List<Blaze.Tdf>();
+            result.Add(BlazeHelper.CreateUserDataStruct(pi, "EDAT"));
+            result.Add(Blaze.TdfInteger.Create("FLGS", 3));
+            result.Add(BlazeHelper.CreateUserStruct(pi));
+            byte[] buff = Blaze.CreatePacket(p.Component, p.Command, 0, 0x1000, p.ID, result);
+            ns.Write(buff, 0, buff.Length);
+            ns.Flush();
         }
     }
 }
