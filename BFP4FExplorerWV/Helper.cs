@@ -16,6 +16,8 @@ namespace BFP4FExplorerWV
 {
     public static class Helper
     {
+        public static char seperator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator[0];
+
         public static void ConvertDFMSWF(string filename)
         {
             byte[] key = { 0x0B, 0xAD, 0xF0, 0x0D };
@@ -143,8 +145,7 @@ namespace BFP4FExplorerWV
         public static Vector3 ParseVector3(string data)
         {
             string[] parts = data.Split('/');
-            string t = new NumberFormatInfo().NumberDecimalSeparator;
-            if (t == ".")
+            if (seperator == ',')
                 parts = data.Replace(".", ",").Split('/');
             return new Vector3(Convert.ToSingle(parts[0]), Convert.ToSingle(parts[1]), Convert.ToSingle(parts[2]));
         }

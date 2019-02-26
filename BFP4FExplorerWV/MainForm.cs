@@ -42,6 +42,7 @@ namespace BFP4FExplorerWV
                 return;
             BF2FileSystem.Load();
             BF2HUDLoader.Init();
+            Log.WriteLine("Number decimal seperator for current culture = '" + Helper.seperator + "'");
             Log.WriteLine("Done. Loaded " + (BF2FileSystem.clientFS.Count() + BF2FileSystem.serverFS.Count()) + " files");
             RefreshTrees();
             engineMeshExplorer = new Engine3D(pic2);
