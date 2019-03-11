@@ -318,10 +318,9 @@
             // 
             // hb1
             // 
-            this.hb1.BoldFont = null;
+            this.hb1.ColumnInfoVisible = true;
             this.hb1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.hb1.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.hb1.LineInfoForeColor = System.Drawing.Color.Empty;
             this.hb1.LineInfoVisible = true;
             this.hb1.Location = new System.Drawing.Point(0, 0);
             this.hb1.Name = "hb1";

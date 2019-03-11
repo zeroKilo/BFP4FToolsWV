@@ -465,15 +465,19 @@ namespace BlazeSharkWV
 
             OpenFileDialog d = new OpenFileDialog();
             d.Filter = "*.bin|*.bin";
+            d.Multiselect = true;
             if (d.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                byte[] data = File.ReadAllBytes(d.FileName);
-                lock (_sync)
+                packets.Clear();
+                foreach (string file in d.FileNames)
                 {
-                    packets.Clear();
-                    packets.AddRange(Blaze.FetchAllBlazePackets(new MemoryStream(data)));
-                    packetCount = -1;
+                    byte[] data = File.ReadAllBytes(file);
+                    lock (_sync)
+                    {
+                        packets.AddRange(Blaze.FetchAllBlazePackets(new MemoryStream(data)));
+                    }
                 }
+                packetCount = -1;
             }
         }
 
